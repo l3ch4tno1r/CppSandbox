@@ -187,6 +187,7 @@ private:
 
 	void MoveMemBlockForward(T* dest, T* src)
 	{
+		// TODO : Finish this part !
 		//ASSERT(dest >= m_Data && dest < m_Data + m_Size);
 		ASSERT(dest >= m_Data);
 		ASSERT(src  >= m_Data && src  < m_Data + m_Size);

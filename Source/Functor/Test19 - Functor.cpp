@@ -1,18 +1,52 @@
 #include <iostream>
 #include <functional>
+#include <future>
 
-class Test
+#include "Utilities/InstanceCounter.h"
+
+class Test : public Counter<Test>
 {
 public:
-	void Method()
+	void Display() const
 	{
-		std::cout << "Hello world !" << std::endl;
+		std::cout << "I am alive ! " << this->Id() << std::endl;
+	}
+
+	Test()
+	{
+		std::cout << "Default ctor - " << this->Id() << std::endl; 
+	}
+
+	Test(const Test& other)
+	{
+		std::cout << "Copy ctor from " << other.Id() << " to " << this->Id() << std::endl;
+	}
+
+	Test(Test&& other)
+	{
+		std::cout << "Move ctor from " << other.Id() << " to " << this->Id() << std::endl; 
+	}
+
+	Test& operator=(const Test& other)
+	{
+		std::cout << "Move assignement from " << other.Id() << " to " << this->Id() << std::endl;
+
+		return *this; 
 	}
 };
 
-void Display(int a, char c)
+void Display(const Test& a)
 {
-	std::cout << "Hello world ! " << a << ", " << c << std::endl;
+	a.Display();
+}
+
+Test CreateInstance()
+{
+	std::cout << "------ CreateInstance ------" << std::endl;
+
+	Test test;
+
+	return test;
 }
 
 template<typename F>
@@ -31,9 +65,10 @@ public:
 		f(_f)
 	{}
 
-	Ret operator()(Args... args)
+	Ret operator()(Args ...args) const
 	{
-		return (*f)(args...);
+		//return (*f)(args...);
+		return (*f)(std::forward<Args>(args)...);
 	}
 };
 
@@ -55,7 +90,7 @@ public:
 		m(_m)
 	{}
 
-	Ret operator()(Args... args)
+	Ret operator()(Args ...args)
 	{
 		return (o.*m)(args...);
 	}
@@ -69,17 +104,38 @@ int main()
 	Test test;
 
 	(test.*methodptr)();
-	*/
 
-	Func<void(int, char)> f(Display);
-
-	f(1, 'a');
+	Func<void(const Test&)> f(Display);
 
 	Test test;
 
-	std::function<void(void)> func = std::bind(&Test::Method, &test);
+	f(test);
+	f(Test());
 
-	func();
+	std::function<void(const Test&)> m(&Test::Display);
+
+	m(test);
+
+	std::function<void(void)> r = std::bind(&Test::Display, std::cref(test));
+
+	r();
+	*/
+
+	std::packaged_task<Test(void)> pt(CreateInstance);
+
+	std::cout << "----------------------" << std::endl;
+
+	pt();
+
+	std::cout << "----------------------" << std::endl;
+
+	Test ret = pt.get_future().get();
+
+	/*
+	Test test;
+
+	MemFunc<void(const Test&)> mem = &Test::Display;
+	*/
 
 	//MemFunc<Test, void(void)> m(&test, &Test::Method);
 

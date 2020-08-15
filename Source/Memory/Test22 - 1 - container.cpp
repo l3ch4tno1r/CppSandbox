@@ -9,6 +9,14 @@
 
 #define SEPARATOR(X) std::cout << "------- " << X << " -------" << std::endl
 
+#define DEBUG_MEM 0
+
+#if DEBUG_MEM == 1
+#define LOG(X) X
+#else
+#define LOG(X)
+#endif
+
 class MemTracker
 {
 private:
@@ -55,7 +63,7 @@ MemTracker tracker;
 
 void* operator new(size_t size)
 {
-	std::cout << "Allocated " << size << " bytes." << std::endl;
+	LOG(std::cout << "Allocated " << size << " bytes." << std::endl);
 
 	tracker.Allocate(size);
 
@@ -64,7 +72,7 @@ void* operator new(size_t size)
 
 void operator delete(void* ptr, size_t size)
 {
-	std::cout << "Deallocated " << size << " bytes." << std::endl;
+	LOG(std::cout << "Deallocated " << size << " bytes." << std::endl);
 
 	tracker.Deallocate(size);
 
@@ -278,35 +286,35 @@ public:
 	Test() :
 		m_Name("No name")
 	{
-		std::cout << "#" << this->Id() << " Hello world " << m_Name << std::endl;
+		std::cout << "#" << this->Id() << "\tdefault ctor " << m_Name << std::endl;
 	}
 
 	Test(const char* str) :
 		m_Name(str)
 	{
-		std::cout << "#" << this->Id() << " Hello world " << m_Name << std::endl;
+		std::cout << "#" << this->Id() << "\tcustom ctor " << m_Name << std::endl;
 	}
 
 	Test(const Test& other) :
 		m_Name(other.m_Name)
 	{
-		std::cout << "#" << this->Id() << " Hello world - Copy " << m_Name << std::endl;
+		std::cout << "#" << this->Id() << "\tcopy ctor " << m_Name << " - copied from " << other.Id() << " to " << this->Id() << std::endl;
 	}
 
 	Test(Test&& other) :
 		m_Name(std::move(other.m_Name))
 	{
-		std::cout << "#" << this->Id() << " Hello world - Move " << m_Name << std::endl;
+		std::cout << "#" << this->Id() << "\tmove ctor " << m_Name << " - moved from " << other.Id() << " to " << this->Id() << std::endl;
 	}
 
 	~Test()
 	{
-		std::cout << "#" << this->Id() << " Goodbye world " << m_Name << std::endl;
+		std::cout << "#" << this->Id() << "\tdtor " << m_Name << std::endl;
 	}
 
 	Test& operator=(const Test& other)
 	{
-		std::cout << "#" << this->Id() << " copy assigned " << m_Name << std::endl;
+		std::cout << "#" << this->Id() << "\tcopy assigned " << m_Name << std::endl;
 
 		m_Name = other.m_Name;
 
@@ -317,7 +325,7 @@ public:
 	{
 		m_Name = std::move(other.m_Name);
 
-		std::cout << "#" << this->Id() << " move assigned " << this->Name() << std::endl;
+		std::cout << "#" << this->Id() << "\tmove assigned " << this->Name() << std::endl;
 
 		return *this;
 	}
@@ -350,7 +358,7 @@ int main()
 	std::vector<Test> vec;
 
 	SEPARATOR(1);
-	vec.reserve(5);
+	vec.reserve(15);
 
 	SEPARATOR(2);
 	vec.emplace_back("Joe");
@@ -361,13 +369,18 @@ int main()
 	vec.emplace_back("Melody");
 	vec.emplace_back("Donald");
 
-	SEPARATOR(3);
-
-	vec.erase(vec.begin() + 3);
-
-	SEPARATOR(4);
-
-	vec.insert(vec.end(), Test("John"));
-
 	SEPARATOR(5);
+
+	std::initializer_list<Test> list = { Test("Bob"), Test("Gratt"), Test("Bill"), Test("Emmett") };
+
+	SEPARATOR(6);
+
+	vec.insert(vec.begin() + 4, list);
+
+	SEPARATOR(7);
+
+	for (const Test& e : vec)
+		std::cout << e.Name() << std::endl;
+
+	SEPARATOR(8);
 }

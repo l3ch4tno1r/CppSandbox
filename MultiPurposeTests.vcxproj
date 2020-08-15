@@ -121,7 +121,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp" />
-    <ClCompile Include="Source\Functor\Test19 - Functor.cpp" />
+    <ClCompile Include="Source\Memory\Test33 - vector implementation.cpp" />
+    <ClCompile Include="Source\Memory\_MemTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\stb_image\stb_image.h" />

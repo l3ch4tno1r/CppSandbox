@@ -1,7 +1,7 @@
 #include <mutex>
 #include <iostream>
 
-#define DEBUG_MEM 0
+#define DEBUG_MEM 1
 
 #if DEBUG_MEM == 1
 #define LOG(X) X
@@ -12,46 +12,55 @@
 class MemTracker
 {
 private:
-	std::mutex allocated_mut;
-	size_t allocated;
+	std::mutex m_AllocatedMut;
+	size_t m_Allocated;
+	size_t m_NumAlloc;
 
-	std::mutex deallocated_mut;
-	size_t deallocated;
+	std::mutex m_DeallocatedMut;
+	size_t m_Deallocated;
+	size_t m_NumDealloc;
 
 public:
 	MemTracker() :
-		allocated(0),
-		deallocated(0)
+		m_Allocated(0),
+		m_Deallocated(0)
 	{}
 
 	~MemTracker()
 	{
 		std::cout << std::endl;
 
-		std::cout << "Total Memory allocated   : " << allocated << " bytes." << std::endl;
-		std::cout << "Total Memory deallocated : " << deallocated << " bytes." << std::endl;
+		std::cout << "Total Memory allocated   : " << m_Allocated << " bytes." << std::endl;
+		std::cout << "Total Memory deallocated : " << m_Deallocated << " bytes." << std::endl;
 
-		std::cout << "\nDelta = " << allocated - deallocated << std::endl;
+		std::cout << '\n';
+
+		std::cout << "Total number of allocations   : " << m_NumAlloc << std::endl;
+		std::cout << "Total number of deallocations : " << m_NumDealloc << std::endl;
+
+		std::cout << "\nDelta = " << m_Allocated - m_Deallocated << std::endl;
 
 		std::cin.get();
 	}
 
 	void Allocate(size_t size)
 	{
-		std::unique_lock<std::mutex> lock(allocated_mut);
+		std::unique_lock<std::mutex> lock(m_AllocatedMut);
 
 		LOG(std::cout << "Allocated " << size << " bytes." << std::endl);
 
-		allocated += size;
+		m_Allocated += size;
+		++m_NumAlloc;
 	}
 
 	void Deallocate(size_t size)
 	{
-		std::unique_lock<std::mutex> lock(deallocated_mut);
+		std::unique_lock<std::mutex> lock(m_DeallocatedMut);
 
 		LOG(std::cout << "Deallocated " << size << " bytes." << std::endl);
 
-		deallocated += size;
+		m_Deallocated += size;
+		++m_NumDealloc;
 	}
 };
 

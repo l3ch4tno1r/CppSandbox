@@ -10,7 +10,7 @@ int main()
 	std::string str = "<Transformation>1.0 0. 0. 0. 0.0 1.0 0.0 5.0  0. 0. 1. 0. 0. 0. 0. 1.0</Transformation>";
 
 	//std::regex  transformRegex("<Transformation>((-?\\d+\\.\\d* *){16})</Transformation>");
-	std::regex  transformRegex("<(\\w+)>([\\w\\d(-?\\d+\\.\\d* *)]+)<\\/\\1>");
+	std::regex  transformRegex("<(\\w+)>([\\w\\d(-?\\d+\\.\\d* *)]+)</\\1>");
 	std::smatch matches;
 
 	std::regex_search(str, matches, transformRegex);

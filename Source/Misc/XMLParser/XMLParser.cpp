@@ -1,5 +1,6 @@
 #include "XMLParser.h"
 #include "Utilities/ErrorHandling.h"
+#include "Geometry/Geometry3D/Transform3D.h"
 
 #include <fstream>
 #include <sstream>
@@ -10,15 +11,15 @@ XMLParser::XMLParser(const char * filepath) :
 	m_FilePath(filepath)
 {}
 
-TreeNode XMLParser::ParseFile() const
+SceneNode XMLParser::ParseFile() const
 {
 	std::ifstream file(m_FilePath);
 
 	if (!file)
 		throw std::exception("File not found");
 
-	TreeNode root;
-	std::stack<TreeNode*> stack;
+	SceneNode root;
+	std::stack<SceneNode*> stack;
 
 	stack.push(&root);
 
@@ -26,21 +27,19 @@ TreeNode XMLParser::ParseFile() const
 	std::string line;
 
 	std::regex nodeStartRegEx("<Node>");
-	std::regex nodeEndRegEx("<\Node>");
+	std::regex nodeEndRegEx("</Node>");
+	/*
 	std::regex nameRegEx("<Name>(\\w+)</Name>");
 	std::regex transformRegEx("<Transformation>((-?\\d+\\.\\d* *){16})</Transformation>");
 	std::regex geometryRegEx("<Geometry>(\\w+)</Geometry>");
+	*/
+	std::regex markupRegEx("<(\\w+)>([\\w\\d(-?\\d+\\.\\d* *)]+)</\\1>");
 
 	while (std::getline(file, line))
 	{
-		TreeNode* current = stack.top();
+		SceneNode* current = stack.top();
 
-		std::string temp;
-		std::stringstream sstr(line);
-
-		sstr >> temp;
-
-		if ("<Node>" == temp)
+		if (std::regex_search(line, nodeStartRegEx))
 		{
 			if (first)
 			{
@@ -48,14 +47,14 @@ TreeNode XMLParser::ParseFile() const
 				continue;
 			}
 
-			TreeNode& newNode = current->AddChild(TreeNode());
+			SceneNode& newNode = current->AddChild(SceneNode());
 
 			stack.push(&newNode);
 
 			continue;
 		}
 
-		if ("</Node>" == temp)
+		if (std::regex_search(line, nodeEndRegEx))
 		{
 			stack.pop();
 
@@ -67,20 +66,27 @@ TreeNode XMLParser::ParseFile() const
 
 		std::smatch matches;
 
-		if (std::regex_search(temp, matches, nameRegEx))
+		if (std::regex_search(line, matches, markupRegEx))
 		{
-			if (matches.size() != 2)
+			ASSERT(matches.size() == 3);
+
+			if (matches.size() != 3)
 				continue;
 
-			current->Name() = matches[1].str();
-		}
+			std::string markupName = matches[1].str();
+			std::string markupData = matches[2].str();
 
-		if (std::regex_search(temp, matches, geometryRegEx))
-		{
-			if (matches.size() != 2)
-				continue;
+			if("Name" == markupName)
+				current->Name() = markupData;
 
-			current->Geometry() = matches[1].str();
+			if ("Geometry" == markupName)
+				current->Geometry() = markupData;
+
+			if ("Transformation" == markupName)
+			{
+				//std::stringstream sstr(markupData);
+				current->Transform() = markupData;
+			}
 		}
 	}
 

@@ -122,9 +122,9 @@
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
+    <ClCompile Include="Source\Misc\XMLParser\Test01 - xml parser.cpp" />
     <ClCompile Include="Source\Misc\XMLParser\TreeNode.cpp" />
     <ClCompile Include="Source\Misc\XMLParser\XMLParser.cpp" />
-    <ClCompile Include="Source\RegEx\Test01 - regex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\stb_image\stb_image.h" />

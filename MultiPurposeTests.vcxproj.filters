@@ -27,7 +27,7 @@
     <ClCompile Include="Source\Memory\_MemTracker.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\RegEx\Test01 - regex.cpp">
+    <ClCompile Include="Source\Misc\XMLParser\Test01 - xml parser.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

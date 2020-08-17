@@ -1,3 +1,6 @@
+#define MEM_TRACKING 0
+
+#if MEM_TRACKING == 1
 #include <mutex>
 #include <iostream>
 
@@ -79,3 +82,4 @@ void operator delete(void* ptr, size_t size)
 
 	free(ptr);
 }
+#endif

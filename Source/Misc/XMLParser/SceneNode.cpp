@@ -1,4 +1,4 @@
-#include "TreeNode.h"
+#include "SceneNode.h"
 
 #include <iostream>
 
@@ -41,7 +41,8 @@ void SceneNode::ls_r(size_t indent) const
 	if (!m_Geometry.empty())
 		std::cout << " (" << m_Geometry << ')';
 
-	std::cout << " - " << m_Transform << std::endl;
+	//std::cout << " - " << m_Transform << std::endl;
+	std::cout << std::endl;
 
 	for (const SceneNode& e : m_Children)
 		e.ls_r(indent);

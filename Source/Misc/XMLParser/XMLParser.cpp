@@ -1,6 +1,5 @@
 #include "XMLParser.h"
 #include "Utilities/ErrorHandling.h"
-#include "Geometry/Geometry3D/Transform3D.h"
 
 #include <fstream>
 #include <sstream>
@@ -84,8 +83,22 @@ SceneNode XMLParser::ParseFile() const
 
 			if ("Transformation" == markupName)
 			{
-				//std::stringstream sstr(markupData);
-				current->Transform() = markupData;
+				std::stringstream sstr(markupData);
+
+				for (size_t i = 0; i < 16; ++i)
+				{
+					size_t I = i / 4;
+					size_t J = i % 4;
+
+					float temp;
+
+					sstr >> temp;
+
+					if (sstr.fail())
+						throw std::exception("Transformation format incorrect.");
+
+					current->Transform().mat(I, J) = temp;
+				}
 			}
 		}
 	}

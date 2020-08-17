@@ -3,14 +3,17 @@
 #include <string>
 #include <vector>
 
+#include "Geometry/Geometry3D/Transform3D.h"
+
 class SceneNode
 {
 private:
 	std::string m_Name;
-	std::string m_Transform;
 	std::string m_Geometry;
 
 	std::vector<SceneNode> m_Children;
+
+	Transform3D<float> m_Transform;
 
 public:
 	SceneNode() = default;
@@ -34,12 +37,13 @@ public:
 	void ls_r(size_t indent = 0) const;
 
 	std::string& Name()      { return m_Name; }
-	std::string& Transform() { return m_Transform; }
 	std::string& Geometry()  { return m_Geometry; }
 
 	const std::string& Name() const      { return m_Name; }
-	const std::string& Transform() const { return m_Transform; }
 	const std::string& Geometry() const  { return m_Geometry; }
+
+	Transform3D<float>& Transform() { return m_Transform; }
+	const Transform3D<float>& Transform() const { return m_Transform; }
 
 	const std::vector<SceneNode>& Children() const { return m_Children; }
 };

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "TreeNode.h"
+#include "SceneNode.h"
 
 class XMLParser
 {

@@ -8,7 +8,7 @@ int main()
 	{
 		XMLParser parser("Ressources/scene.xml");
 
-		TreeNode scene = parser.ParseFile();
+		SceneNode scene = parser.ParseFile();
 
 		scene.ls_r();
 	}

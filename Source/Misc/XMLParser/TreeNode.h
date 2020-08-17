@@ -3,28 +3,28 @@
 #include <string>
 #include <vector>
 
-class TreeNode
+class SceneNode
 {
 private:
 	std::string m_Name;
 	std::string m_Transform;
 	std::string m_Geometry;
 
-	std::vector<TreeNode> m_Children;
+	std::vector<SceneNode> m_Children;
 
 public:
-	TreeNode() = default;
+	SceneNode() = default;
 
-	TreeNode(const TreeNode& other);
+	SceneNode(const SceneNode& other);
 
-	TreeNode(TreeNode&& other);
+	SceneNode(SceneNode&& other);
 
-	TreeNode& AddChild(const TreeNode& child);
+	SceneNode& AddChild(const SceneNode& child);
 
-	TreeNode& AddChild(TreeNode&& child);
+	SceneNode& AddChild(SceneNode&& child);
 
 	template<typename ...Args>
-	TreeNode& AddChildEmplace(Args&& ...args)
+	SceneNode& AddChildEmplace(Args&& ...args)
 	{
 		m_Children.emplace_back(std::forward<Args>(args)...);
 
@@ -41,5 +41,5 @@ public:
 	const std::string& Transform() const { return m_Transform; }
 	const std::string& Geometry() const  { return m_Geometry; }
 
-	const std::vector<TreeNode>& Children() const { return m_Children; }
+	const std::vector<SceneNode>& Children() const { return m_Children; }
 };

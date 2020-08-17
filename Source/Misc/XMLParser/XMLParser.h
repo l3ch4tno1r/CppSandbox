@@ -12,5 +12,5 @@ private:
 public:
 	XMLParser(const char* filepath);
 
-	TreeNode ParseFile() const;
+	SceneNode ParseFile() const;
 };

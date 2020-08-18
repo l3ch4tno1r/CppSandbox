@@ -27,11 +27,6 @@ SceneNode XMLParser::ParseFile() const
 
 	std::regex nodeStartRegEx("<Node>");
 	std::regex nodeEndRegEx("</Node>");
-	/*
-	std::regex nameRegEx("<Name>(\\w+)</Name>");
-	std::regex transformRegEx("<Transformation>((-?\\d+\\.\\d* *){16})</Transformation>");
-	std::regex geometryRegEx("<Geometry>(\\w+)</Geometry>");
-	*/
 	std::regex markupRegEx("<(\\w+)>([\\w\\d(-?\\d+\\.\\d* *)]+)</\\1>");
 
 	while (std::getline(file, line))

@@ -107,14 +107,14 @@ public:
 	{
 		m_Elements.push_back(std::make_unique<File>(name));
 
-		return static_cast<File&>(*m_Elements.back());
+		return dynamic_cast<File&>(*m_Elements.back());
 	}
 
 	Directory& AddDirectory(const char* name)
 	{
 		m_Elements.push_back(std::make_unique<Directory>(name));
 
-		return static_cast<Directory&>(*m_Elements.back());
+		return dynamic_cast<Directory&>(*m_Elements.back());
 	}
 
 	void ls() override

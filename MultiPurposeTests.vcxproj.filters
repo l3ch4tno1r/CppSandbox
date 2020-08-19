@@ -18,19 +18,10 @@
     <ClCompile Include="External\stb_image\stb_image.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Misc\XMLParser\XMLParser.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Memory\_MemTracker.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Misc\XMLParser\Test01 - xml parser.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Misc\XMLParser\SceneNode.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Misc\XMLParser\Scene.cpp">
+    <ClCompile Include="Source\Misc\XMLParser\Attempt02\Scene.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,13 +32,7 @@
     <ClInclude Include="External\TheCherno\Instrumentor.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Misc\XMLParser\XMLParser.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Misc\XMLParser\SceneNode.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Misc\XMLParser\Scene.h">
+    <ClInclude Include="Source\Misc\XMLParser\Attempt02\Scene.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

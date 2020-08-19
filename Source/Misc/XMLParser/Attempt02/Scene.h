@@ -2,6 +2,7 @@
 
 #include <string>
 #include <list>
+#include <memory>
 
 #include "Geometry/Geometry3D/Transform3D.h"
 
@@ -20,6 +21,8 @@ public:
 	const Transform3D<float>& Transform() const { return m_Transform; }
 };
 
+using uptrBaseNode = std::unique_ptr<BaseNode>;
+
 class GeometryNode : public BaseNode
 {
 private:
@@ -35,4 +38,7 @@ public:
 };
 
 class GroupNode : public BaseNode
-{};
+{
+private:
+	std::list<uptrBaseNode> m_Children;
+};

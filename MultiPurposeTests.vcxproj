@@ -122,17 +122,12 @@
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
-    <ClCompile Include="Source\Misc\XMLParser\Scene.cpp" />
-    <ClCompile Include="Source\Misc\XMLParser\Test01 - xml parser.cpp" />
-    <ClCompile Include="Source\Misc\XMLParser\SceneNode.cpp" />
-    <ClCompile Include="Source\Misc\XMLParser\XMLParser.cpp" />
+    <ClCompile Include="Source\Misc\XMLParser\Attempt02\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\stb_image\stb_image.h" />
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
-    <ClInclude Include="Source\Misc\XMLParser\Scene.h" />
-    <ClInclude Include="Source\Misc\XMLParser\SceneNode.h" />
-    <ClInclude Include="Source\Misc\XMLParser\XMLParser.h" />
+    <ClInclude Include="Source\Misc\XMLParser\Attempt02\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">

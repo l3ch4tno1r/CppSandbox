@@ -6,7 +6,7 @@
 
 #define DEBUG_MEM 1
 
-#if DEBUG_MEM == 1
+#if DEBUG_MEM == 0
 #define LOG(X) X
 #else
 #define LOG(X)

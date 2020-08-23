@@ -1,4 +1,4 @@
-#define MEM_TRACKING 0
+#define MEM_TRACKING 1
 
 #if MEM_TRACKING == 1
 #include <mutex>
@@ -6,7 +6,7 @@
 
 #define DEBUG_MEM 1
 
-#if DEBUG_MEM == 0
+#if DEBUG_MEM == 1
 #define LOG(X) X
 #else
 #define LOG(X)

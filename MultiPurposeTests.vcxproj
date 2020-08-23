@@ -122,7 +122,7 @@
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
-    <ClCompile Include="Source\Misc\Test26.cpp" />
+    <ClCompile Include="Source\Misc\Test26 - map iterator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\stb_image\stb_image.h" />

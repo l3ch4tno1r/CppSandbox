@@ -1,11 +1,14 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <vector>
 
 #include "Utilities/InstanceCounter.h"
 #include "Utilities/ErrorHandling.h"
 
 #include "Containers/DynamicArray.h"
+
+#include "Algorithms/Algorithms.h"
 
 #define SEPARATOR(X) std::cout << "\n----------- " << X << " -----------" << std::endl
 
@@ -71,7 +74,7 @@ public:
 int main()
 {
 	{
-		DynamicArray<Test> vec;
+		LCN::DynamicArray<Test> vec;
 
 		SEPARATOR("Add Joe");
 		vec.EmplaceBack("Joe");
@@ -158,6 +161,33 @@ int main()
 
 		for (auto it = vec.Begin(); it != vec.End(); ++it)
 			std::cout << "After erase 2 : " << it->Name() << std::endl;
+
+		SEPARATOR("Iterator 3");
+
+		std::cout << vec.Begin()[0].Name() << std::endl;
+		std::cout << vec.Begin()[1].Name() << std::endl;
+		std::cout << vec.Begin()[2].Name() << std::endl;
+
+		SEPARATOR("Algorithms");
+
+		std::vector<int> temp = { 91, 27, 18, 53, 46, 86, 79, 6, 17, 8, 73, 16, 56, 55, 14 };
+
+		std::cout << "Is heap : " << std::is_heap(temp.begin(), temp.end()) << std::endl;;
+
+		LCN::DynamicArray<int> vec2 = { 91, 27, 18, 53, 46, 86, 79, 6, 17, 8, 73, 16, 56, 55, 14 }; //, 6, 97, 74, 20, 40, 13, 47, 4, 67, 99, 3, 83, 57, 89, 51 };
+
+		LCN::MakeHeap(vec2.Begin(), vec2.End());
+
+		auto it5 = temp.begin();
+		auto it6 = vec2.Begin();
+
+		while (it6 != vec2.End())
+			*(it5++) = *(it6++);
+
+		std::cout << "Is heap : " << std::is_heap(temp.begin(), temp.end()) << std::endl;;
+
+		for (const auto& e : temp)
+			std::cout << e << std::endl;
 
 		SEPARATOR("End");
 	}

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <initializer_list>
+
 namespace LCN {
 	template<typename T>
 	class DynamicArray
@@ -37,6 +39,14 @@ namespace LCN {
 		DynamicArray(size_t size)
 		{
 			Realloc(size);
+		}
+
+		DynamicArray(const std::initializer_list<T> list)
+		{
+			Realloc(list.size());
+
+			for (const T& i : list)
+				this->EmplaceBack(i);
 		}
 
 		~DynamicArray()
@@ -112,6 +122,8 @@ namespace LCN {
 			friend class DynamicArray<T>;
 
 		public:
+			using Type = typename T;
+
 			Iterator() :
 				m_Ptr(nullptr)
 			{}
@@ -121,8 +133,10 @@ namespace LCN {
 			{}
 
 			T* operator->() { return m_Ptr; }
-
 			T& operator*() { return *m_Ptr; }
+			T& operator[](size_t i) { return *(m_Ptr + i); }
+
+			T* GetRawPtr() { return m_Ptr; }
 
 			Iterator& operator++()
 			{
@@ -147,9 +161,9 @@ namespace LCN {
 
 			bool operator==(const Iterator& other) const { return m_Ptr == other.m_Ptr; }
 			bool operator!=(const Iterator& other) const { return m_Ptr != other.m_Ptr; }
-			bool operator< (const Iterator& other) const { return m_Ptr < other.m_Ptr; }
+			bool operator< (const Iterator& other) const { return m_Ptr <  other.m_Ptr; }
 			bool operator<=(const Iterator& other) const { return m_Ptr <= other.m_Ptr; }
-			bool operator> (const Iterator& other) const { return m_Ptr > other.m_Ptr; }
+			bool operator> (const Iterator& other) const { return m_Ptr >  other.m_Ptr; }
 			bool operator>=(const Iterator& other) const { return m_Ptr >= other.m_Ptr; }
 		};
 

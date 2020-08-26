@@ -1,4 +1,4 @@
-#define MEM_TRACKING 1
+#define MEM_TRACKING 0
 
 #if MEM_TRACKING == 1
 #include <mutex>

@@ -129,7 +129,6 @@
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
     <ClInclude Include="Source\Memory\Containers\BinarySearchTree.h" />
     <ClInclude Include="Source\Memory\Containers\DynamicArray.h" />
-    <ClInclude Include="Source\Memory\Containers\Heap.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">

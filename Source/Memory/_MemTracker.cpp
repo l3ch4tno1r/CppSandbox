@@ -4,6 +4,8 @@
 #include <mutex>
 #include <iostream>
 
+#include "Utilities/ErrorHandling.h"
+
 #define DEBUG_MEM 1
 
 #if DEBUG_MEM == 1
@@ -76,8 +78,26 @@ void* operator new(size_t size)
 	return malloc(size);
 }
 
+void* operator new[](size_t size)
+{
+	tracker.Allocate(size);
+
+	return malloc(size);
+}
+
 void operator delete(void* ptr, size_t size)
 {
+	ASSERT(ptr != nullptr);
+
+	tracker.Deallocate(size);
+
+	free(ptr);
+}
+
+void operator delete[](void* ptr, size_t size)
+{
+	ASSERT(ptr != nullptr);
+
 	tracker.Deallocate(size);
 
 	free(ptr);

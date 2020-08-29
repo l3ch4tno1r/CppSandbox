@@ -74,120 +74,124 @@ public:
 int main()
 {
 	{
-		LCN::DynamicArray<Test> vec;
-
-		SEPARATOR("Add Joe");
-		vec.EmplaceBack("Joe");
-		SEPARATOR("Add Jack");
-		vec.EmplaceBack("Jack");
-		SEPARATOR("Add William");
-		vec.EmplaceBack("William");
-		SEPARATOR("Add Averell");
-		vec.EmplaceBack("Averell");
-		SEPARATOR("Add Matt");
-		vec.EmplaceBack("Matt");
-
-		SEPARATOR("Display");
-
-		for (size_t i = 0; i < vec.Size(); ++i)
-			std::cout << vec[i].Id() << " - " << vec[i].Name() << std::endl;
-
-		SEPARATOR("Pop");
-
-		vec.PopBack();
-
-		for (size_t i = 0; i < vec.Size(); ++i)
-			std::cout << vec[i].Id() << " - " << vec[i].Name() << std::endl;
-
-		SEPARATOR("Clear");
-
-		vec.Clear();
-
-		vec.EmplaceBack("Joe");
-		vec.EmplaceBack("Jack");
-		vec.EmplaceBack("William");
-		vec.EmplaceBack("Averell");
-		vec.EmplaceBack("Matt");
-
-		SEPARATOR("Iterator 1");
-
-		for(auto it = vec.Begin(); it != vec.End(); ++it)
-			std::cout << "Iterator test : " << it->Name() << std::endl;
-
-		SEPARATOR("Iterator 2");
-
-		auto it1 = vec.Begin();
-		auto it2 = it1++;
-
-		std::cout << "Iterator test : " << it1->Name() << std::endl;
-		std::cout << "Iterator test : " << it2->Name() << std::endl;
-		std::cout << "Iterator test : " << (it1 + 2)->Name() << std::endl;
-		std::cout << "Iterator test : " << (vec.End() - 1)->Name() << std::endl;
-
-		SEPARATOR("Erase 1");
-
-		for (auto it = vec.Begin(); it != vec.End(); ++it)
-			std::cout << "Before erase : " << it->Name() << std::endl;
-
-		vec.Erase(vec.Begin() + 2);
-
-		for (auto it = vec.Begin(); it != vec.End(); ++it)
-			std::cout << "After erase : " << it->Name() << std::endl;
+		// Dynamic array tests
 		/*
+		{
+			LCN::DynamicArray<Test> vec;
+
+			SEPARATOR("Add Joe");
+			vec.EmplaceBack("Joe");
+			SEPARATOR("Add Jack");
+			vec.EmplaceBack("Jack");
+			SEPARATOR("Add William");
+			vec.EmplaceBack("William");
+			SEPARATOR("Add Averell");
+			vec.EmplaceBack("Averell");
+			SEPARATOR("Add Matt");
+			vec.EmplaceBack("Matt");
+
+			SEPARATOR("Display");
+
+			for (size_t i = 0; i < vec.Size(); ++i)
+				std::cout << vec[i].Id() << " - " << vec[i].Name() << std::endl;
+
+			SEPARATOR("Pop");
+
+			vec.PopBack();
+
+			for (size_t i = 0; i < vec.Size(); ++i)
+				std::cout << vec[i].Id() << " - " << vec[i].Name() << std::endl;
+
+			SEPARATOR("Clear");
+
+			vec.Clear();
+
+			vec.EmplaceBack("Joe");
+			vec.EmplaceBack("Jack");
+			vec.EmplaceBack("William");
+			vec.EmplaceBack("Averell");
+			vec.EmplaceBack("Matt");
+
+			SEPARATOR("Iterator 1");
+
+			for(auto it = vec.Begin(); it != vec.End(); ++it)
+				std::cout << "Iterator test : " << it->Name() << std::endl;
+
+			SEPARATOR("Iterator 2");
+
+			auto it1 = vec.Begin();
+			auto it2 = it1++;
+
+			std::cout << "Iterator test : " << it1->Name() << std::endl;
+			std::cout << "Iterator test : " << it2->Name() << std::endl;
+			std::cout << "Iterator test : " << (it1 + 2)->Name() << std::endl;
+			std::cout << "Iterator test : " << (vec.End() - 1)->Name() << std::endl;
+
+			SEPARATOR("Erase 1");
+
+			for (auto it = vec.Begin(); it != vec.End(); ++it)
+				std::cout << "Before erase : " << it->Name() << std::endl;
+
+			vec.Erase(vec.Begin() + 2);
+
+			for (auto it = vec.Begin(); it != vec.End(); ++it)
+				std::cout << "After erase : " << it->Name() << std::endl;
+
+			SEPARATOR("Insert");
+
+			vec.Insert(vec.End(), "Melody");
+
+			for (auto it = vec.Begin(); it != vec.End(); ++it)
+				std::cout << "Before insert : " << it->Name() << std::endl;
+
+			vec.Insert(vec.Begin() + 4, {
+				Test("Bob"),
+				Test("Gratt"),
+				Test("Bill"),
+				Test("Emmett")
+			});
+
+			for (auto it = vec.Begin(); it != vec.End(); ++it)
+				std::cout << "After insert : " << it->Name() << std::endl;
+
+			SEPARATOR("Erase 2");
+
+			vec.Erase(vec.Begin() + 1, vec.Begin() + 3);
+
+			for (auto it = vec.Begin(); it != vec.End(); ++it)
+				std::cout << "After erase 2 : " << it->Name() << std::endl;
+
+			SEPARATOR("Iterator 3");
+
+			std::cout << vec.Begin()[0].Name() << std::endl;
+			std::cout << vec.Begin()[1].Name() << std::endl;
+			std::cout << vec.Begin()[2].Name() << std::endl;
+		}
 		*/
 
-		SEPARATOR("Insert");
+		// Algorithm tests
+		{
+			SEPARATOR("Algorithms");
 
-		vec.Insert(vec.End(), "Melody");
+			std::vector<int> temp = { 91, 27, 18, 53, 46, 86, 79, 6, 17, 8, 73, 16, 56, 55, 14 };
 
-		for (auto it = vec.Begin(); it != vec.End(); ++it)
-			std::cout << "Before insert : " << it->Name() << std::endl;
+			std::cout << "Is heap : " << std::is_heap(temp.begin(), temp.end()) << std::endl;;
 
-		vec.Insert(vec.Begin() + 4, {
-			Test("Bob"),
-			Test("Gratt"),
-			Test("Bill"),
-			Test("Emmett")
-		});
+			LCN::DynamicArray<int> vec2 = { 91, 27, 18, 53, 46, 86, 79, 6, 17, 8, 73, 16, 56, 55, 14 }; //, 6, 97, 74, 20, 40, 13, 47, 4, 67, 99, 3, 83, 57, 89, 51 };
 
-		for (auto it = vec.Begin(); it != vec.End(); ++it)
-			std::cout << "After insert : " << it->Name() << std::endl;
+			LCN::MakeHeap(vec2.Begin(), vec2.End());
 
-		/*
-		*/
-		SEPARATOR("Erase 2");
+			auto it5 = temp.begin();
+			auto it6 = vec2.Begin();
 
-		vec.Erase(vec.Begin() + 1, vec.Begin() + 3);
+			while (it6 != vec2.End())
+				*(it5++) = *(it6++);
 
-		for (auto it = vec.Begin(); it != vec.End(); ++it)
-			std::cout << "After erase 2 : " << it->Name() << std::endl;
+			std::cout << "Is heap : " << std::is_heap(temp.begin(), temp.end()) << std::endl;;
 
-		SEPARATOR("Iterator 3");
-
-		std::cout << vec.Begin()[0].Name() << std::endl;
-		std::cout << vec.Begin()[1].Name() << std::endl;
-		std::cout << vec.Begin()[2].Name() << std::endl;
-
-		SEPARATOR("Algorithms");
-
-		std::vector<int> temp = { 91, 27, 18, 53, 46, 86, 79, 6, 17, 8, 73, 16, 56, 55, 14 };
-
-		std::cout << "Is heap : " << std::is_heap(temp.begin(), temp.end()) << std::endl;;
-
-		LCN::DynamicArray<int> vec2 = { 91, 27, 18, 53, 46, 86, 79, 6, 17, 8, 73, 16, 56, 55, 14 }; //, 6, 97, 74, 20, 40, 13, 47, 4, 67, 99, 3, 83, 57, 89, 51 };
-
-		LCN::MakeHeap(vec2.Begin(), vec2.End());
-
-		auto it5 = temp.begin();
-		auto it6 = vec2.Begin();
-
-		while (it6 != vec2.End())
-			*(it5++) = *(it6++);
-
-		std::cout << "Is heap : " << std::is_heap(temp.begin(), temp.end()) << std::endl;;
-
-		for (const auto& e : temp)
-			std::cout << e << std::endl;
+			for (int e : temp)
+				std::cout << e << std::endl;
+		}
 
 		SEPARATOR("End");
 	}

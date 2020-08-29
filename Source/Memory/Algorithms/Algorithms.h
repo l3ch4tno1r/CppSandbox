@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "Utilities/ErrorHandling.h"
 
 namespace LCN {
@@ -11,19 +13,20 @@ namespace LCN {
 
 		ASSERT(size > 0);
 
-		for (int i = size - 1; i >= 0; --i)
+		for (int parentId = (size - 2) / 2; parentId >= 0; --parentId)
 		{
-			int parentId = (i - 1) / 2;
+			size_t leftChildId  = 2 * parentId + 1;
+			size_t rightChildId = 2 * parentId + 2;
+			size_t nodeToSwapId;
 
-			while (parentId >= 0 && first[parentId] < first[i])
-			{
-				auto temp = first[parentId];
+			if (rightChildId >= size)
+				nodeToSwapId = leftChildId;
+			else
+				nodeToSwapId = (first[leftChildId] > first[rightChildId] ? leftChildId : rightChildId);
 
-				first[parentId] = first[i];
-				first[i] = temp;
-
-				parentId = (parentId - 1) / 2;
-			}
+			if (first[nodeToSwapId] > first[parentId])
+				std::swap(first[parentId], first[nodeToSwapId]);
 		}
+
 	}
 }

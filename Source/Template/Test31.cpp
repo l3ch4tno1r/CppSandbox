@@ -9,6 +9,8 @@
 
 #include "Utilities/InstanceCounter.h"
 
+#define SEPARATOR(X) std::cout << "------------- " << X << " -------------" << std::endl
+
 #pragma region Seen on stackoverflow
 template<int...>
 struct int_sequence
@@ -34,25 +36,35 @@ namespace std
 }
 #pragma endregion
 
-template<class C, typename ...Args>
+class IObserver;
+
+template<typename ...Args>
 class ISubject
 {
 private:
-	std::list<std::pair<C*, std::function<void(Args...)>>> m_Observers;
+	using IObsPtrFctPair = std::pair<IObserver*, std::function<void(Args...)>>;
+	std::list<IObsPtrFctPair> m_Observers;
 
 	template<int...Is>
-	void AddObserver(C& observer, int_sequence<Is...>)
+	void AddObserver(IObserver& observer, int_sequence<Is...>)
 	{
-		std::function<void(Args...)> temp = std::bind(&C::Update, std::ref(observer), placeholder_template<Is>{}...);
+		std::function<void(Args...)> temp = std::bind(&IObserver::Update, std::ref(observer), placeholder_template<Is>{}...);
 
-		std::pair<C*, std::function<void(Args...)>> item(&observer, std::move(temp));
-		m_Observers.push_back(item);
+		m_Observers.push_back(IObsPtrFctPair(&observer, std::move(temp)));
 	}
 
 public:
-	void AddObserver(C& observer)
+	void AddObserver(IObserver& observer)
 	{
 		AddObserver(observer, make_int_sequence<sizeof...(Args)>{});
+	}
+
+	void RemoveObserver(IObserver& observer)
+	{
+		m_Observers.remove_if([&observer](IObsPtrFctPair& elem)
+		{
+			return elem.first == &observer;
+		});
 	}
 
 	void Notify(Args ...args)
@@ -62,45 +74,31 @@ public:
 	}
 };
 
-class IObserver : public Counter<IObserver>
+template<typename Subject>
+class IObserverBase
 {
 private:
-	std::string m_Name;
+	Subject* m_Subject;
 
 public:
-	IObserver()
+	virtual ~IObserverBase()
 	{
-		std::cout << "IObserver default ctor #" << this->Id() << std::endl;
+		m_Subject->RemoveObserver(*this);
 	}
+};
 
-	IObserver(const IObserver& other)
-	{
-		std::cout << "IObserver copy ctor from #" << other.Id() << " to #" << this->Id() << std::endl;
-	}
-
+class IObserver : public Counter<IObserver>, public IObserverBase<ISubject<const char*>>
+{
+public:
 	void Update(const char* str)
 	{
-		m_Name = str;
-
-		std::cout << '#' << this->Id() << " -> " << m_Name << std::endl;
+		std::cout << "Test : " << this->Id() << ", " << str << std::endl;
 	}
-
-	IObserver& operator=(const IObserver& other)
-	{
-		std::cout << "IObserver copy assignement from #" << other.Id() << " to #" << this->Id() << std::endl;
-	}
-
-	IObserver& operator=(IObserver&& other)
-	{
-		std::cout << "IObserver move assignement from #" << other.Id() << " to #" << this->Id() << std::endl;
-	}
-
-	const std::string& Name() const { return m_Name; }
 };
 
 int main()
 {
-	ISubject<IObserver, const char*> subject;
+	ISubject<const char*> subject;
 	IObserver obs1;
 	IObserver obs2;
 	IObserver obs3;
@@ -109,7 +107,27 @@ int main()
 	subject.AddObserver(obs2);
 	subject.AddObserver(obs3);
 
-	subject.Notify("Hello world !");
+	subject.Notify("Hello world ! 1");
+
+	SEPARATOR(1);
+
+	subject.RemoveObserver(obs2);
+
+	subject.Notify("Hello world ! 2");
+
+	{
+		SEPARATOR(2);
+
+		IObserver obs4;
+
+		subject.AddObserver(obs4);
+	}
+
+	IObserver obs5;
+
+	subject.AddObserver(obs5);
+
+	subject.Notify("Hello world ! 3");
 
 	/*
 	IObserver obs1;

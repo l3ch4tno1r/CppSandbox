@@ -1,86 +1,145 @@
 #include <iostream>
 #include <string>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <chrono>
 
 #include "Utilities/InstanceCounter.h"
 #include "Utilities/Design Patterns/Observer.h"
+#include "Utilities/TraceLog.h"
 
-#define SEPARATOR(X) std::cout << "------------- " << X << " -------------" << std::endl
+using namespace std::literals::chrono_literals;
+using namespace LCNUtilities;
 
-class Observer : public ObserverBase<Observer>
+#define SEPARATOR(X) Log() << "------------- " << X << " -------------"
+
+class Device : public ObserverBase<Device>
 {
+private:
+	std::thread m_MainThread;
+
+	struct
+	{
+		bool Run      : 1;
+		bool Notified : 1;
+	} m_State;
+
+	std::mutex m_NotifMut;
+	std::condition_variable m_NotifCond;
+
+	void MainThread()
+	{
+		while (Continue())
+			Log() << std::this_thread::get_id() << " working...";
+
+		Log() << std::this_thread::get_id() << " Done !";
+	}
+
+	bool Continue()
+	{
+		std::unique_lock<std::mutex> lock(m_NotifMut);
+
+		while (!m_State.Notified)
+			m_NotifCond.wait(lock);
+
+		m_State.Notified = false;
+
+		return m_State.Run;
+	}
+
 public:
-	virtual void Update(const char* msg) = 0;
+	~Device()
+	{
+		Update(false);
+
+		if (m_MainThread.joinable())
+			m_MainThread.join();
+	}
+
+	void Start()
+	{
+		if (m_State.Run)
+			return;
+
+		m_State.Run = true;
+
+		m_MainThread = std::thread(&Device::MainThread, this);
+	}
+
+	void Update(bool run)
+	{
+		std::lock_guard<std::mutex> lock(m_NotifMut);
+
+		m_State.Run     = run;
+		m_State.Notified = true;
+
+		m_NotifCond.notify_one();
+	}
 };
 
-class PaceMaker : public Subject<Observer>
-{};
+class PaceMaker : public Subject<Device>
+{
+private:
+	bool m_Run = false;
+	std::thread m_MainThread;
+
+	void MainThread()
+	{
+		while (m_Run)
+		{
+			Log() << "Heartbeat !";
+
+			this->Notify(true);
+
+			std::this_thread::sleep_for(1s);
+		}
+	}
+
+public:
+	~PaceMaker()
+	{
+		m_Run = false;
+
+		if (m_MainThread.joinable())
+			m_MainThread.join();
+	}
+
+	void Start()
+	{
+		m_Run = true;
+
+		m_MainThread = std::thread(&PaceMaker::MainThread, this);
+	}
+};
 
 int main()
 {
 	{
-		SEPARATOR("Test 01");
+		SEPARATOR(1);
 
-		Subject<Observer> subject;
+		PaceMaker subject;
 
-		Test obs1("Riri");
-		Test obs2("Fifi");
-		Test obs3("Loulou");
+		Device obs1;
+		Device obs2;
+		Device obs3;
 
-		subject.AddObserver(obs1);
-		subject.AddObserver(obs2);
-		subject.AddObserver(obs3);
-
-		subject.Notify("Test 01");
-	}
-
-	{
-		SEPARATOR("Test 02");
-
-		Test obs1("Riri");
-		Test obs2("Fifi");
-		Test obs3("Loulou");
-
-		Subject<Observer> subject;
+		obs1.Start();
+		obs2.Start();
+		obs3.Start();
 
 		subject.AddObserver(obs1);
 		subject.AddObserver(obs2);
 		subject.AddObserver(obs3);
 
-		subject.Notify("Test 02");
+		subject.Start();
+
+		std::cin.get();
 	}
 
-	{
-		SEPARATOR("Test 03");
+	SEPARATOR("Done");
 
-		Test obs1("Riri");
-		Test obs2("Fifi");
-		Test obs3("Loulou");
-
-		Subject<Observer> subject;
-
-		subject.AddObserver(obs1);
-		subject.AddObserver(obs2);
-		subject.AddObserver(obs3);
-
-		{
-			Test obs4("Donald");
-
-			subject.AddObserver(obs4);
-			subject.AddObserver(obs3);
-
-			subject.Notify("Test 03");
-		}
-
-		SEPARATOR("Test 04");
-
-		subject.Notify("Test 04");
-
-		SEPARATOR("Test 05");
-
-		subject.RemoveObserver(obs3);
-
-		subject.Notify("Test 05");
-	}
+	Log() << sizeof(Device);
 
 	std::cin.get();
 }

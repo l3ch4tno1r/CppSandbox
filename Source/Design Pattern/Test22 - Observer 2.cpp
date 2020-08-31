@@ -139,7 +139,5 @@ int main()
 
 	SEPARATOR("Done");
 
-	Log() << sizeof(Device);
-
 	std::cin.get();
 }

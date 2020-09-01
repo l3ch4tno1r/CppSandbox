@@ -13,8 +13,9 @@ using namespace std::literals::chrono_literals;
 using namespace LCNUtilities;
 
 #define SEPARATOR(X) Log() << "------------- " << X << " -------------"
+#define SIZEOF(X) Log() << "Size of " << #X << " : " << sizeof(X)
 
-class Device : public ObserverBase<Device>
+class Device : public Observer<Device>
 {
 private:
 	std::thread m_MainThread;
@@ -115,6 +116,7 @@ public:
 
 int main()
 {
+	/*
 	{
 		SEPARATOR(1);
 
@@ -135,6 +137,17 @@ int main()
 		subject.Start();
 
 		std::cin.get();
+	}
+	*/
+
+	{
+		SEPARATOR(2);
+
+		SIZEOF(Device);
+		SIZEOF(Observer<Device>);
+		SIZEOF(std::thread);
+		SIZEOF(std::mutex);
+		SIZEOF(std::condition_variable);
 	}
 
 	SEPARATOR("Done");

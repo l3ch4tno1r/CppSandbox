@@ -1,5 +1,3 @@
-#ifdef TEST14
-
 #include <iostream>
 #include <string>
 
@@ -14,7 +12,8 @@ int main()
 	unsigned int size      = 10;
 	const char*  grayscale = " .:-=+*#%@";
 
-	std::string filepath("Ressources/Wooden_Medium.jpg");
+	//std::string filepath("Ressources/Wooden_Medium.jpg");
+	std::string filepath("Ressources/Le_Chat_Noir_Photo_Medium.png");
 
 	unsigned char* localbuffer;
 	int width;
@@ -49,5 +48,3 @@ int main()
 
 	std::cin.get();
 }
-
-#endif // TEST14

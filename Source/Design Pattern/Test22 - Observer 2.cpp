@@ -5,9 +5,9 @@
 #include <condition_variable>
 #include <chrono>
 
-#include "Utilities/InstanceCounter.h"
-#include "Utilities/Design Patterns/Observer.h"
-#include "Utilities/TraceLog.h"
+#include "Source/InstanceCounter.h"
+#include "Source/Design Patterns/Observer.h"
+#include "Source/TraceLog.h"
 
 using namespace std::literals::chrono_literals;
 using namespace LCNUtilities;

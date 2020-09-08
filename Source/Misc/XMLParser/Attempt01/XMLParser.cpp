@@ -1,18 +1,19 @@
 #include "XMLParser.h"
-#include "Utilities/ErrorHandling.h"
+#include "Source/ErrorHandling.h"
 
 #include <fstream>
 #include <sstream>
 #include <stack>
 #include <regex>
 
-XMLParser::XMLParser(const char * filepath) :
-	m_FilePath(filepath)
+XMLNode::XMLNode(XMLNode && other) :
+	m_Attributes(std::move(other.m_Attributes)),
+	m_Children(std::move(other.m_Children))
 {}
 
-SceneNode XMLParser::ParseFile() const
+SceneNode XMLParser::ParseFile(const std::string filepath) const
 {
-	std::ifstream file(m_FilePath);
+	std::ifstream file(filepath);
 
 	if (!file)
 		throw std::exception("File not found");
@@ -101,4 +102,70 @@ SceneNode XMLParser::ParseFile() const
 	ASSERT(stack.size() == 0);
 
 	return root;
+}
+
+void XMLParser::ParseFile2(const std::string filepath)
+{
+	std::ifstream file(filepath);
+
+	if (!file)
+		throw std::exception("File not found");
+
+	std::stack<XMLNode*> stack;
+
+	stack.push(&m_Root);
+
+	bool first = true;
+	std::string line;
+
+	std::regex nodeStartRegEx("<Node>");
+	std::regex nodeEndRegEx("</Node>");
+	std::regex markupRegEx("<(\\w+)>([\\w\\d(-?\\d+\\.\\d* *)]+)</\\1>");
+
+	while (std::getline(file, line))
+	{
+		XMLNode* current = stack.top();
+
+		if (std::regex_search(line, nodeStartRegEx))
+		{
+			if (first)
+			{
+				first = false;
+				continue;
+			}
+
+			current->m_Children.emplace_back();
+
+			stack.push(&current->m_Children.back());
+
+			continue;
+		}
+
+		if (std::regex_search(line, nodeEndRegEx))
+		{
+			stack.pop();
+
+			if (0 == stack.size())
+				break;
+			else
+				continue;
+		}
+
+		std::smatch matches;
+
+		if (std::regex_search(line, matches, markupRegEx))
+		{
+			ASSERT(matches.size() == 3);
+
+			if (matches.size() != 3)
+				continue;
+
+			std::string markupName = matches[1].str();
+			std::string markupData = matches[2].str();
+
+			current->m_Attributes[markupName] = markupData;
+		}
+	}
+
+	ASSERT(stack.size() == 0);
 }

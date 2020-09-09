@@ -28,21 +28,22 @@ Transform3D<float> StrToTransform(const std::string& data)
 	return result;
 }
 
-SceneNode XMLNodeToSceneNode(const XMLNode& node)
+SceneNode XMLNodeToSceneNodeRecursive(const XMLNode& xmlnode)
 {
-	SceneNode scene;
+	SceneNode scenenode;
 
-	scene.Name() = node["Name"];
-	scene.Transform() = StrToTransform(node["Transformation"]);
+	scenenode.Name() = xmlnode["Name"];
+	scenenode.Transform() = StrToTransform(xmlnode["Transformation"]);
 
-	if(node.ContainsAttribute("Geometry"))
-	{ }
+	if(xmlnode.ContainsAttribute("Geometry"))
+		scenenode.Geometry() = xmlnode["Geometry"];
 	else
 	{
-
+		for (const XMLNode& child : xmlnode.Children())
+			scenenode.AddChild(XMLNodeToSceneNodeRecursive(child));
 	}
 
-	return scene;
+	return scenenode;
 }
 
 int main()
@@ -60,7 +61,9 @@ int main()
 		parser.ParseFile2("Ressources/scene.xml");
 
 		XMLNode root = std::move(parser.Root());
-		SceneNode scene2 = XMLNodeToSceneNode(root);
+		SceneNode scene2 = XMLNodeToSceneNodeRecursive(root);
+
+		scene2.ls_r();
 
 		/*
 		if(root.ContainsAttribute("Name"))

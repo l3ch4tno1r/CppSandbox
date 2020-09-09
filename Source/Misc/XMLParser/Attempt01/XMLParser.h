@@ -19,7 +19,11 @@ public:
 
 	XMLNode(XMLNode&& other);
 
-	const std::string& operator[](const std::string& key) { return m_Attributes[key]; }
+	const std::unordered_map<std::string, std::string>& Attributes() const { return m_Attributes; }
+
+	bool ContainsAttribute(const std::string& key) const { return m_Attributes.count(key) != 0; }
+
+	const std::string& operator[](const std::string& key) const;
 
 	std::vector<XMLNode>& Children() { return m_Children; }
 

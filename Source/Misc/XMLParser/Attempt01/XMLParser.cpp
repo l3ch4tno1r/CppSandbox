@@ -11,6 +11,16 @@ XMLNode::XMLNode(XMLNode && other) :
 	m_Children(std::move(other.m_Children))
 {}
 
+const std::string & XMLNode::operator[](const std::string& key) const
+{
+	auto it = m_Attributes.find(key);
+
+	if (m_Attributes.end() == it)
+		throw std::exception("XMLNode does not contain the specified key.");
+
+	return it->second;
+}
+
 SceneNode XMLParser::ParseFile(const std::string filepath) const
 {
 	std::ifstream file(filepath);

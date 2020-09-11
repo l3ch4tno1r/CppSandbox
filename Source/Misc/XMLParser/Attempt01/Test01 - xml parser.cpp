@@ -37,19 +37,20 @@ SceneNode XMLNodeToSceneNodeRecursive(const XMLNode& xmlnode)
 
 	if(xmlnode.ContainsAttribute("Geometry"))
 		scenenode.Geometry() = xmlnode["Geometry"];
-	else
-	{
-		for (const XMLNode& child : xmlnode.Children())
-			scenenode.AddChild(XMLNodeToSceneNodeRecursive(child));
-	}
+
+	for (const XMLNode& child : xmlnode.Children())
+		scenenode.AddChild(XMLNodeToSceneNodeRecursive(child));
 
 	return scenenode;
 }
 
-int main()
+int main(int argc, char** argv)
 {
 	try
 	{
+		if (argc > 0)
+			std::cout << argv[0] << std::endl;
+
 		XMLParser parser;
 
 		SceneNode scene1 = parser.ParseFile("Ressources/scene.xml");

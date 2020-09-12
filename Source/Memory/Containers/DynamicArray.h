@@ -2,6 +2,8 @@
 
 #include <initializer_list>
 
+#include "RandomIterator.h"
+
 namespace LCN {
 	template<typename T>
 	class DynamicArray
@@ -31,6 +33,9 @@ namespace LCN {
 		}
 
 	public:
+		using ValueType = T;
+		using Iterator = RandomIterator<DynamicArray>;
+
 		DynamicArray()
 		{
 			Realloc(2);
@@ -109,63 +114,6 @@ namespace LCN {
 
 			m_Size = 0;
 		}
-
-		class Iterator
-		{
-		private:
-			T* m_Ptr;
-
-			Iterator(T* ptr) :
-				m_Ptr(ptr)
-			{}
-
-			friend class DynamicArray<T>;
-
-		public:
-			using Type = typename T;
-
-			Iterator() :
-				m_Ptr(nullptr)
-			{}
-
-			Iterator(const Iterator& other) :
-				m_Ptr(other.m_Ptr)
-			{}
-
-			T* operator->() { return m_Ptr; }
-			T& operator*() { return *m_Ptr; }
-			T& operator[](size_t i) { return *(m_Ptr + i); }
-
-			T* GetRawPtr() { return m_Ptr; }
-
-			Iterator& operator++()
-			{
-				++m_Ptr;
-
-				return *this;
-			}
-
-			Iterator operator++(int) { return Iterator(m_Ptr++); }
-
-			Iterator& operator--()
-			{
-				--m_Ptr;
-
-				return *this;
-			}
-
-			Iterator operator--(int) { return Iterator(m_Ptr--); }
-
-			Iterator operator+(size_t i) { return Iterator(m_Ptr + i); }
-			Iterator operator-(size_t i) { return Iterator(m_Ptr - i); }
-
-			bool operator==(const Iterator& other) const { return m_Ptr == other.m_Ptr; }
-			bool operator!=(const Iterator& other) const { return m_Ptr != other.m_Ptr; }
-			bool operator< (const Iterator& other) const { return m_Ptr <  other.m_Ptr; }
-			bool operator<=(const Iterator& other) const { return m_Ptr <= other.m_Ptr; }
-			bool operator> (const Iterator& other) const { return m_Ptr >  other.m_Ptr; }
-			bool operator>=(const Iterator& other) const { return m_Ptr >= other.m_Ptr; }
-		};
 
 		Iterator Begin()
 		{

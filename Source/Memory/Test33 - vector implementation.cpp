@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <vector>
 
-#include "Utilities/InstanceCounter.h"
-#include "Utilities/ErrorHandling.h"
+#include "Source/InstanceCounter.h"
+#include "Source/ErrorHandling.h"
 
 #include "Containers/DynamicArray.h"
 
@@ -112,20 +112,20 @@ int main()
 			vec.EmplaceBack("Averell");
 			vec.EmplaceBack("Matt");
 
-			SEPARATOR("Iterator 1");
+			SEPARATOR("RandomIterator 1");
 
 			for(auto it = vec.Begin(); it != vec.End(); ++it)
-				std::cout << "Iterator test : " << it->Name() << std::endl;
+				std::cout << "RandomIterator test : " << it->Name() << std::endl;
 
-			SEPARATOR("Iterator 2");
+			SEPARATOR("RandomIterator 2");
 
 			auto it1 = vec.Begin();
 			auto it2 = it1++;
 
-			std::cout << "Iterator test : " << it1->Name() << std::endl;
-			std::cout << "Iterator test : " << it2->Name() << std::endl;
-			std::cout << "Iterator test : " << (it1 + 2)->Name() << std::endl;
-			std::cout << "Iterator test : " << (vec.End() - 1)->Name() << std::endl;
+			std::cout << "RandomIterator test : " << it1->Name() << std::endl;
+			std::cout << "RandomIterator test : " << it2->Name() << std::endl;
+			std::cout << "RandomIterator test : " << (it1 + 2)->Name() << std::endl;
+			std::cout << "RandomIterator test : " << (vec.End() - 1)->Name() << std::endl;
 
 			SEPARATOR("Erase 1");
 
@@ -161,7 +161,7 @@ int main()
 			for (auto it = vec.Begin(); it != vec.End(); ++it)
 				std::cout << "After erase 2 : " << it->Name() << std::endl;
 
-			SEPARATOR("Iterator 3");
+			SEPARATOR("RandomIterator 3");
 
 			std::cout << vec.Begin()[0].Name() << std::endl;
 			std::cout << vec.Begin()[1].Name() << std::endl;

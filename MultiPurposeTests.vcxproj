@@ -122,15 +122,12 @@
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp" />
     <ClCompile Include="Source\Memory\Algorithms\Algorithms.h" />
-    <ClCompile Include="Source\Memory\Test33 - vector implementation.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
+    <ClCompile Include="Source\Windows\Test02 - Event handling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\stb_image\stb_image.h" />
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
-    <ClInclude Include="Source\Memory\Containers\BinarySearchTree.h" />
-    <ClInclude Include="Source\Memory\Containers\DynamicArray.h" />
-    <ClInclude Include="Source\Memory\Containers\RandomIterator.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">

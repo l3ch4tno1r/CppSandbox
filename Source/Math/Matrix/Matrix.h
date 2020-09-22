@@ -6,8 +6,14 @@
 
 #include "Source/ErrorHandling.h"
 
+template<class E, typename T>
+class MatrixBase : public MatrixExpression<MatrixBase<E, T>, T>
+{
+	MATRIXEXPRESSIONINTERFACE
+};
+
 template<typename T, size_t L, size_t C>
-class Matrix : public MatrixExpression<Matrix<T, L, C>, T>
+class Matrix : public MatrixBase<Matrix<T, L, C>, T>
 {
 public:
 	using ValType = T;
@@ -15,7 +21,7 @@ public:
 	using RefType = T& ;
 
 private:
-	ValType tab[L][C];
+	ValType m_Tab[L][C];
 
 public:
 	Matrix() = default;
@@ -32,7 +38,7 @@ public:
 			size_t i = Idx / C;
 			size_t j = Idx % C;
 
-			tab[i][j] = e;
+			m_Tab[i][j] = e;
 
 			++Idx;
 		}
@@ -45,11 +51,11 @@ public:
 
 		for (size_t i = 0; i < other.Line(); ++i)
 			for (size_t j = 0; j < other.Column(); ++j)
-				tab[i][j] = other(i, j);
+				m_Tab[i][j] = other(i, j);
 	}
 
-	RefType operator()(size_t i, size_t j) { return tab[i][j]; }
-	ValType operator()(size_t i, size_t j) const { return tab[i][j]; }
+	RefType operator()(size_t i, size_t j) { return m_Tab[i][j]; }
+	ValType operator()(size_t i, size_t j) const { return m_Tab[i][j]; }
 
 	size_t Line() const { return L; }
 	size_t Column() const { return C; }

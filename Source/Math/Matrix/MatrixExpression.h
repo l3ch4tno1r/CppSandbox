@@ -3,15 +3,13 @@
 template<class E, typename T>
 class MatrixExpression
 {
-private:
-	E& Derived() { return static_cast<E&>(*this); }
-	const E& Derived() const { return static_cast<const E&>(*this); }
+#define MATRIXEXPRESSIONINTERFACE \
+public:\
+	T operator()(size_t i, size_t j) const { return static_cast<const E&>(*this)(i, j); }\
+	size_t Line()   const { return static_cast<const E&>(*this).Line(); }\
+	size_t Column() const { return static_cast<const E&>(*this).Column(); }
 
-public:
-	T operator()(size_t i, size_t j) const { return Derived()(i, j); }
-
-	size_t Line() const { return Derived().Line(); }
-	size_t Column() const { return Derived().Column(); }
+	MATRIXEXPRESSIONINTERFACE
 };
 
 template<class E, typename T>

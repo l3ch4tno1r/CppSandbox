@@ -24,7 +24,7 @@
     <ClCompile Include="Source\Memory\Algorithms\Algorithms.h">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Misc\Test27 - CRTP.cpp">
+    <ClCompile Include="Source\Math\Test05 - CRTP for matrix.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClInclude Include="Source\Math\Matrix\MatrixExpression.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Math\Matrix\MatrixOperations.h">
+    <ClInclude Include="Source\Math\Matrix\MatrixBase.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

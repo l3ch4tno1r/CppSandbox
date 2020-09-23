@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "Matrix/Matrix.h"
-#include "Matrix/MatrixOperations.h"
 
 int main()
 {

@@ -7,9 +7,10 @@
 #include "Source/ErrorHandling.h"
 
 template<class E, typename T>
-class MatrixBase : public MatrixExpression<MatrixBase<E, T>, T>
+class MatrixBase : public MatrixExpression<E, T>
 {
-	MATRIXEXPRESSIONINTERFACE
+public:
+	T& operator()(size_t i, size_t j) { return this->Derived()(i, j); }
 };
 
 template<typename T, size_t L, size_t C>
@@ -46,6 +47,16 @@ public:
 
 	template<class E>
 	Matrix(const MatrixExpression<E, ValType>& other)
+	{
+		ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
+
+		for (size_t i = 0; i < other.Line(); ++i)
+			for (size_t j = 0; j < other.Column(); ++j)
+				m_Tab[i][j] = other(i, j);
+	}
+
+	template<class E>
+	Matrix& operator=(const MatrixExpression<E, ValType>& other)
 	{
 		ASSERT((this->Line() == other.Line()) && (this->Column() == other.Column()));
 

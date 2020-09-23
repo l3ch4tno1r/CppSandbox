@@ -7,33 +7,14 @@ int main()
 	try
 	{
 		Matrix<float, 2, 2> mat = {
-		1.0f, 2.0f,
-		3.0f, 4.0f
+			1.0f, 2.0f,
+			3.0f, 4.0f
 		};
 
-		Matrix<float, 2, 1> vec = {
-			 1.0f,
-			-1.0f
-		};
+		auto imat = mat.Invert();
 
-		std::cout << mat * vec << std::endl;
-
-		mat.SwapLines(0, 1);
-
-		std::cout << mat << std::endl;
-
-		mat.ScaleLine(1, 2.0f);
-
-		std::cout << mat << std::endl;
-		std::cout << mat.Trace() << std::endl;
-
-		mat.CombineLines(1, 1.0f, 0, -1.0f);
-
-		std::cout << mat << std::endl;
-
-		std::cout << mat.Det() << std::endl;
-		std::cout << mat.GaussElimination() << std::endl;
-		std::cout << mat << std::endl;
+		std::cout << imat << std::endl;
+		std::cout << mat * imat << std::endl;
 	}
 	catch (const std::exception& e)
 	{	

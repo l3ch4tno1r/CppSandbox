@@ -127,6 +127,6 @@ public:
 
 	Derived Invert() const
 	{
-
+		return this->Derived().Invert();
 	}
 };

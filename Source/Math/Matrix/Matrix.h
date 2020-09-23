@@ -2,16 +2,7 @@
 
 #include <initializer_list>
 
-#include "MatrixExpression.h"
-
-#include "Source/ErrorHandling.h"
-
-template<class E, typename T>
-class MatrixBase : public MatrixExpression<E, T>
-{
-public:
-	T& operator()(size_t i, size_t j) { return this->Derived()(i, j); }
-};
+#include "MatrixBase.h"
 
 template<typename T, size_t L, size_t C>
 class Matrix : public MatrixBase<Matrix<T, L, C>, T>
@@ -68,6 +59,6 @@ public:
 	RefType operator()(size_t i, size_t j) { return m_Tab[i][j]; }
 	ValType operator()(size_t i, size_t j) const { return m_Tab[i][j]; }
 
-	size_t Line() const { return L; }
-	size_t Column() const { return C; }
+	constexpr size_t Line() const { return L; }
+	constexpr size_t Column() const { return C; }
 };

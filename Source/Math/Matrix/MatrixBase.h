@@ -125,7 +125,6 @@ public:
 		return temp.GaussElimination();
 	}
 
-public:
 	Derived Invert() const
 	{
 		auto temp = Derived::Matrix2C();

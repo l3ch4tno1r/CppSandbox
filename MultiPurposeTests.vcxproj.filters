@@ -24,7 +24,7 @@
     <ClCompile Include="Source\Memory\Algorithms\Algorithms.h">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Math\Test05 - CRTP for matrix.cpp">
+    <ClCompile Include="Source\Misc\Test28 - CRTP.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

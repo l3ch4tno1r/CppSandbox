@@ -125,8 +125,36 @@ public:
 		return temp.GaussElimination();
 	}
 
+public:
 	Derived Invert() const
 	{
-		return this->Derived().Invert();
+		auto temp = Derived::Matrix2C();
+
+		if (this->Line() != temp.Line() || 2 * this->Column() != temp.Column())
+			throw std::exception("Line / Column number not matching.");
+
+		size_t L = this->Line();
+		size_t C = this->Column();
+
+		for (size_t i = 0; i < L; i++)
+			for (size_t j = 0; j < C; j++)
+				temp(i, j) = this->Derived()(i, j);
+
+		for (size_t i = 0; i < L; i++)
+			for (size_t j = C; j < 2 * C; j++)
+				temp(i, j) = (i == j - C ? T(1) : T(0));
+
+		T pseudodet = temp.GaussElimination();
+
+		if (std::abs(pseudodet) < T(0.0001))
+			throw std::exception("This matrix cannot be inverted.");
+
+		Derived result;
+
+		for (size_t i = 0; i < L; i++)
+			for (size_t j = 0; j < C; j++)
+				result(i, j) = temp(i, j + C);
+
+		return result;
 	}
 };

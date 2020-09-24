@@ -59,32 +59,11 @@ public:
 	RefType operator()(size_t i, size_t j) { return m_Tab[i][j]; }
 	ValType operator()(size_t i, size_t j) const { return m_Tab[i][j]; }
 
-	constexpr size_t Line() const { return L; }
+	constexpr size_t Line()   const { return L; }
 	constexpr size_t Column() const { return C; }
 
-	Matrix Invert() const
+	static Matrix<ValType, L, 2 * C> Matrix2C()
 	{
-		Matrix<T, L, 2 * C> temp;
-
-		for (size_t i = 0; i < L; i++)
-			for (size_t j = 0; j < C; j++)
-				temp(i, j) = m_Tab[i][j];
-
-		for (size_t i = 0; i < L; i++)
-			for (size_t j = C; j < 2 * C; j++)
-				temp(i, j) = (i == j - C ? T(1) : T(0));
-
-		T pseudodet = temp.GaussElimination();
-
-		if (std::abs(pseudodet) < T(0.0001))
-			throw std::exception("This matrix cannot be inverted.");
-
-		Matrix result;
-
-		for (size_t i = 0; i < L; i++)
-			for (size_t j = 0; j < C; j++)
-				result(i, j) = temp(i, j + C);
-
-		return result;
+		return Matrix<ValType, L, 2 * C>();
 	}
 };

@@ -2,6 +2,11 @@
 
 #include "Matrix/Matrix.h"
 
+Matrix<float, 2, 2> Test(const MatrixBase<Matrix<float, 2, 2>, float>& mat)
+{
+	return mat.Invert();
+}
+
 int main()
 {
 	try
@@ -15,6 +20,10 @@ int main()
 
 		std::cout << imat << std::endl;
 		std::cout << mat * imat << std::endl;
+
+		auto test = Test(mat);
+
+		std::cout << test << std::endl;
 	}
 	catch (const std::exception& e)
 	{	

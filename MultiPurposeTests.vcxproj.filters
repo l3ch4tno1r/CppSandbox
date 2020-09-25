@@ -24,7 +24,7 @@
     <ClCompile Include="Source\Memory\Algorithms\Algorithms.h">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Misc\Test28 - CRTP.cpp">
+    <ClCompile Include="Source\Math\Test05 - CRTP for matrix.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,13 +35,19 @@
     <ClInclude Include="External\TheCherno\Instrumentor.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Math\Matrix\Matrix.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Math\Matrix\MatrixExpression.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Source\Math\Matrix\MatrixBase.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Matrix\StaticMatrix.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Matrix\StaticMatrixBase.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Matrix\Vector3D.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

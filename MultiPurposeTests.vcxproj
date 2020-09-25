@@ -121,16 +121,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\stb_image\stb_image.cpp" />
+    <ClCompile Include="Source\Math\Test05 - CRTP for matrix.cpp" />
     <ClCompile Include="Source\Memory\Algorithms\Algorithms.h" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
-    <ClCompile Include="Source\Misc\Test28 - CRTP.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\stb_image\stb_image.h" />
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
-    <ClInclude Include="Source\Math\Matrix\Matrix.h" />
+    <ClInclude Include="Source\Math\Matrix\StaticMatrix.h" />
     <ClInclude Include="Source\Math\Matrix\MatrixBase.h" />
     <ClInclude Include="Source\Math\Matrix\MatrixExpression.h" />
+    <ClInclude Include="Source\Math\Matrix\StaticMatrixBase.h" />
+    <ClInclude Include="Source\Math\Matrix\Vector3D.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">

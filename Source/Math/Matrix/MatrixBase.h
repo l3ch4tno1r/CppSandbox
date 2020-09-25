@@ -102,10 +102,11 @@ public:
 
 	bool IsSquareMatrix() const { return this->Line() == this->Column(); }
 
+	void AssertSquareMatrix() const { this->Derived().AssertSquareMatrix(); }
+
 	T Trace() const
 	{
-		if (!this->IsSquareMatrix())
-			throw std::exception("This is not a square matrix.");
+		this->AssertSquareMatrix();
 
 		T result(T(0));
 
@@ -117,8 +118,7 @@ public:
 
 	T Det() const
 	{
-		if (!this->IsSquareMatrix())
-			throw std::exception("This is not a square matrix.");
+		this->AssertSquareMatrix();
 
 		Derived temp = *this;
 
@@ -127,10 +127,9 @@ public:
 
 	Derived Invert() const
 	{
-		auto temp = Derived::Matrix2C();
+		this->AssertSquareMatrix();
 
-		if (this->Line() != temp.Line() || 2 * this->Column() != temp.Column())
-			throw std::exception("Line / Column number not matching.");
+		auto temp = Derived::Matrix2C();
 
 		size_t L = this->Line();
 		size_t C = this->Column();

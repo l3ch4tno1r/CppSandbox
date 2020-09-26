@@ -128,12 +128,6 @@
   <ItemGroup>
     <ClInclude Include="External\stb_image\stb_image.h" />
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
-    <ClInclude Include="Source\Math\Matrix\StaticMatrix.h" />
-    <ClInclude Include="Source\Math\Matrix\MatrixBase.h" />
-    <ClInclude Include="Source\Math\Matrix\MatrixExpression.h" />
-    <ClInclude Include="Source\Math\Matrix\StaticMatrixBase.h" />
-    <ClInclude Include="Source\Math\Matrix\Vector3D.h" />
-    <ClInclude Include="Source\Math\Matrix\VectorBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">

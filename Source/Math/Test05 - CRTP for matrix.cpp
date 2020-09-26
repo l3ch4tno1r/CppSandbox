@@ -3,6 +3,25 @@
 #include "Matrix/StaticMatrix.h"
 #include "Matrix/Vector3D.h"
 
+struct HVec
+{
+	char x, y, z;
+	const char s = 's';
+
+	char operator[](size_t i) const
+	{
+		return ((char*)this)[i];
+	}
+};
+
+std::ostream& operator<<(std::ostream& stream, const HVec& vec)
+{
+	for (size_t i = 0; i < 4; i++)
+		stream << vec[i];
+
+	return stream;
+}
+
 int main()
 {
 	try
@@ -30,6 +49,12 @@ int main()
 		Vector3D<float> vec3 = vec1 + vec2;
 
 		std::cout << vec3 << std::endl;
+
+		HVec v1 = { 'x', 'y', 'z' };
+		HVec v2 = { 'X', 'Y', 'Z' };
+
+		std::cout << (int)&(v1.s) << std::endl;
+		std::cout << (int)&(v2.s) << std::endl;
 	}
 	catch (const std::exception& e)
 	{	

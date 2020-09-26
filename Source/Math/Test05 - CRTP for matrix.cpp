@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "Matrix/StaticMatrix.h"
-#include "Matrix/Vector3D.h"
+#include "Matrix2/StaticMatrix.h"
+#include "Matrix2/Vector3D.h"
 
 struct HVec
 {

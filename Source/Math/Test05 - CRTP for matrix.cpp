@@ -19,10 +19,17 @@ int main()
 
 		std::cout << imat << std::endl;
 
-		Vector3D<float> vec(1,	2,	3);
+		Vector3D<float> vec1(1,	2, 3);
+		Vector3D<float> vec2(4, 5, 6);
 
-		std::cout << vec << std::endl;
-		std::cout << mat * vec << std::endl;
+		std::cout << vec1 << std::endl;
+		std::cout << mat * vec1 << std::endl;
+
+		std::cout << vec1.Norm() << std::endl;
+
+		Vector3D<float> vec3 = vec1 + vec2;
+
+		std::cout << vec3 << std::endl;
 	}
 	catch (const std::exception& e)
 	{	

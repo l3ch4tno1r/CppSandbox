@@ -50,11 +50,12 @@ int main()
 
 		std::cout << vec3 << std::endl;
 
-		HVec v1 = { 'x', 'y', 'z' };
-		HVec v2 = { 'X', 'Y', 'Z' };
+		vec3 = vec1 ^ vec2;
 
-		std::cout << (int)&(v1.s) << std::endl;
-		std::cout << (int)&(v2.s) << std::endl;
+		std::cout << vec3 << std::endl;
+
+		std::cout << 2.0f * vec3 << std::endl;
+		std::cout << vec3 * -1.0f << std::endl;
 	}
 	catch (const std::exception& e)
 	{	

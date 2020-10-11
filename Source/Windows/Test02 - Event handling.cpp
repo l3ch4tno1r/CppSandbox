@@ -12,6 +12,7 @@ using namespace std::literals::chrono_literals;
 #define PRINTVAL(X) std::cout << #X << " = " << X << std::endl
 
 std::atomic<bool> run = true;
+std::atomic<bool> leftbtnpressed = false;
 
 void Thread()
 {
@@ -19,9 +20,10 @@ void Thread()
 	{
 		auto start = std::chrono::high_resolution_clock::now();
 
-		std::cout << "Working" << std::endl;
+		if(leftbtnpressed)
+			std::cout << "Working" << std::endl;
 
-		std::this_thread::sleep_until(start + 1s);
+		std::this_thread::sleep_until(start + 0.5s);
 	}
 }
 
@@ -32,7 +34,7 @@ int main()
 	DWORD        cNumRead;
 	INPUT_RECORD irInBuf[128];
 
-	//std::thread thread(Thread);
+	std::thread thread(Thread);
 
 	SetConsoleMode(hStdin, ENABLE_EXTENDED_FLAGS | ENABLE_MOUSE_INPUT | ENABLE_WINDOW_INPUT);
 
@@ -54,7 +56,10 @@ int main()
 
 	KeyBoardAction keyactions[256];
 
-	keyactions[VK_ESCAPE] = [](const KeyState&) { run = false; };
+	auto quit = [](const KeyState&) { run = false; };
+
+	keyactions[VK_ESCAPE] = quit;
+	keyactions[VK_RETURN] = quit;
 	keyactions[VK_SPACE]  = [](const KeyState& key)
 	{
 		if(key.KeyPressed)
@@ -63,6 +68,7 @@ int main()
 
 	MouseAction mouseactions[5];
 
+	/*
 	for (int i = 0; i < 5; ++i)
 	{
 		mouseactions[i] = [i](const KeyState& mstate, int x, int y)
@@ -74,7 +80,19 @@ int main()
 				std::cout << i << " released : (" << x << ", " << y << ')' << std::endl;
 		};
 	}
+	*/
 
+	mouseactions[0] = [](const KeyState& mstate, int x, int y)
+	{
+		leftbtnpressed = mstate.KeyHeld;
+
+		if (mstate.KeyPressed)
+			std::cout << "Left button pressed : (" << x << ", " << y << ')' << std::endl;
+
+		if (mstate.KeyReleased)
+			std::cout << "Left button released : (" << x << ", " << y << ')' << std::endl;
+	};
+	
 	while (run)
 	{
 		cNumRead = 0;
@@ -91,7 +109,7 @@ int main()
 				KeyState&       key = keys[record.Event.KeyEvent.wVirtualKeyCode];
 				KeyBoardAction& keyaction = keyactions[record.Event.KeyEvent.wVirtualKeyCode];
 
-				key.KeyNewState = record.Event.KeyEvent.bKeyDown;
+				key.KeyNewState =  record.Event.KeyEvent.bKeyDown;
 				key.KeyHeld     =  key.KeyNewState;
 				key.KeyPressed  = !key.KeyOldState &&  key.KeyNewState;
 				key.KeyReleased =  key.KeyOldState && !key.KeyNewState;
@@ -143,5 +161,5 @@ int main()
 		}
 	}
 
-	//thread.join();
+	thread.join();
 }

@@ -5,6 +5,7 @@
 #include "RandomIterator.h"
 
 namespace LCN {
+
 	template<typename T>
 	class DynamicArray
 	{

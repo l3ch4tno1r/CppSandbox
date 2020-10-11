@@ -2,7 +2,7 @@
 
 namespace LCN {
 
-template<class ContiguousContainer>
+	template<class ContiguousContainer>
 	class RandomIterator
 	{
 	public:
@@ -54,9 +54,9 @@ template<class ContiguousContainer>
 
 		bool operator==(const RandomIterator& other) const { return m_Ptr == other.m_Ptr; }
 		bool operator!=(const RandomIterator& other) const { return m_Ptr != other.m_Ptr; }
-		bool operator< (const RandomIterator& other) const { return m_Ptr < other.m_Ptr; }
+		bool operator< (const RandomIterator& other) const { return m_Ptr <  other.m_Ptr; }
 		bool operator<=(const RandomIterator& other) const { return m_Ptr <= other.m_Ptr; }
-		bool operator> (const RandomIterator& other) const { return m_Ptr > other.m_Ptr; }
+		bool operator> (const RandomIterator& other) const { return m_Ptr >  other.m_Ptr; }
 		bool operator>=(const RandomIterator& other) const { return m_Ptr >= other.m_Ptr; }
 	};
 }

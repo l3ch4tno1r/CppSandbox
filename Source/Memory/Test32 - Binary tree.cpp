@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "Utilities/ErrorHandling.h"
+#include "Utilities/Source/ErrorHandling.h"
 #include "Containers/BinarySearchTree.h"
 
 std::vector<std::string> FillDico(const char* filename)
@@ -43,7 +43,7 @@ int main()
 		for (std::string& e : v)
 			tree.Insert(e);
 
-		tree.Display();
+		//tree.Display();
 
 		std::cout << "\n---------- Size : " << tree.Size() << " ----------\n" << std::endl;
 	}

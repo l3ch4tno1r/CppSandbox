@@ -37,6 +37,11 @@ private:
 			if (m_Children[Right])
 				m_Children[Right]->DisplayRecursive(indent + 1);
 		}
+
+		TreeNode* FindInOrderSuccessor(const TreeNode& node)
+		{
+
+		}
 	};
 
 	size_t    m_Size;

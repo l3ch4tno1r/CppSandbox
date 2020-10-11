@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "_Matrix/StaticMatrix.h"
-#include "_Geometry/3D/Vector3D.h"
+#include "LCN_Math/Source/_Matrix/StaticMatrix.h"
+#include "LCN_Math/Source/_Geometry/3D/Vector3D.h"
 
 #define SEPARATOR(X) std::cout << "-------- " << X << " --------" << std::endl
 

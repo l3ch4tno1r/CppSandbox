@@ -1,78 +1,39 @@
 #include <iostream>
-#include <functional>
-#include <vector>
-#include <string>
+#include <limits>
 
-#include "Utilities/Source/InstanceCounter.h"
-
-class Observable
+void FindClosestSum(int* arr1, size_t size1, int* arr2, size_t size2, int target, int& idx1, int& idx2)
 {
-	typedef std::function<void()> Signal;
+	idx1 = idx2 = 0;
 
-public:
-	void AddListener(const Signal& f)
+	int deltamin = std::numeric_limits<int>::max();
+
+	for (int i = 0; i < size1; i++)
 	{
-		m_Listeners.emplace_back(f);
+		for (int j = 0; j < size2; j++)
+		{
+			int delta = std::abs(target - (arr1[i] + arr2[j]));
+
+			if (delta < deltamin)
+			{
+				deltamin = delta;
+
+				idx1 = i;
+				idx2 = j;
+			}
+		}
 	}
-
-	void AddListener(Signal&& f)
-	{
-		m_Listeners.emplace_back(std::move(f));
-	}
-
-	void Emmit() const
-	{
-		for (auto& f : m_Listeners)
-			f();
-	}
-
-private:
-	std::vector<Signal> m_Listeners;
-};
-
-void f()
-{
-	std::cout << "Hello world !" << std::endl;
 }
-
-class Test : public Counter<Test>
-{
-public:
-	Test(const char* name) : m_Name(name) {}
-	Test(const Test&) : Counter<Test>()	{}
-
-	void Hello() const
-	{
-		std::cout << "Hello world from Test class ! " << m_Name << ' ' << this->Id() << std::endl;
-	}
-
-private:
-	std::string m_Name;
-};
 
 int main()
 {
-	{
-		Observable obs;
-		Test test("Matt");
+	int arr1[] = { -1, 3, 8,  2, 9,  5 };
+	int arr2[] = {  4, 1, 2, 10, 5, 20 };
 
-		obs.AddListener(f);
-		obs.AddListener(std::bind(&Test::Hello, std::cref(test)));
+	int idx1, idx2;
 
-		{
-			Test test2("Don");
-			obs.AddListener(std::bind(&Test::Hello, std::cref(test2)));
-		}
+	FindClosestSum(arr1, 6, arr2, 6, 24, idx1, idx2);
 
-		int a = 0;
-		int b = 0;
-		int c = 0;
-		int d = 0;
-		int e = 0;
-		int f = 0;
-
-		obs.Emmit();
-	}
+	std::cout << '(' << idx1 << ", " << idx2 << ") -> " << arr1[idx1] + arr2[idx2] << std::endl;
 
 	std::cin.get();
 }

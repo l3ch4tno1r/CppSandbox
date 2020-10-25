@@ -21,7 +21,7 @@
     <ClCompile Include="Source\Memory\_MemTracker.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Memory\Test32 - Binary tree.cpp">
+    <ClCompile Include="Source\Windows\Test02 - Event handling.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

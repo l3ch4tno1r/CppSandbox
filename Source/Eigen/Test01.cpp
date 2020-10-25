@@ -1,6 +1,9 @@
 #include <iostream>
 
 #include "Eigen/Core"
+#include "Eigen/Geometry"
+
+#define SEPARATOR(X) std::cout << "---------- " << X << " ----------" << std::endl
 
 int main()
 {
@@ -14,6 +17,18 @@ int main()
 		7.0f, 8.0f, 9.0f;
 
 	std::cout << mat(0, 0) << std::endl;
+
+	SEPARATOR(1);
+
+	Eigen::Vector3f vec(1, 2, 3);
+
+	vec.x() = 2;
+
+	std::cout << vec.y() << std::endl;
+	auto vec4 = vec.homogeneous();
+	std::cout << vec4.y() << std::endl;
+
+	std::cout << sizeof(Eigen::Vector3f) << std::endl;
 
 	std::cin.get();
 }

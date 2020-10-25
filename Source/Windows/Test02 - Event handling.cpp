@@ -30,7 +30,6 @@ void Thread()
 int main()
 {
 	HANDLE       hStdin = GetStdHandle(STD_INPUT_HANDLE);
-	HWND         hWnd = GetConsoleWindow();
 	DWORD        cNumRead;
 	INPUT_RECORD irInBuf[128];
 

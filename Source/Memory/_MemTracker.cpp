@@ -1,12 +1,12 @@
-#define MEM_TRACKING 0
+#define MEM_TRACKING 1
 
 #if MEM_TRACKING == 1
 #include <mutex>
 #include <iostream>
 
-#include "Utilities/ErrorHandling.h"
+#include "Utilities/Source/ErrorHandling.h"
 
-#define DEBUG_MEM 1
+#define DEBUG_MEM 0
 
 #if DEBUG_MEM == 1
 #define LOG(X) X
@@ -16,6 +16,13 @@
 
 class MemTracker
 {
+public:
+	static MemTracker& Get() noexcept
+	{
+		static MemTracker instance;
+		return instance;
+	}
+
 private:
 	std::mutex m_AllocatedMut;
 	size_t m_Allocated;
@@ -25,7 +32,6 @@ private:
 	size_t m_Deallocated;
 	size_t m_NumDealloc;
 
-public:
 	MemTracker() :
 		m_Allocated(0),
 		m_Deallocated(0)
@@ -67,20 +73,23 @@ public:
 		m_Deallocated += size;
 		++m_NumDealloc;
 	}
-};
 
-MemTracker tracker;
+	friend void* ::operator new(size_t);
+	friend void* ::operator new[](size_t);
+	friend void  ::operator delete(void*, size_t);
+	friend void  ::operator delete[](void*, size_t);
+};
 
 void* operator new(size_t size)
 {
-	tracker.Allocate(size);
+	MemTracker::Get().Allocate(size);
 
 	return malloc(size);
 }
 
 void* operator new[](size_t size)
 {
-	tracker.Allocate(size);
+	MemTracker::Get().Allocate(size);
 
 	return malloc(size);
 }
@@ -89,7 +98,7 @@ void operator delete(void* ptr, size_t size)
 {
 	ASSERT(ptr != nullptr);
 
-	tracker.Deallocate(size);
+	MemTracker::Get().Deallocate(size);
 
 	free(ptr);
 }
@@ -98,7 +107,7 @@ void operator delete[](void* ptr, size_t size)
 {
 	ASSERT(ptr != nullptr);
 
-	tracker.Deallocate(size);
+	MemTracker::Get().Deallocate(size);
 
 	free(ptr);
 }

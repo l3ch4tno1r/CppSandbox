@@ -63,6 +63,8 @@ int main()
 	{
 		if(key.KeyPressed)
 			std::cout << "Jump !" << std::endl;
+
+		std::cout << "Test" << std::endl;
 	};
 
 	MouseAction mouseactions[5];

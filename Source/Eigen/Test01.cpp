@@ -24,11 +24,9 @@ int main()
 
 	vec.x() = 2;
 
-	std::cout << vec.y() << std::endl;
+	std::cout << vec.y() << std::endl << std::endl;
 	auto vec4 = vec.homogeneous();
-	std::cout << vec4.y() << std::endl;
-
-	std::cout << sizeof(Eigen::Vector3f) << std::endl;
+	std::cout << vec4 + vec4 << std::endl;
 
 	std::cin.get();
 }

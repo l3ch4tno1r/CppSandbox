@@ -25,12 +25,12 @@ public:
 
 private:
 	std::mutex m_AllocatedMut;
-	size_t m_Allocated;
-	size_t m_NumAlloc;
+	size_t     m_Allocated;
+	size_t     m_NumAlloc;
 
 	std::mutex m_DeallocatedMut;
-	size_t m_Deallocated;
-	size_t m_NumDealloc;
+	size_t     m_Deallocated;
+	size_t     m_NumDealloc;
 
 	MemTracker() :
 		m_Allocated(0),

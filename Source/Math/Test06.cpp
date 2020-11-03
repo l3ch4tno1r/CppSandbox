@@ -87,7 +87,15 @@ int main()
 		HVector3Df hvec1 = { 1, 2, 3, 1 };
 		HVector3Df hvec2 = { 4, 5, 6, 1 };
 
-		HVector3Df hcprod = hvec1 ^ hvec2;
+		//HVector3Df hcprod = hvec1 ^ hvec2; // Will fail on purpose
+	}
+
+	SEPARATOR("Homogeneous");
+	{
+		Vector3Df vec1 = { 1, 2, 3 };
+		auto hvec1 = vec1.Homogeneous(0);
+
+		std::cout << hvec1 << std::endl;
 	}
 
 	std::cin.get();

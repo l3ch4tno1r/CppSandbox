@@ -5,8 +5,103 @@
 #define SEPARATOR(X) std::cout << "-------- " << X << " --------" << std::endl
 #define DISPLAY(X) std::cout << #X << " = " << X << std::endl;
 
+template<class Subject>
+class SmallMatrix;
+
+template<class _Derived, typename T>
+class Matrix
+{
+public:
+	using ValType  = T;
+	using PtrType  = ValType*;
+	using RefType  = ValType&;
+	using ViewType = typename SmallMatrix<_Derived>;
+
+	ValType operator()(int i, int j) const { return Derived()(i, j); }
+
+	int Line()   const { return Derived().Line(); }
+	int Column() const { return Derived().Column(); }
+
+	ViewType View(int ioffset, int joffset) const { return ViewType(Derived(), ioffset, joffset); }
+
+protected:
+	_Derived& Derived() { return static_cast<_Derived&>(*this); }
+	const _Derived& Derived() const { return static_cast<const _Derived&>(*this); }
+};
+
+template<class _Derived, typename T>
+std::ostream& operator<<(std::ostream& stream, const Matrix<_Derived, T>& mat)
+{
+	for (int i = 0; i < mat.Line(); i++)
+	{
+		for (int j = 0; j < mat.Column(); j++)
+		{
+			stream << mat(i, j) << ' ';
+		}
+
+		stream << '\n';
+	}
+
+	return stream;
+}
+
+template<class Subject>
+class SmallMatrix : public Matrix<SmallMatrix<Subject>, typename Subject::ValType>
+{
+public:
+	using ValType = typename Subject::ValType;
+
+	SmallMatrix(const Subject& bigm, int ioffset, int joffset) :
+		m_Ref(bigm),
+		m_Ioffset(ioffset),
+		m_Joffset(joffset)
+	{}
+
+	ValType operator()(int i, int j) const { return m_Ref(i + m_Ioffset, j + m_Joffset); }
+
+	int Line()   const { return 2; }
+	int Column() const { return 2; }
+
+private:
+	const Subject& m_Ref;
+	int m_Ioffset;
+	int m_Joffset;
+};
+
+template<typename T>
+class BigMatrix : public Matrix<BigMatrix<T>, T>
+{
+public:
+	using ValType  = T;
+	using ViewType = SmallMatrix<BigMatrix>;
+
+	BigMatrix(const std::initializer_list<ValType>& list)
+	{
+		int idx = 0;
+
+		for(auto e : list)
+		{
+			int i = idx / 3;
+			int j = idx % 3;
+
+			m_Mat[i][j] = e;
+
+			++idx;
+		}
+	}
+
+	ValType operator()(int i, int j) const { return m_Mat[i][j]; }
+
+	int Line()   const { return 3; }
+	int Column() const { return 3; }
+
+private:
+	ValType m_Mat[3][3];
+};
+
 int main()
 {
+	SEPARATOR("Misc");
 	{
 		Vector3Df vec1 = { 1, 2, 3 };
 		Vector3Df vec2 = { 4, 5, 6 };
@@ -96,6 +191,58 @@ int main()
 		auto hvec1 = vec1.Homogeneous(0);
 
 		std::cout << hvec1 << std::endl;
+	}
+
+	SEPARATOR("Operators");
+	{
+		Vector3Df vec1 = { 1, 2, 3 };
+		Vector3Df vec2 = { 4, 5, 6 };
+
+		auto sum = vec1 + vec2 + vec1;
+
+		std::cout << sum << std::endl;
+	}
+
+	SEPARATOR("Matrix view");
+	{
+		StaticMatrix<float, 3, 3> mat = {
+			1, 2, 3,
+			4, 5, 6,
+			7, 8, 9
+		};
+
+		std::cout << mat << std::endl;
+
+		auto view = mat.View<2, 2>(0, 1);
+
+		std::cout << view << std::endl;
+
+		Vector2Df vec = { 1, 2 };
+
+		std::cout << view * vec << std::endl;
+
+		HVector3Df hvec = { 1, 2, 3, 1 };
+
+		HVector3Df::ViewType<3, 1> svecview(hvec, 0, 0);
+		Vector3Df svec = hvec.View<3, 1>(0, 0);
+
+		std::cout << svecview << std::endl;
+		std::cout << svec << std::endl;
+	}
+
+	SEPARATOR("Test");
+	{
+		BigMatrix<float> mat = {
+			1, 2, 3,
+			4, 5, 6,
+			7, 8, 9
+		};
+
+		std::cout << mat << std::endl;
+
+		BigMatrix<float>::ViewType view = mat.View(1, 0);
+
+		std::cout << view << std::endl;
 	}
 
 	std::cin.get();

@@ -35,7 +35,7 @@ namespace LCN {
 
 	public:
 		using ValueType = T;
-		using Iterator = RandomIterator<DynamicArray>;
+		using Iterator  = RandomIterator<DynamicArray>;
 
 		DynamicArray()
 		{

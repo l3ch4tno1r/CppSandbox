@@ -6,12 +6,12 @@
 
 #include "Utilities/Source/ErrorHandling.h"
 
-#define DEBUG_MEM 0
+#define DEBUG_MEM 1
 
 #if DEBUG_MEM == 1
-#define LOG(X) X
+#define MEM_LOG(X) std::cout << "Mem debug : "; X
 #else
-#define LOG(X)
+#define MEM_LOG(X)
 #endif
 
 class MemTracker
@@ -58,7 +58,7 @@ private:
 	{
 		std::unique_lock<std::mutex> lock(m_AllocatedMut);
 
-		LOG(std::cout << "Allocated " << size << " bytes." << std::endl);
+		MEM_LOG(std::cout << "Allocated " << size << " bytes." << std::endl);
 
 		m_Allocated += size;
 		++m_NumAlloc;
@@ -68,7 +68,7 @@ private:
 	{
 		std::unique_lock<std::mutex> lock(m_DeallocatedMut);
 
-		LOG(std::cout << "Deallocated " << size << " bytes." << std::endl);
+		MEM_LOG(std::cout << "Deallocated " << size << " bytes." << std::endl);
 
 		m_Deallocated += size;
 		++m_NumDealloc;

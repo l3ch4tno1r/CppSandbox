@@ -257,15 +257,29 @@ int main()
 
 	SEPARATOR("Transform");
 	{
-		Transform<float, 3> transform = {
+		Transform3Df transform1 = {
 			1, 0, 0, 1,
 			0, 0, 1, 2,
 			0, 1, 0, 3,
 			0, 0, 0, 1
 		};
 
-		std::cout << transform << std::endl;
-		std::cout << transform[3] << std::endl;
+		std::cout << transform1 << std::endl;
+		std::cout << transform1[3] << std::endl;
+
+		Transform3Df transform2;
+
+		std::cout << transform2 << std::endl;
+
+		Transform3Df itransform1 = transform1.Invert();
+		auto product = transform1 * itransform1;
+
+		std::cout << itransform1 << std::endl;
+		std::cout << transform1 * itransform1 << std::endl;
+
+		HVector3Df hvec = { 4, 5, 6, 1 };
+
+		std::cout << transform1 * hvec << std::endl;
 	}
 
 	std::cin.get();

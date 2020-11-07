@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "LCN_Math/Source/_Geometry/Vector.h"
+#include "LCN_Math/Source/_Geometry/Transform.h"
 
 #define SEPARATOR(X) std::cout << "-------- " << X << " --------" << std::endl
 #define DISPLAY(X) std::cout << #X << " = " << X << std::endl;
@@ -223,11 +224,20 @@ int main()
 
 		HVector3Df hvec = { 1, 2, 3, 1 };
 
-		HVector3Df::ViewType<3, 1> svecview(hvec, 0, 0);
+		HVector3Df::RVectorView svecview(hvec, 0, 0);
 		Vector3Df svec = hvec.View<3, 1>(0, 0);
 
 		std::cout << svecview << std::endl;
 		std::cout << svec << std::endl;
+
+		Vector3Df crossp = svec ^ svecview;
+
+		std::cout << crossp << std::endl;
+
+		HVector3Df hvec2 = { 4, 5, 6, 1 };
+		HVector3Df::RVectorView svecview2 = hvec2.VectorView();
+
+		std::cout << svecview2 << std::endl;
 	}
 
 	SEPARATOR("Test");
@@ -243,6 +253,19 @@ int main()
 		BigMatrix<float>::ViewType view = mat.View(1, 0);
 
 		std::cout << view << std::endl;
+	}
+
+	SEPARATOR("Transform");
+	{
+		Transform<float, 3> transform = {
+			1, 0, 0, 1,
+			0, 0, 1, 2,
+			0, 1, 0, 3,
+			0, 0, 0, 1
+		};
+
+		std::cout << transform << std::endl;
+		std::cout << transform[3] << std::endl;
 	}
 
 	std::cin.get();

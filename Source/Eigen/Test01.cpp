@@ -25,6 +25,10 @@ int main()
 	{
 		Eigen::Vector3f vec(1, 2, 3);
 
+		vec.cross(vec);
+
+		auto d = vec.dot(vec);
+
 		vec.x() = 2;
 
 		std::cout << vec.y() << std::endl << std::endl;

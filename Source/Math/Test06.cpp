@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "LCN_Math/Source/_Geometry/Vector.h"
-#include "LCN_Math/Source/_Geometry/Transform.h"
+#include "LCN_Math/Source/Geometry/Vector.h"
+#include "LCN_Math/Source/Geometry/Transform.h"
 
 #define SEPARATOR(X) std::cout << "-------- " << X << " --------" << std::endl
 #define DISPLAY(X) std::cout << #X << " = " << X << std::endl;
@@ -176,9 +176,9 @@ int main()
 		Vector3Df vec1 = { 1, 2, 3 };
 		Vector3Df vec2 = { 4, 5, 6 };
 
-		Vector3Df cprod = vec1 ^ vec2;
-
-		std::cout << cprod << std::endl;
+		//Vector3Df cprod = vec1 ^ vec2;
+		//
+		//std::cout << cprod << std::endl;
 
 		HVector3Df hvec1 = { 1, 2, 3, 1 };
 		HVector3Df hvec2 = { 4, 5, 6, 1 };
@@ -202,6 +202,14 @@ int main()
 		auto sum = vec1 + vec2 + vec1;
 
 		std::cout << sum << std::endl;
+
+		auto diff = vec2 - vec1;
+
+		std::cout << diff << std::endl;
+
+		float dotp1 = (Vector3Df)sum | (Vector3Df)diff;
+
+		std::cout << dotp1 << std::endl;
 	}
 
 	SEPARATOR("Matrix view");
@@ -230,9 +238,9 @@ int main()
 		std::cout << svecview << std::endl;
 		std::cout << svec << std::endl;
 
-		Vector3Df crossp = svec ^ svecview;
-
-		std::cout << crossp << std::endl;
+		//Vector3Df crossp = svec ^ svecview;
+		//
+		//std::cout << crossp << std::endl;
 
 		HVector3Df hvec2 = { 4, 5, 6, 1 };
 		HVector3Df::RVectorView svecview2 = hvec2.VectorView();
@@ -280,6 +288,12 @@ int main()
 		HVector3Df hvec = { 4, 5, 6, 1 };
 
 		std::cout << transform1 * hvec << std::endl;
+	}
+
+	SEPARATOR("Traits");
+	{
+		Traits<HVector3Df>::ValType t = 0.0f;
+		Traits<Transform3Df>::LineAtCT;
 	}
 
 	std::cin.get();

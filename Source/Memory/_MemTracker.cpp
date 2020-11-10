@@ -1,4 +1,4 @@
-#define MEM_TRACKING 1
+#define MEM_TRACKING 0
 
 #if MEM_TRACKING == 1
 #include <mutex>
@@ -6,7 +6,7 @@
 
 #include "Utilities/Source/ErrorHandling.h"
 
-#define DEBUG_MEM 1
+#define DEBUG_MEM 0
 
 #if DEBUG_MEM == 1
 #define MEM_LOG(X) std::cout << "Mem debug : "; X

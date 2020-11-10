@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "Matrix\Stack\SqrSMatrix.h"
-#include "Source\Utils\TimeMeasurement.h"
-#include "Source\Utils\ErrorHandling.h"
+#include "LCN_Math/Source/_Matrix_Old/Stack/SqrSMatrix.h"
+#include "Utilities/Source/TimeMeasurement.h"
+#include "Utilities/Source/ErrorHandling.h"
 
 using Vector3D = LCNMath::Matrix::StaticMatrix::Matrix<float, 3, 1>;
 

@@ -144,31 +144,31 @@ int main()
 
 		std::cout << std::boolalpha;
 
-		DISPLAY(Vector2Df::cm_X_Accessible);
-		DISPLAY(Vector2Df::cm_Y_Accessible);
-		DISPLAY(Vector2Df::cm_Z_Accessible);
-		DISPLAY(Vector2Df::cm_W_Accessible);
+		DISPLAY(Vector2Df::X_Accessible);
+		DISPLAY(Vector2Df::Y_Accessible);
+		DISPLAY(Vector2Df::Z_Accessible);
+		DISPLAY(Vector2Df::W_Accessible);
 
 		SEPARATOR(2);
 
-		DISPLAY(HVector2Df::cm_X_Accessible);
-		DISPLAY(HVector2Df::cm_Y_Accessible);
-		DISPLAY(HVector2Df::cm_Z_Accessible);
-		DISPLAY(HVector2Df::cm_W_Accessible);
+		DISPLAY(HVector2Df::X_Accessible);
+		DISPLAY(HVector2Df::Y_Accessible);
+		DISPLAY(HVector2Df::Z_Accessible);
+		DISPLAY(HVector2Df::W_Accessible);
 
 		SEPARATOR(3);
 
-		DISPLAY(Vector3Df::cm_X_Accessible);
-		DISPLAY(Vector3Df::cm_Y_Accessible);
-		DISPLAY(Vector3Df::cm_Z_Accessible);
-		DISPLAY(Vector3Df::cm_W_Accessible);
+		DISPLAY(Vector3Df::X_Accessible);
+		DISPLAY(Vector3Df::Y_Accessible);
+		DISPLAY(Vector3Df::Z_Accessible);
+		DISPLAY(Vector3Df::W_Accessible);
 
 		SEPARATOR(4);
 
-		DISPLAY(HVector3Df::cm_X_Accessible);
-		DISPLAY(HVector3Df::cm_Y_Accessible);
-		DISPLAY(HVector3Df::cm_Z_Accessible);
-		DISPLAY(HVector3Df::cm_W_Accessible);
+		DISPLAY(HVector3Df::X_Accessible);
+		DISPLAY(HVector3Df::Y_Accessible);
+		DISPLAY(HVector3Df::Z_Accessible);
+		DISPLAY(HVector3Df::W_Accessible);
 	}
 
 	SEPARATOR("Cross product");
@@ -199,7 +199,7 @@ int main()
 		Vector3Df vec1 = { 1, 2, 3 };
 		Vector3Df vec2 = { 4, 5, 6 };
 
-		auto sum = vec1 + vec2 + vec1;
+		auto sum = vec1 + vec2 + 2 * vec1;
 
 		std::cout << sum << std::endl;
 

@@ -1,4 +1,4 @@
-#define MEM_TRACKING 0
+#define MEM_TRACKING 1
 
 #if MEM_TRACKING == 1
 #include <mutex>
@@ -17,11 +17,10 @@
 class MemTracker
 {
 public:
-	static MemTracker& Get() noexcept
-	{
-		static MemTracker instance;
-		return instance;
-	}
+	static MemTracker& Get() noexcept;
+
+	size_t NumAlloc()   const;
+	size_t NumDeAlloc() const;
 
 private:
 	std::mutex m_AllocatedMut;
@@ -76,7 +75,9 @@ private:
 
 	friend void* ::operator new(size_t);
 	friend void* ::operator new[](size_t);
+	friend void  ::operator delete(void*);
 	friend void  ::operator delete(void*, size_t);
+	friend void  ::operator delete[](void*);
 	friend void  ::operator delete[](void*, size_t);
 };
 
@@ -94,11 +95,29 @@ void* operator new[](size_t size)
 	return malloc(size);
 }
 
+void operator delete(void* ptr)
+{
+	ASSERT(ptr != nullptr);
+
+	MemTracker::Get().Deallocate(0);
+
+	free(ptr);
+}
+
 void operator delete(void* ptr, size_t size)
 {
 	ASSERT(ptr != nullptr);
 
 	MemTracker::Get().Deallocate(size);
+
+	free(ptr);
+}
+
+void operator delete[](void* ptr)
+{
+	ASSERT(ptr != nullptr);
+
+	MemTracker::Get().Deallocate(0);
 
 	free(ptr);
 }
@@ -112,3 +131,19 @@ void operator delete[](void* ptr, size_t size)
 	free(ptr);
 }
 #endif
+
+MemTracker& MemTracker::Get() noexcept
+{
+	static MemTracker instance;
+	return instance;
+}
+
+size_t MemTracker::NumAlloc() const
+{
+	return m_NumAlloc;
+}
+
+size_t MemTracker::NumDeAlloc() const
+{
+	return m_NumDealloc;
+}

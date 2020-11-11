@@ -79,7 +79,12 @@
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
+    <Link>
+      <GenerateMapFile>false</GenerateMapFile>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -124,12 +129,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="External\stb_image\stb_image.cpp" />
-    <ClCompile Include="Source\Benchmark\Test05.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
+    <ClCompile Include="Source\Misc\Test32 - Inlining.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="External\stb_image\stb_image.h" />
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
     <ClInclude Include="Source\Memory\Containers\BinarySearchTree.h" />
     <ClInclude Include="Source\Memory\Containers\DynamicArray.h" />

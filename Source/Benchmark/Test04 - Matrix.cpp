@@ -55,7 +55,7 @@ int main()
 
 		std::cout << a + b + c << std::endl;
 
-		TimePerformance(iterations, [&a, &b, &c]()
+		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
 		{
 			NaiveVector3Df sum = a + b + c;
 		});
@@ -67,7 +67,7 @@ int main()
 		Vector3Df b = { 4, 5, 6 };
 		Vector3Df c = { 7, 8, 9 };
 
-		TimePerformance(iterations, [&a, &b, &c]()
+		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
 		{
 			Vector3Df sum = a + b + c;
 		});
@@ -81,7 +81,7 @@ int main()
 
 		auto expr = a + b + c;
 
-		TimePerformance(iterations, [&expr]()
+		Benchmark::TimePerformance(iterations, [&expr]()
 		{
 			Vector3Df sum = expr;
 		});
@@ -93,7 +93,7 @@ int main()
 		Eigen::Vector3f b(4, 5, 6);
 		Eigen::Vector3f c(7, 8, 9);
 
-		TimePerformance(iterations, [&a, &b, &c]()
+		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
 		{
 			Eigen::Vector3f sum = a + b + c;
 		});
@@ -107,7 +107,7 @@ int main()
 		NaiveVector3Df b(4, 5, 6);
 		NaiveVector3Df c(7, 8, 9);
 
-		TimePerformance(iterations, [&a, &b, &c]()
+		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
 		{
 			float sumx = (a + b + c).x();
 		});
@@ -119,7 +119,7 @@ int main()
 		Vector3Df b = { 4, 5, 6 };
 		Vector3Df c = { 7, 8, 9 };
 
-		TimePerformance(iterations, [&a, &b, &c]()
+		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
 		{
 			float sumx = (a + b + c)(0, 0);
 		});
@@ -133,7 +133,7 @@ int main()
 
 		auto expr = a + b + c;
 
-		TimePerformance(iterations, [&expr]()
+		Benchmark::TimePerformance(iterations, [&expr]()
 		{
 			float sumx = expr(0, 0);
 		});
@@ -145,7 +145,7 @@ int main()
 		Eigen::Vector3f b(4, 5, 6);
 		Eigen::Vector3f c(7, 8, 9);
 
-		TimePerformance(iterations, [&a, &b, &c]()
+		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
 		{
 			float sumx = (a + b + c)(0, 0);
 		});
@@ -159,7 +159,7 @@ int main()
 
 		auto expr = a + b + c;
 
-		TimePerformance(iterations, [&expr]()
+		Benchmark::TimePerformance(iterations, [&expr]()
 		{
 			float sumx = expr(0, 0);
 		});

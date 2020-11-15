@@ -9,6 +9,9 @@ class MemTracker
 public:
 	static MemTracker& Get();
 
+	void BeginSession();
+	void EndSession();
+
 	size_t NumAlloc() const;
 	size_t NumDeAlloc() const;
 };
@@ -123,6 +126,7 @@ private:
 
 	friend Vector3D<Naive, HeapAllocatedVector3D> operator+(const Vector3D<Naive, HeapAllocatedVector3D>& a, Vector3D<Naive, HeapAllocatedVector3D>&& b);
 	friend Vector3D<Naive, HeapAllocatedVector3D> operator+(Vector3D<Naive, HeapAllocatedVector3D>&& a, const Vector3D<Naive, HeapAllocatedVector3D>& b);
+	friend Vector3D<Naive, HeapAllocatedVector3D> operator+(Vector3D<Naive, HeapAllocatedVector3D>&& a, Vector3D<Naive, HeapAllocatedVector3D>&& b);
 };
 
 template<class StorageKind>
@@ -139,6 +143,13 @@ Vector3D<Naive, HeapAllocatedVector3D> operator+(const Vector3D<Naive, HeapAlloc
 }
 
 Vector3D<Naive, HeapAllocatedVector3D> operator+(Vector3D<Naive, HeapAllocatedVector3D>&& a, const Vector3D<Naive, HeapAllocatedVector3D>& b)
+{
+	a += b;
+
+	return Vector3D<Naive, HeapAllocatedVector3D>(std::move(a));
+}
+
+Vector3D<Naive, HeapAllocatedVector3D> operator+(Vector3D<Naive, HeapAllocatedVector3D>&& a, Vector3D<Naive, HeapAllocatedVector3D>&& b)
 {
 	a += b;
 
@@ -196,7 +207,7 @@ private:
 };
 
 template<class _EL, class _ER>
-AddOp<_EL, _ER> operator+(const Vector3DExpr<_EL>& el, const Vector3DExpr<_ER>& er)
+inline AddOp<_EL, _ER> operator+(const Vector3DExpr<_EL>& el, const Vector3DExpr<_ER>& er)
 {
 	return AddOp<_EL, _ER>(static_cast<const _EL&>(el), static_cast<const _ER&>(er));
 }
@@ -209,11 +220,50 @@ int main()
 {
 	const int iterations = 2000000;
 
-#pragma region stack_allocation
+	MemTracker::Get().BeginSession();
+
+	SEPARATOR("Testing alloc number");
+	{
+		Vector3D<Naive, HeapAllocatedVector3D> na = { 1, 2, 3 };
+		Vector3D<Naive, HeapAllocatedVector3D> nb = { 4, 5, 6 };
+		Vector3D<Naive, HeapAllocatedVector3D> nc = { 7, 8, 9 };
+
+		Vector3D<Expr, HeapAllocatedVector3D> ea = { 1, 2, 3 };
+		Vector3D<Expr, HeapAllocatedVector3D> eb = { 4, 5, 6 };
+		Vector3D<Expr, HeapAllocatedVector3D> ec = { 7, 8, 9 };
+
+		size_t numalloc = MemTracker::Get().NumAlloc();
+
+		Vector3D<Naive, HeapAllocatedVector3D> sum1 = na + nb + nc + na + nb + nc;
+
+		std::cout << "Num allocs : " << MemTracker::Get().NumAlloc() - numalloc << std::endl;
+
+		numalloc = MemTracker::Get().NumAlloc();
+
+		Vector3D<Naive, HeapAllocatedVector3D> sum2 = (na + nb) + (nc + na) + (nb + nc);
+
+		std::cout << "Num allocs : " << MemTracker::Get().NumAlloc() - numalloc << std::endl;
+
+		numalloc = MemTracker::Get().NumAlloc();
+
+		Vector3D<Expr, HeapAllocatedVector3D> sum3 = ea + eb + ec + ea + eb + ec;
+
+		std::cout << "Num allocs : " << MemTracker::Get().NumAlloc() - numalloc << std::endl;
+
+		numalloc = MemTracker::Get().NumAlloc();
+
+		Vector3D<Expr, HeapAllocatedVector3D> sum4 = (ea + eb) + (ec + ea) + (eb + ec);
+
+		std::cout << "Num allocs : " << MemTracker::Get().NumAlloc() - numalloc << std::endl;
+	}
+
+	MemTracker::Get().EndSession();
+#pragma region stack_allocation_performance_test
 
 	std::cout << "////////////////////////////////" << std::endl;
 	std::cout << "//-- Stack allocated vector --//" << std::endl;
 	std::cout << "////////////////////////////////" << std::endl;
+	std::cout << '\n';
 
 	SEPARATOR("Naive stack allocated");
 	{
@@ -264,15 +314,14 @@ int main()
 	}
 #pragma endregion
 
-#pragma region heap_allocation
-
+#pragma region heap_allocation_performance_test
+	std::cout << '\n';
 	std::cout << "///////////////////////////////" << std::endl;
 	std::cout << "//-- Heap allocated vector --//" << std::endl;
 	std::cout << "///////////////////////////////" << std::endl;
+	std::cout << '\n';
 
-	size_t alloc = MemTracker::Get().NumAlloc();
-
-	SEPARATOR("Naive heap allocated");
+	SEPARATOR("Naive heap 1 allocated");
 	{
 		Vector3D<Naive, HeapAllocatedVector3D> na = { 1, 2, 3 };
 		Vector3D<Naive, HeapAllocatedVector3D> nb = { 4, 5, 6 };
@@ -283,9 +332,16 @@ int main()
 		});
 	}
 
-	std::cout << "Number of allocations : " << MemTracker::Get().NumAlloc() - alloc << std::endl;
+	SEPARATOR("Naive heap 2 allocated");
+	{
+		Vector3D<Naive, HeapAllocatedVector3D> na = { 1, 2, 3 };
+		Vector3D<Naive, HeapAllocatedVector3D> nb = { 4, 5, 6 };
+		Vector3D<Naive, HeapAllocatedVector3D> nc = { 7, 8, 9 };
 
-	alloc = MemTracker::Get().NumAlloc();
+		Benchmark::TimePerformance(iterations, [&]() {
+			Vector3D<Naive, HeapAllocatedVector3D> nsum = (na + nb) + (nc + na) + (nb + nc);
+		});
+	}
 
 	SEPARATOR("Expr 1 heap allocated");
 	{
@@ -298,10 +354,6 @@ int main()
 		});
 	}
 
-	std::cout << "Number of allocations : " << MemTracker::Get().NumAlloc() - alloc << std::endl;
-
-	alloc = MemTracker::Get().NumAlloc();
-
 	SEPARATOR("Expr 2 heap allocated");
 	{
 		Vector3D<Expr, HeapAllocatedVector3D> ea = { 1, 2, 3 };
@@ -312,12 +364,8 @@ int main()
 
 		Benchmark::TimePerformance(iterations, [&]() {
 			Vector3D<Expr, HeapAllocatedVector3D> result = esum;
-			});
+		});
 	}
-
-	std::cout << "Number of allocations : " << MemTracker::Get().NumAlloc() - alloc << std::endl;
-
-	alloc = MemTracker::Get().NumAlloc();
 
 	SEPARATOR("Expr 3 heap allocated");
 	{
@@ -331,11 +379,13 @@ int main()
 			Vector3D<Expr, HeapAllocatedVector3D> result = esum;
 		});
 	}
-
-	std::cout << "Number of allocations : " << MemTracker::Get().NumAlloc() - alloc << std::endl;
-
-	alloc = MemTracker::Get().NumAlloc();
 #pragma endregion
+
+	std::cout << '\n';
+	std::cout << "//////////////" << std::endl;
+	std::cout << "//-- Done --//" << std::endl;
+	std::cout << "//////////////" << std::endl;
+	std::cout << '\n';
 
 	std::cin.get();
 }

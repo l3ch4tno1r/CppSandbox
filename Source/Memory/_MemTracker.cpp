@@ -3,6 +3,7 @@
 #if MEM_TRACKING == 1
 #include <mutex>
 #include <iostream>
+#include <atomic>
 
 #include "Utilities/Source/ErrorHandling.h"
 
@@ -19,6 +20,9 @@ class MemTracker
 public:
 	static MemTracker& Get() noexcept;
 
+	void BeginSession();
+	void EndSession();
+
 	size_t NumAlloc()   const;
 	size_t NumDeAlloc() const;
 
@@ -30,6 +34,8 @@ private:
 	std::mutex m_DeallocatedMut;
 	size_t     m_Deallocated;
 	size_t     m_NumDealloc;
+
+	std::atomic_bool m_SessionRun = false;
 
 	MemTracker() :
 		m_Allocated(0),
@@ -55,6 +61,9 @@ private:
 
 	void Allocate(size_t size)
 	{
+		if (!m_SessionRun)
+			return;
+
 		std::unique_lock<std::mutex> lock(m_AllocatedMut);
 
 		MEM_LOG(std::cout << "Allocated " << size << " bytes." << std::endl);
@@ -65,6 +74,9 @@ private:
 
 	void Deallocate(size_t size)
 	{
+		if (!m_SessionRun)
+			return;
+
 		std::unique_lock<std::mutex> lock(m_DeallocatedMut);
 
 		MEM_LOG(std::cout << "Deallocated " << size << " bytes." << std::endl);
@@ -130,12 +142,21 @@ void operator delete[](void* ptr, size_t size)
 
 	free(ptr);
 }
-#endif
 
 MemTracker& MemTracker::Get() noexcept
 {
 	static MemTracker instance;
 	return instance;
+}
+
+void MemTracker::BeginSession()
+{
+	m_SessionRun = true;
+}
+
+void MemTracker::EndSession()
+{
+	m_SessionRun = false;
 }
 
 size_t MemTracker::NumAlloc() const
@@ -147,3 +168,4 @@ size_t MemTracker::NumDeAlloc() const
 {
 	return m_NumDealloc;
 }
+#endif

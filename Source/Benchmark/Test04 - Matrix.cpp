@@ -47,17 +47,17 @@ int main()
 {
 	const int iterations = 1000000;
 
+#define EXPRESSION a + b + c + a + b + c
+
 	SEPARATOR("Naive version");
 	{
 		NaiveVector3Df a(1, 2, 3);
 		NaiveVector3Df b(4, 5, 6);
 		NaiveVector3Df c(7, 8, 9);
 
-		std::cout << a + b + c << std::endl;
-
 		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
 		{
-			NaiveVector3Df sum = a + b + c;
+			NaiveVector3Df sum = EXPRESSION;
 		});
 	}
 
@@ -69,7 +69,7 @@ int main()
 
 		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
 		{
-			Vector3Df sum = a + b + c;
+			Vector3Df sum = EXPRESSION;
 		});
 	}
 
@@ -79,7 +79,7 @@ int main()
 		Vector3Df b = { 4, 5, 6 };
 		Vector3Df c = { 7, 8, 9 };
 
-		auto expr = a + b + c;
+		auto expr = EXPRESSION;
 
 		Benchmark::TimePerformance(iterations, [&expr]()
 		{
@@ -95,11 +95,13 @@ int main()
 
 		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
 		{
-			Eigen::Vector3f sum = a + b + c;
+			Eigen::Vector3f sum = EXPRESSION;
 		});
 	}
 
 	SEPARATOR("XXXXXXXXXXXXXXXXXXXXXXXX");
+
+	const size_t iterations2 = 2000000;
 
 	SEPARATOR("Evaluating one value - Naive version");
 	{
@@ -107,21 +109,21 @@ int main()
 		NaiveVector3Df b(4, 5, 6);
 		NaiveVector3Df c(7, 8, 9);
 
-		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
+		Benchmark::TimePerformance(iterations2, [&a, &b, &c]()
 		{
-			float sumx = (a + b + c).x();
+			float sumx = (EXPRESSION).x();
 		});
 	}
 
-	SEPARATOR("Evaluating one value - Expression version");
+	SEPARATOR("Evaluating one value - Expression version 1");
 	{
 		Vector3Df a = { 1, 2, 3 };
 		Vector3Df b = { 4, 5, 6 };
 		Vector3Df c = { 7, 8, 9 };
 
-		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
+		Benchmark::TimePerformance(iterations2, [&a, &b, &c]()
 		{
-			float sumx = (a + b + c)(0, 0);
+			float sumx = (EXPRESSION)(0, 0);
 		});
 	}
 
@@ -131,9 +133,9 @@ int main()
 		Vector3Df b = { 4, 5, 6 };
 		Vector3Df c = { 7, 8, 9 };
 
-		auto expr = a + b + c;
+		auto expr = EXPRESSION;
 
-		Benchmark::TimePerformance(iterations, [&expr]()
+		Benchmark::TimePerformance(iterations2, [&expr]()
 		{
 			float sumx = expr(0, 0);
 		});
@@ -145,9 +147,9 @@ int main()
 		Eigen::Vector3f b(4, 5, 6);
 		Eigen::Vector3f c(7, 8, 9);
 
-		Benchmark::TimePerformance(iterations, [&a, &b, &c]()
+		Benchmark::TimePerformance(iterations2, [&a, &b, &c]()
 		{
-			float sumx = (a + b + c)(0, 0);
+			float sumx = (EXPRESSION)(0, 0);
 		});
 	}
 
@@ -157,9 +159,9 @@ int main()
 		Eigen::Vector3f b(4, 5, 6);
 		Eigen::Vector3f c(7, 8, 9);
 
-		auto expr = a + b + c;
+		auto expr = EXPRESSION;
 
-		Benchmark::TimePerformance(iterations, [&expr]()
+		Benchmark::TimePerformance(iterations2, [&expr]()
 		{
 			float sumx = expr(0, 0);
 		});

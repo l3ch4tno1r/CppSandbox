@@ -36,5 +36,11 @@ int main()
 		std::cout << vec4 + vec4 << std::endl;
 	}
 
+	SEPARATOR(2);
+	{
+		Eigen::MatrixX<float> mat;
+		Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>
+	}
+
 	std::cin.get();
 }

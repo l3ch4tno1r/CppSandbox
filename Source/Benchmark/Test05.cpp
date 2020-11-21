@@ -258,12 +258,26 @@ int main()
 	}
 
 	MemTracker::Get().EndSession();
+
 #pragma region stack_allocation_performance_test
 
 	std::cout << "////////////////////////////////" << std::endl;
 	std::cout << "//-- Stack allocated vector --//" << std::endl;
 	std::cout << "////////////////////////////////" << std::endl;
 	std::cout << '\n';
+
+	SEPARATOR("Low level op");
+	{
+		float xa = 1, xb = 2, xc = 3;
+		float ya = 4, yb = 5, yc = 6;
+		float za = 7, zb = 8, zc = 9;
+
+		Benchmark::TimePerformance(iterations, [&]() {
+			float x = xa + xb + xc + xa + xb + xc;
+			float y = ya + yb + yc + ya + yb + yc;
+			float z = za + zb + zc + za + zb + zc;
+		});
+	}
 
 	SEPARATOR("Naive stack allocated");
 	{

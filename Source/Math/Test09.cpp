@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include <LCN_Math/Source/Matrix/Matrix.h>
+#include <LCN_Math/Source/Matrix/MatrixN.h>
 
 #define SEPARATOR(X) std::cout << "-------- " << X << " --------" << std::endl
 
@@ -37,6 +38,18 @@ int main()
 		});
 
 		std::cout << test << std::endl;
+
+		Matrix3f test2 = test * mat;
+
+		std::cout << test2 << std::endl;
+
+		test2 = {
+			1, 1, 1,
+			2, 2, 2,
+			3, 3, 3
+		};
+
+		std::cout << test2 << std::endl;
 	}
 
 	SEPARATOR(2);

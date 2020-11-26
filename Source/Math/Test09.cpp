@@ -5,8 +5,6 @@
 
 #define SEPARATOR(X) std::cout << "-------- " << X << " --------" << std::endl
 
-using Matrix3f = Matrix<float, 3, 3>;
-
 int main()
 {
 	SEPARATOR(1);
@@ -54,15 +52,13 @@ int main()
 
 	SEPARATOR(2);
 	{
-		MatrixN<float> dmat(3, 3);
+		MatrixN<float> dmat(3, 4, {
+			1, 1, 1, 1,
+			2, 2, 2, 2,
+			3, 3, 3, 3
+		});
 
-		/*
-		dmat = {
-			1, 2, 3,
-			4, 5, 6,
-			7, 8, 9
-		};
-		*/
+		std::cout << dmat << std::endl;
 
 		Matrix3f smat = {
 			1, 0, 0,

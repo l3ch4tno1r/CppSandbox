@@ -35,5 +35,8 @@
     <ClInclude Include="Source\Memory\Containers\DynamicArray.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Memory\_MemTracker.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

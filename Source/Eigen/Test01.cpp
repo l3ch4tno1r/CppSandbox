@@ -38,8 +38,9 @@ int main()
 
 	SEPARATOR(2);
 	{
-		Eigen::MatrixX<float> mat;
-		Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic>
+		Eigen::Matrix3f mat;
+
+		auto tmat = mat.transpose().eval();
 	}
 
 	std::cin.get();

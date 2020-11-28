@@ -3,6 +3,8 @@
 #include <LCN_Math/Source/Matrix/Matrix.h>
 #include <LCN_Math/Source/Matrix/MatrixN.h>
 
+#include "MiscellaneousTests/Source/Memory/_MemTracker.h"
+
 #define SEPARATOR(X) std::cout << "-------- " << X << " --------" << std::endl
 
 int main()
@@ -52,6 +54,8 @@ int main()
 
 	SEPARATOR(2);
 	{
+		MemTracker::ScopeBasedSession session = MemTracker::Get().BeginScopeBasedSession();
+
 		MatrixN<float> dmat(3, 4, {
 			1, 1, 1, 1,
 			2, 2, 2, 2,
@@ -69,6 +73,22 @@ int main()
 		auto prod = smat * dmat;
 
 		std::cout << prod << std::endl;
+
+		MatrixN<float> dmat2 = std::move(dmat);
+
+		std::cout << dmat2 << std::endl;
+
+		dmat = std::move(dmat2);
+
+		std::cout << dmat << std::endl;
+
+		dmat2 = dmat;
+
+		std::cout << dmat2 << std::endl;
+
+		dmat2 = prod;
+
+		std::cout << dmat2 << std::endl;
 	}
 
 	std::cin.get();

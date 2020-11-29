@@ -91,5 +91,38 @@ int main()
 		std::cout << dmat2 << std::endl;
 	}
 
+	SEPARATOR("Memory management");
+	{
+		auto session = MemTracker::Get().BeginScopeBasedSession();
+
+		MatrixN<char> dmat;
+
+		dmat.Resize(4, 4);
+
+		Matrix<char, 3, 3> smat = {
+			'a', 'b', 'c',
+			'd', 'e', 'f',
+			'g', 'h', 'i',
+		};
+
+		dmat = smat;
+
+		std::cout << dmat << std::endl;
+		std::cout << "dmat capacity    : " << dmat.Capacity() << std::endl;
+		std::cout << "dmat actual size : " << dmat.Line() * dmat.Column() << std::endl;
+
+		dmat.ShrinkToFit();
+
+		std::cout << '\n';
+		std::cout << "dmat capacity    : " << dmat.Capacity() << std::endl;
+		std::cout << "dmat actual size : " << dmat.Line() * dmat.Column() << std::endl;
+
+		MatrixN<char> dmat2 = std::move(dmat);
+
+		std::cout << dmat2 << std::endl;
+	}
+
+	SEPARATOR("Done !");
+
 	std::cin.get();
 }

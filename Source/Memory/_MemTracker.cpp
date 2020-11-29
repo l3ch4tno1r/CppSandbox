@@ -26,6 +26,23 @@ public:
 	size_t NumAlloc()   const;
 	size_t NumDeAlloc() const;
 
+	class ScopeBasedSession
+	{
+	private:
+		ScopeBasedSession();
+
+	public:
+		~ScopeBasedSession();
+
+	private:
+		size_t m_AllocAtBegining;
+		size_t m_DeallocAtBegining;
+
+		friend class MemTracker;
+	};
+
+	ScopeBasedSession BeginScopeBasedSession();
+
 private:
 	std::mutex m_AllocatedMut;
 	size_t     m_Allocated;
@@ -39,7 +56,9 @@ private:
 
 	MemTracker() :
 		m_Allocated(0),
-		m_Deallocated(0)
+		m_Deallocated(0),
+		m_NumAlloc(0),
+		m_NumDealloc(0)
 	{}
 
 	~MemTracker()
@@ -167,5 +186,32 @@ size_t MemTracker::NumAlloc() const
 size_t MemTracker::NumDeAlloc() const
 {
 	return m_NumDealloc;
+}
+
+MemTracker::ScopeBasedSession::ScopeBasedSession()
+{
+	m_AllocAtBegining   = MemTracker::Get().NumAlloc();
+	m_DeallocAtBegining = MemTracker::Get().NumDeAlloc();
+
+	MemTracker::Get().BeginSession();
+
+	std::cout << "Memory tracking session started.\n" << std::endl;
+}
+
+MemTracker::ScopeBasedSession::~ScopeBasedSession()
+{
+	size_t deltaalloc   = MemTracker::Get().NumAlloc()   - m_AllocAtBegining;
+	size_t deltadealloc = MemTracker::Get().NumDeAlloc() - m_DeallocAtBegining;
+
+	MemTracker::Get().EndSession();
+
+	std::cout << "Memory tracking session ended : " << std::endl;
+	std::cout << " - Number of allocations   : " << deltaalloc << std::endl;
+	std::cout << " - Number of deallocations : " << deltadealloc << '\n' << std::endl;
+}
+
+MemTracker::ScopeBasedSession MemTracker::BeginScopeBasedSession()
+{
+	return ScopeBasedSession();
 }
 #endif

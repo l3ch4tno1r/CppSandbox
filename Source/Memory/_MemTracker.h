@@ -13,14 +13,18 @@ public:
 
 	class ScopeBasedSession
 	{
+	private:
+		ScopeBasedSession();
+
 	public:
-		~ScopeBasedSession() { Get().EndSession(); }
+		~ScopeBasedSession();
 
 	private:
-		ScopeBasedSession() { Get().BeginSession(); }
+		size_t m_AllocAtBegining;
+		size_t m_DeallocAtBegining;
 
 		friend class MemTracker;
 	};
 
-	ScopeBasedSession BeginScopeBasedSession() { return ScopeBasedSession(); }
+	ScopeBasedSession BeginScopeBasedSession();
 };

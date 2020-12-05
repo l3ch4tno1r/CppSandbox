@@ -130,8 +130,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Benchmark\Test07 - Matrix chaining.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
+    <ClCompile Include="Source\Multi Thread\Test07 - thread_local.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\TheCherno\Instrumentor.h" />

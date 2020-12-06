@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
@@ -130,8 +130,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Memory\Test38 - stringstream.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
-    <ClCompile Include="Source\Multi Thread\Test07 - thread_local.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\TheCherno\Instrumentor.h" />

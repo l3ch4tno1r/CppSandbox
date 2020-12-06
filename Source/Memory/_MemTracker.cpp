@@ -195,7 +195,7 @@ MemTracker::ScopeBasedSession::ScopeBasedSession()
 
 	MemTracker::Get().BeginSession();
 
-	std::cout << "Memory tracking session started.\n" << std::endl;
+	std::cout << "Memory tracking session started...\n" << std::endl;
 }
 
 MemTracker::ScopeBasedSession::~ScopeBasedSession()
@@ -205,7 +205,7 @@ MemTracker::ScopeBasedSession::~ScopeBasedSession()
 
 	MemTracker::Get().EndSession();
 
-	std::cout << "Memory tracking session ended : " << std::endl;
+	std::cout << "\nMemory tracking session ended : " << std::endl;
 	std::cout << " - Number of allocations   : " << deltaalloc << std::endl;
 	std::cout << " - Number of deallocations : " << deltadealloc << '\n' << std::endl;
 }

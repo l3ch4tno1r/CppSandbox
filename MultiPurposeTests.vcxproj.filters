@@ -18,7 +18,7 @@
     <ClCompile Include="Source\Memory\_MemTracker.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Multi Thread\Test07 - thread_local.cpp">
+    <ClCompile Include="Source\Memory\Test38 - stringstream.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

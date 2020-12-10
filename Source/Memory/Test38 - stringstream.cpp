@@ -3,6 +3,8 @@
 
 #include "_MemTracker.h"
 
+#include <Utilities/Source/Benchmarking.h>
+
 class LogHelper
 {
 public:
@@ -26,8 +28,8 @@ namespace LCN
 	{
 	public:
 		using base = allocator<value_type>;
-
-		using base::allocator;
+		using char_allocator_traits = std::allocator_traits<std::allocator<char>>;
+		using pointer = char_allocator_traits::pointer;
 
 		Allocator()
 		{}
@@ -44,12 +46,12 @@ namespace LCN
 			}
 		}
 
-		value_type* allocate(std::size_t n, const void* hint)
+		pointer allocate(std::size_t n, const void* hint)
 		{
 			throw std::exception("Not implemented");
 		}
 
-		value_type* allocate(std::size_t n)
+		pointer allocate(std::size_t n)
 		{
 			size_t otherbufferidx = (m_CurrentBufferIdx + 1) % 2;
 
@@ -70,20 +72,37 @@ namespace LCN
 			return m_Buffers[m_CurrentBufferIdx].m_Buffer;
 		}
 
-		void deallocate(value_type* p, std::size_t n) {}
+		void deallocate(pointer p, std::size_t n) {}
 
 	private:
 		struct Buffer
 		{
-			std::size_t m_Size   = 0;
-			pointer     m_Buffer = nullptr;
+			std::size_t m_Size = 0;
+			pointer m_Buffer   = nullptr;
 		} m_Buffers[2];
 
 		size_t m_CurrentBufferIdx = 0;
 	};
 
-	using stringstream = std::basic_stringstream<char, std::char_traits<char>, Allocator>;
-	using string       = std::basic_string<char, std::char_traits<char>, Allocator>;
+	class stringstream : public std::basic_stringstream<char, std::char_traits<char>, Allocator>
+	{
+	public:
+		using base = std::basic_stringstream<char, std::char_traits<char>, Allocator>;
+
+		void Reset()
+		{
+			base::clear();
+			base::str(sm_Empty);
+			base::seekg(0);
+			base::seekp(0);
+		}
+
+	private:
+		static const base::_Mystr sm_Empty;
+	};
+
+	//using stringstream = std::basic_stringstream<char, std::char_traits<char>, Allocator>;
+	//using string       = std::basic_string<char, std::char_traits<char>, Allocator>;
 	//using string = stringstream::_Mystr;
 }
 
@@ -146,7 +165,7 @@ void TestFunction2()
 template<class StringStream>
 void TestFunction3()
 {
-	auto session = MemTracker::Get().BeginScopeBasedSession();
+	//auto session = MemTracker::Get().BeginScopeBasedSession();
 
 	const int iterations = 1000;
 
@@ -165,11 +184,13 @@ void TestFunction3()
 
 int main()
 {
-	TestFunction3<std::stringstream>();
+	const size_t iterations = 1000;
+
+	Benchmark::TimePerformance(iterations, TestFunction3<std::stringstream>);
 	
 	std::cout << "\n///////////////////////////////\n\n";
 	
-	TestFunction3<LCN::stringstream>();
+	Benchmark::TimePerformance(iterations, TestFunction3<LCN::stringstream>);
 
 	//LCN::string str("Hello world ! Chaine trop petite ?");
 	//

@@ -15,10 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Memory\_MemTracker.cpp">
+    <ClCompile Include="Source\Memory\MemoryAllocation\Allocators\SimpleMemoryAllocator.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Memory\Test38 - stringstream.cpp">
+    <ClCompile Include="Source\Memory\Test39 - Custom memory allocator.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Memory\MemoryAllocation\NewAndDeleteOverload.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,7 +38,10 @@
     <ClInclude Include="Source\Memory\Containers\DynamicArray.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Memory\_MemTracker.h">
+    <ClInclude Include="Source\Memory\MemoryAllocation\MemoryManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Memory\MemoryAllocation\Allocators\SimpleMemoryAllocator.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

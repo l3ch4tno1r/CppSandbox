@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
@@ -130,15 +130,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Memory\Test38 - stringstream.cpp" />
-    <ClCompile Include="Source\Memory\_MemTracker.cpp" />
+    <ClCompile Include="Source\Memory\MemoryAllocation\Allocators\SimpleMemoryAllocator.cpp" />
+    <ClCompile Include="Source\Memory\MemoryAllocation\NewAndDeleteOverload.cpp" />
+    <ClCompile Include="Source\Memory\Test39 - Custom memory allocator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
     <ClInclude Include="Source\Memory\Containers\BinarySearchTree.h" />
     <ClInclude Include="Source\Memory\Containers\DynamicArray.h" />
     <ClInclude Include="Source\Memory\Containers\RandomIterator.h" />
-    <ClInclude Include="Source\Memory\_MemTracker.h" />
+    <ClInclude Include="Source\Memory\MemoryAllocation\MemoryManager.h" />
+    <ClInclude Include="Source\Memory\MemoryAllocation\Allocators\SimpleMemoryAllocator.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">

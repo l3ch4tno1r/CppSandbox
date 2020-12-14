@@ -130,17 +130,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Memory\MemoryAllocation\Allocators\SimpleMemoryAllocator.cpp" />
+    <ClCompile Include="Source\Memory\MemoryAllocation\Allocators\BaseMemoryAllocator.cpp" />
     <ClCompile Include="Source\Memory\MemoryAllocation\NewAndDeleteOverload.cpp" />
-    <ClCompile Include="Source\Memory\Test39 - Custom memory allocator.cpp" />
+    <ClCompile Include="Source\SQLite\Test02 - Concurrent access.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
     <ClInclude Include="Source\Memory\Containers\BinarySearchTree.h" />
     <ClInclude Include="Source\Memory\Containers\DynamicArray.h" />
     <ClInclude Include="Source\Memory\Containers\RandomIterator.h" />
-    <ClInclude Include="Source\Memory\MemoryAllocation\MemoryManager.h" />
     <ClInclude Include="Source\Memory\MemoryAllocation\Allocators\SimpleMemoryAllocator.h" />
+    <ClInclude Include="Source\Memory\MemoryAllocation\MemoryManager.h" />
+    <ClInclude Include="Source\Memory\MemoryAllocation\Allocators\BaseMemoryAllocator.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">

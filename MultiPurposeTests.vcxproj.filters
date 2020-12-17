@@ -21,7 +21,7 @@
     <ClCompile Include="Source\Memory\MemoryAllocation\Allocators\BaseMemoryAllocator.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SQLite\Test02 - Concurrent access.cpp">
+    <ClCompile Include="Source\Misc\Test34.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

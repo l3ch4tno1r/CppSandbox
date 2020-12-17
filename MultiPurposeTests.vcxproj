@@ -132,7 +132,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Memory\MemoryAllocation\Allocators\BaseMemoryAllocator.cpp" />
     <ClCompile Include="Source\Memory\MemoryAllocation\NewAndDeleteOverload.cpp" />
-    <ClCompile Include="Source\SQLite\Test02 - Concurrent access.cpp" />
+    <ClCompile Include="Source\Misc\Test34.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\TheCherno\Instrumentor.h" />

@@ -33,10 +33,15 @@ void AccessingThread()
 			if (sqlite3_open(dbpath, &db))
 				throw std::exception(sqlite3_errmsg(db));
 
-			const char* query = "select p.Name, p.Value from Parameters p";
+			std::shared_ptr<sqlite3> sptr_db(db, [=](sqlite3* ptr) { sqlite3_close(ptr); });
+
+			const char* query = 
+				"select p.Name, p.Value from Parameters p"
+				"where p.Name = \"goforward\"";
+
 			char* errormsg = nullptr;
 
-			sqlite3_exec(db, query, callback, nullptr, &errormsg);
+			sqlite3_exec(sptr_db.get(), query, callback, nullptr, &errormsg);
 
 			if (errormsg)
 			{
@@ -45,8 +50,6 @@ void AccessingThread()
 			}
 
 			//std::this_thread::sleep_for(1s);
-
-			sqlite3_close(db);
 		}
 	}
 	catch (const std::exception& e)

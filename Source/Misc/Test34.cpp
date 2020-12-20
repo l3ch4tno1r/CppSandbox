@@ -34,6 +34,13 @@ std::istream& operator>>(std::istream& istream, Test& arg)
 	return istream;
 }
 
+std::ostream& operator<<(std::ostream& ostream, const Test& arg)
+{
+	ostream << arg.C();
+
+	return ostream;
+}
+
 int main()
 {
 	try
@@ -42,6 +49,8 @@ int main()
 
 		Test key1 = appsettings["goforward"];
 		Test key2 = appsettings["gobackward"];
+
+		std::cout << key1 << ", " << key2 << std::endl;
 	}
 	catch (const std::exception& e)
 	{

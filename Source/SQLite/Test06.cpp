@@ -476,9 +476,9 @@ int main()
 
 		std::cout << (FirstName == LastName) << std::endl;
 		std::cout << (FirstName != LastName) << std::endl;
-		std::cout << (FirstName < LastName) << std::endl;
+		std::cout << (FirstName <  LastName) << std::endl;
 		std::cout << (FirstName <= LastName) << std::endl;
-		std::cout << (FirstName > LastName) << std::endl;
+		std::cout << (FirstName >  LastName) << std::endl;
 		std::cout << (FirstName >= LastName) << std::endl;
 	}
 

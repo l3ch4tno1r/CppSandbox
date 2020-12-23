@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\SQLite\Test06.cpp">
+    <ClCompile Include="Source\Memory\_MemTracker.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Memory\_MemTracker.cpp">
+    <ClCompile Include="Source\Misc\Test35.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

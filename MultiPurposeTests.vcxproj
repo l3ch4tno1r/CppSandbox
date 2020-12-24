@@ -131,7 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
-    <ClCompile Include="Source\Misc\Test35.cpp" />
+    <ClCompile Include="Source\SQLite\Test06.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
@@ -139,6 +139,7 @@
     <ClInclude Include="Source\Memory\Containers\DynamicArray.h" />
     <ClInclude Include="Source\Memory\Containers\RandomIterator.h" />
     <ClInclude Include="Source\Memory\_MemTracker.h" />
+    <ClInclude Include="Source\SQLite\SQLiteEntity\Expression.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">

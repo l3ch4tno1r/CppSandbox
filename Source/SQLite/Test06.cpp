@@ -46,24 +46,24 @@ public:
 	}
 };
 
-template<class Obj>
-class Column : public Variable<Column<Obj>>
+template<class Table>
+class Column : public Variable<Column<Table>>
 {
 public:
 	Column(const char* name) :
 		m_Name(name)
 	{}
 
-	inline size_t Size() const { return 1 + Obj::Name().size() + m_Name.size(); }
+	inline size_t Size() const { return 1 + Table::Name().size() + m_Name.size(); }
 
 	inline char operator[](size_t i) const
 	{
 		size_t i_off = 0;
 
-		if (i < Obj::Name().size())
-			return Obj::Name()[i];
+		if (i < Table::Name().size())
+			return Table::Name()[i];
 
-		i -= Obj::Name().size();
+		i -= Table::Name().size();
 
 		if (0 == i)
 			return '.';
@@ -81,9 +81,7 @@ private:
 };
 
 template<class C>
-class Entity;
-
-#define CONSTRUCT_FIELD(X) X(*this, #X)
+class Table;
 
 class Contact
 {
@@ -100,10 +98,10 @@ private:
 };
 
 template<>
-class Entity<Contact>
+class Table<Contact>
 {
 public:
-	using ColumnType = Column<Entity<Contact>>;
+	using ColumnType = Column<Table<Contact>>;
 
 	static ColumnType FirstName;
 	static ColumnType LastName;
@@ -115,10 +113,10 @@ public:
 	}
 };
 
-using eContact = Entity<Contact>;
+using tContact = Table<Contact>;
 
-eContact::ColumnType eContact::FirstName("FirstName");
-eContact::ColumnType eContact::LastName("LastName");
+tContact::ColumnType tContact::FirstName("FirstName");
+tContact::ColumnType tContact::LastName("LastName");
 
 #pragma endregion
 
@@ -207,7 +205,7 @@ int main()
 
 	SEPARATOR(3);
 	{
-		std::cout << (eContact::FirstName > eContact::LastName) << std::endl;
+		std::cout << !(tContact::FirstName > tContact::LastName) << std::endl;
 	}
 
 	std::cin.get();

@@ -1,0 +1,29 @@
+#pragma once
+
+class %TableName%
+{
+public:
+    %PropertyAccessorList%
+    
+private:
+    %PropertyList%
+};
+
+template<>
+class Table<%TableName%>
+{
+public:
+    using ColumnType = Column<Table<%TableName%>>;
+    
+    %StaticPropertyList%
+  
+    static const std::string& Name()
+    {
+        static std::string name = "%TableName%";
+        return name;
+    }
+};
+
+using t%TableName% = Table<%TableName%>;
+
+%StaticPropertyInitializer%

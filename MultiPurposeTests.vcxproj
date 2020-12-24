@@ -131,7 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
-    <ClCompile Include="Source\SQLite\Test06.cpp" />
+    <ClCompile Include="Source\SQLite\Test08.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\TheCherno\Instrumentor.h" />

@@ -18,7 +18,7 @@
     <ClCompile Include="Source\Memory\_MemTracker.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SQLite\Test06.cpp">
+    <ClCompile Include="Source\SQLite\Test08.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

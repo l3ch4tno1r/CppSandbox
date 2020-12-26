@@ -6,14 +6,12 @@ namespace LCN {
 	class RandomIterator
 	{
 	public:
-		using ValueType     = typename ContiguousContainer::ValueType;
-		using PointerType   = ValueType* ;
-		using ReferenceType = ValueType& ;
+		using ValType = typename ContiguousContainer::ValType;
+		using PtrType = ValType* ;
+		using RefType = ValType& ;
 
 	public:
-		PointerType m_Ptr;
-
-		RandomIterator(PointerType ptr) :
+		RandomIterator(PtrType ptr) :
 			m_Ptr(ptr)
 		{}
 
@@ -25,11 +23,11 @@ namespace LCN {
 			m_Ptr(other.m_Ptr)
 		{}
 
-		PointerType   operator->() { return m_Ptr; }
-		ReferenceType operator*() { return *m_Ptr; }
-		ReferenceType operator[](size_t i) { return *(m_Ptr + i); }
+		PtrType operator->() { return  m_Ptr; }
+		RefType operator*()  { return *m_Ptr; }
+		RefType operator[](size_t i) { return *(m_Ptr + i); }
 
-		PointerType GetRawPtr() { return m_Ptr; }
+		PtrType GetRawPtr() { return m_Ptr; }
 
 		RandomIterator& operator++()
 		{
@@ -58,5 +56,8 @@ namespace LCN {
 		bool operator<=(const RandomIterator& other) const { return m_Ptr <= other.m_Ptr; }
 		bool operator> (const RandomIterator& other) const { return m_Ptr >  other.m_Ptr; }
 		bool operator>=(const RandomIterator& other) const { return m_Ptr >= other.m_Ptr; }
+
+	private:
+		PtrType m_Ptr = nullptr;
 	};
 }

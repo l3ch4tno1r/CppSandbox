@@ -130,14 +130,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Memory\Test41 - Iterators.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
-    <ClCompile Include="Source\SQLite\Test08.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
     <ClInclude Include="Source\Memory\Containers\BinarySearchTree.h" />
     <ClInclude Include="Source\Memory\Containers\DynamicArray.h" />
-    <ClInclude Include="Source\Memory\Containers\RandomIterator.h" />
+    <ClInclude Include="Source\Memory\Containers\Iterators\BidirIterator.h" />
+    <ClInclude Include="Source\Memory\Containers\Iterators\RandomIterator.h" />
+    <ClInclude Include="Source\Memory\Containers\LinkedList.h" />
+    <ClInclude Include="Source\Memory\Containers\StaticArray.h" />
     <ClInclude Include="Source\Memory\_MemTracker.h" />
     <ClInclude Include="Source\SQLite\SQLiteEntity\Expression.h" />
   </ItemGroup>

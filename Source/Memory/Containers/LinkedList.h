@@ -14,43 +14,43 @@ namespace LCN {
 
 		using Iterator = BidirIterator<LinkedList>;
 
-		class LinkedListElement
+		class ListNode
 		{
 		public:
 			template<typename ...Args>
-			LinkedListElement(Args&&...args) :
+			ListNode(Args&&...args) :
 				m_Next(nullptr),
 				m_Prev(nullptr),
 				m_Data(std::forward<Args>(args)...)
 			{}
 
-			inline LinkedListElement* GetNext() { return m_Next; }
-			inline LinkedListElement* GetPrev() { return m_Prev; }
+			inline ListNode* GetNext() { return m_Next; }
+			inline ListNode* GetPrev() { return m_Prev; }
 
 			inline RefType GetVal() { return  m_Data; }
 			inline PtrType GetPtr() { return &m_Data; }
 
 		private:
-			LinkedListElement* m_Next = nullptr;
-			LinkedListElement* m_Prev = nullptr;
+			ListNode* m_Next = nullptr;
+			ListNode* m_Prev = nullptr;
 
 			ValType m_Data;
 
 			friend class LinkedList;
 		};
 
-		using ElementType = LinkedListElement;
+		using ElementType = ListNode;
 
 	public:
 		LinkedList() = default;
 
 		~LinkedList()
 		{
-			LinkedListElement* current = m_First;
+			ListNode* current = m_First;
 
 			while (current)
 			{
-				LinkedListElement* next = current->m_Next;
+				ListNode* next = current->m_Next;
 
 				delete current;
 
@@ -65,12 +65,12 @@ namespace LCN {
 		{
 			if (!m_First && !m_Last)
 			{
-				m_First = new LinkedListElement(std::forward<Args>(args)...);
+				m_First = new ListNode(std::forward<Args>(args)...);
 				m_Last  = m_First;
 			}
 			else
 			{
-				m_Last->m_Next = new LinkedListElement(std::forward<Args>(args)...);
+				m_Last->m_Next = new ListNode(std::forward<Args>(args)...);
 				m_Last->m_Next->m_Prev = m_Last;
 				m_Last = m_Last->m_Next;
 			}
@@ -83,10 +83,10 @@ namespace LCN {
 		template<typename ...Args>
 		Iterator Emplace(Iterator pos, Args&&...args)
 		{
-			LinkedListElement* curr = pos.GetRawPtr();
-			LinkedListElement* prev = curr->m_Prev;
+			ListNode* curr = pos.GetRawPtr();
+			ListNode* prev = curr->m_Prev;
 
-			LinkedListElement* toinsert = new LinkedListElement(std::forward<Args>(args)...);
+			ListNode* toinsert = new ListNode(std::forward<Args>(args)...);
 
 			prev->m_Next     = toinsert;
 			toinsert->m_Next = curr;
@@ -104,7 +104,7 @@ namespace LCN {
 			if (!m_First)
 				return;
 
-			LinkedListElement* next = m_First->m_Next;
+			ListNode* next = m_First->m_Next;
 
 			delete m_First;
 
@@ -119,7 +119,7 @@ namespace LCN {
 			if (!m_Last)
 				return;
 
-			LinkedListElement* prev = m_Last->m_Prev;
+			ListNode* prev = m_Last->m_Prev;
 
 			delete m_Last;
 
@@ -134,7 +134,7 @@ namespace LCN {
 			if (pos == this->End())
 				throw std::out_of_range("Iterator out of range.");
 
-			LinkedListElement* curr = pos.GetRawPtr();
+			ListNode* curr = pos.GetRawPtr();
 
 			if (curr == m_First)
 			{
@@ -148,8 +148,8 @@ namespace LCN {
 				return this->End();
 			}
 
-			LinkedListElement* prev = curr->m_Prev;
-			LinkedListElement* next = curr->m_Next;
+			ListNode* prev = curr->m_Prev;
+			ListNode* next = curr->m_Next;
 
 			delete curr;
 
@@ -165,8 +165,8 @@ namespace LCN {
 		Iterator End()   { return Iterator(nullptr); }
 
 	private:
-		LinkedListElement* m_First = nullptr;
-		LinkedListElement* m_Last  = nullptr;
+		ListNode* m_First = nullptr;
+		ListNode* m_Last  = nullptr;
 
 		size_t m_Size = 0;
 	};

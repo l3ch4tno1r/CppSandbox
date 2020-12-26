@@ -128,7 +128,8 @@ void* operator new[](size_t size)
 
 void operator delete(void* ptr)
 {
-	ASSERT(ptr != nullptr);
+	if (!ptr)
+		return;
 
 	MemTracker::Get().Deallocate(0);
 
@@ -137,7 +138,8 @@ void operator delete(void* ptr)
 
 void operator delete(void* ptr, size_t size)
 {
-	ASSERT(ptr != nullptr);
+	if (!ptr)
+		return;
 
 	MemTracker::Get().Deallocate(size);
 
@@ -146,7 +148,8 @@ void operator delete(void* ptr, size_t size)
 
 void operator delete[](void* ptr)
 {
-	ASSERT(ptr != nullptr);
+	if (!ptr)
+		return;
 
 	MemTracker::Get().Deallocate(0);
 
@@ -155,7 +158,8 @@ void operator delete[](void* ptr)
 
 void operator delete[](void* ptr, size_t size)
 {
-	ASSERT(ptr != nullptr);
+	if (!ptr)
+		return;
 
 	MemTracker::Get().Deallocate(size);
 

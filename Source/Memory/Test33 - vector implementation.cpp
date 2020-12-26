@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <vector>
 
-#include "Source/InstanceCounter.h"
-#include "Source/ErrorHandling.h"
+#include "Utilities/Source/InstanceCounter.h"
+#include "Utilities/Source/ErrorHandling.h"
 
 #include "Containers/DynamicArray.h"
 
@@ -14,9 +14,6 @@
 
 class Test : public Counter<Test>
 {
-private:
-	std::string m_Name;
-
 public:
 	Test() :
 		m_Name("No name")
@@ -69,13 +66,17 @@ public:
 	{
 		return m_Name;
 	}
+
+private:
+	std::string m_Name;
 };
 
 int main()
 {
 	{
-		// Dynamic array tests
 		/*
+		*/
+		SEPARATOR("Dynamic array tests");
 		{
 			LCN::DynamicArray<Test> vec;
 
@@ -167,9 +168,9 @@ int main()
 			std::cout << vec.Begin()[1].Name() << std::endl;
 			std::cout << vec.Begin()[2].Name() << std::endl;
 		}
-		*/
 
 		// Algorithm tests
+		/*
 		{
 			SEPARATOR("Algorithms");
 
@@ -192,6 +193,7 @@ int main()
 			for (int e : temp)
 				std::cout << e << std::endl;
 		}
+		*/
 
 		SEPARATOR("End");
 	}

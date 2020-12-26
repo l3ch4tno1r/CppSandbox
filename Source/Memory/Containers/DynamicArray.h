@@ -1,42 +1,23 @@
 #pragma once
 
+#include <utility>
 #include <initializer_list>
 
-#include "RandomIterator.h"
+#include "Iterators/RandomIterator.h"
 
 namespace LCN {
 
 	template<typename T>
 	class DynamicArray
 	{
-	private:
-		T*       m_Data = nullptr;
-		uint32_t m_Size = 0;
-		uint32_t m_Capacity = 0;
+	public:
+		using ValType = T;
+		using PtrType = ValType*;
+		using RefType = ValType&;
 
-		void Realloc(size_t capacity)
-		{
-			T* temp = (T*)::operator new(capacity * sizeof(T));
-
-			if (capacity < m_Size)
-				m_Size = capacity;
-
-			for (size_t i = 0; i < m_Size; ++i)
-				new(temp + i) T(std::move(m_Data[i]));
-
-			for (size_t i = 0; i < m_Size; ++i)
-				m_Data[i].~T();
-
-			::operator delete(m_Data, m_Capacity * sizeof(T));
-
-			m_Data = temp;
-			m_Capacity = capacity;
-		}
+		using Iterator = RandomIterator<DynamicArray>;
 
 	public:
-		using ValueType = T;
-		using Iterator  = RandomIterator<DynamicArray>;
-
 		DynamicArray()
 		{
 			Realloc(2);
@@ -47,18 +28,18 @@ namespace LCN {
 			Realloc(size);
 		}
 
-		DynamicArray(const std::initializer_list<T> list)
+		DynamicArray(const std::initializer_list<ValType>& list)
 		{
 			Realloc(list.size());
 
-			for (const T& i : list)
+			for (const ValType& i : list)
 				this->EmplaceBack(i);
 		}
 
 		~DynamicArray()
 		{
 			Clear();
-			::operator delete(m_Data, m_Capacity * sizeof(T));
+			::operator delete(m_Data, m_Capacity * sizeof(ValType));
 
 			m_Capacity = 0;
 			m_Size = 0;
@@ -71,17 +52,17 @@ namespace LCN {
 			return m_Size;
 		}
 
-		T& operator[](size_t i)
+		RefType operator[](size_t i)
 		{
 			return m_Data[i];
 		}
 
-		const T& operator[](size_t i) const
+		const RefType operator[](size_t i) const
 		{
 			return m_Data[i];
 		}
 
-		T& PushBack(const T& value)
+		RefType PushBack(const RefType value)
 		{
 			if (m_Size >= m_Capacity)
 				Realloc(m_Capacity + m_Capacity / 2);
@@ -92,12 +73,12 @@ namespace LCN {
 		}
 
 		template<typename ...Args>
-		T& EmplaceBack(Args&& ...args)
+		RefType EmplaceBack(Args&& ...args)
 		{
 			if (m_Size >= m_Capacity)
 				Realloc(m_Capacity + m_Capacity / 2);
 
-			new(m_Data + m_Size) T(std::forward<Args>(args)...);
+			new(m_Data + m_Size) ValType(std::forward<Args>(args)...);
 
 			return m_Data[m_Size++];
 		}
@@ -105,45 +86,38 @@ namespace LCN {
 		void PopBack()
 		{
 			if (m_Size > 0)
-				m_Data[--m_Size].~T();
+				m_Data[--m_Size].~ValType();
 		}
 
 		void Clear()
 		{
 			for (size_t i = 0; i < m_Size; i++)
-				m_Data[i].~T();
+				m_Data[i].~ValType();
 
 			m_Size = 0;
 		}
 
-		Iterator Begin()
-		{
-			return Iterator(m_Data);
-		}
-
-		Iterator End()
-		{
-			return Iterator(m_Data + m_Size);
-		}
+		Iterator Begin() { return Iterator(m_Data); }
+		Iterator End() { return Iterator(m_Data + m_Size); }
 
 	private:
-		void MoveMemBlockBackward(T* dest, T* src)
+		void MoveMemBlockBackward(PtrType dest, PtrType src)
 		{
 			ASSERT(dest >= m_Data && dest < m_Data + m_Size);
 			ASSERT(src >= m_Data && src < m_Data + m_Size);
 			ASSERT(dest < src);
 
-			for (T* ptr = dest; ptr < src; ++ptr)
-				ptr->~T();
+			for (PtrType ptr = dest; ptr < src; ++ptr)
+				ptr->~ValType();
 
 			size_t delta = src - dest;
 			m_Size -= delta;
 
-			for (T* ptr = dest; ptr < m_Data + m_Size; ptr++)
+			for (PtrType ptr = dest; ptr < m_Data + m_Size; ptr++)
 				*ptr = std::move(*(ptr + delta));
 		}
 
-		T* MoveMemBlockForward(T* dest, T* src)
+		PtrType MoveMemBlockForward(PtrType dest, PtrType src)
 		{
 			// TODO : Finish this part !
 			//ASSERT(dest >= m_Data && dest < m_Data + m_Size);
@@ -164,24 +138,24 @@ namespace LCN {
 				src = m_Data + firsttosrc;
 			}
 
-			T* first = m_Data;
-			T* last = m_Data + m_Size - 1;
-			T* end = m_Data + m_Size;
+			PtrType first = m_Data;
+			PtrType last  = m_Data + m_Size - 1;
+			PtrType end   = m_Data + m_Size;
 
 			m_Size += delta;
 
-			T* temp = (dest >= end ? dest : end);
+			PtrType temp = (dest >= end ? dest : end);
 
-			for (T* ptr = m_Data + m_Capacity - 1; ptr >= temp; --ptr)
-				new(ptr) T(std::move(*(ptr - delta)));
+			for (PtrType ptr = m_Data + m_Capacity - 1; ptr >= temp; --ptr)
+				new(ptr) ValType(std::move(*(ptr - delta)));
 
-			for (T* ptr = last; ptr >= dest; --ptr)
+			for (PtrType ptr = last; ptr >= dest; --ptr)
 				*ptr = std::move(*(ptr - delta));
 
 			temp = std::min(dest, end);
 
-			for (T* ptr = src; ptr < temp; ++ptr)
-				ptr->~T();
+			for (PtrType ptr = src; ptr < temp; ++ptr)
+				ptr->~ValType();
 
 			return src;
 		}
@@ -197,26 +171,50 @@ namespace LCN {
 			MoveMemBlockBackward(first.m_Ptr, last.m_Ptr);
 		}
 
-		void Insert(const Iterator& it, const T& value)
+		void Insert(const Iterator& it, const RefType value)
 		{
 			MoveMemBlockForward(it.m_Ptr + 1, it.m_Ptr);
 
 			*(it.m_Ptr) = value;
 		}
 
-		void Insert(const Iterator& it, T&& value)
+		void Insert(const Iterator& it, ValType&& value)
 		{
 			MoveMemBlockForward(it.m_Ptr + 1, it.m_Ptr);
 
 			*(it.m_Ptr) = std::move(value);
 		}
 
-		void Insert(const Iterator& it, const std::initializer_list<T>& list)
+		void Insert(const Iterator& it, const std::initializer_list<ValType>& list)
 		{
-			T* ptr = MoveMemBlockForward(it.m_Ptr + list.size(), it.m_Ptr);
+			PtrType ptr = MoveMemBlockForward(it.m_Ptr + list.size(), it.m_Ptr);
 
 			for (const auto& e : list)
-				new(ptr++) T(e);
+				new(ptr++) ValType(e);
+		}
+
+	private:
+		PtrType m_Data = nullptr;
+		size_t  m_Size = 0;
+		size_t  m_Capacity = 0;
+
+		void Realloc(size_t capacity)
+		{
+			PtrType temp = (PtrType)::operator new(capacity * sizeof(ValType));
+
+			if (capacity < m_Size)
+				m_Size = capacity;
+
+			for (size_t i = 0; i < m_Size; ++i)
+				new(temp + i) ValType(std::move(m_Data[i]));
+
+			for (size_t i = 0; i < m_Size; ++i)
+				m_Data[i].~ValType();
+
+			::operator delete(m_Data, m_Capacity * sizeof(ValType));
+
+			m_Data = temp;
+			m_Capacity = capacity;
 		}
 	};
 }

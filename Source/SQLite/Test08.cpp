@@ -3,6 +3,9 @@
 #include <string>
 #include <unordered_set>
 #include <list>
+#include <cstring>
+
+#include <Utilities/Source/ErrorHandling.h>
 
 struct ColumnInfo
 {
@@ -48,6 +51,11 @@ int main()
 			{ "LastName",  "std::string" }
 		};
 
+		auto it = columns.begin();
+
+		it++;
+		it--;
+
 		std::list<std::string> generated;
 
 		using StrListIterator = std::list<std::string>::iterator;
@@ -62,6 +70,8 @@ int main()
 
 			for (const char* tag : tagstofind)
 			{
+				//ASSERT(std::strcmp(tag, tagstofind[3]));
+
 				if (last->find(tag) != std::string::npos)
 					iterators.push_back(last);
 			}

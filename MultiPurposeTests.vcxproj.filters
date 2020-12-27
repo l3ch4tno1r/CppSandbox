@@ -18,7 +18,7 @@
     <ClCompile Include="Source\Memory\_MemTracker.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Memory\Test41 - Iterators.cpp">
+    <ClCompile Include="Source\Memory\Test42 - BinarySearchTree.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

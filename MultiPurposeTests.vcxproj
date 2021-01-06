@@ -77,7 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir);$(SolutionDir)Utilities\External\SQLiteCpp\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <PreprocessToFile>false</PreprocessToFile>
@@ -130,7 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Memory\Test42 - BinarySearchTree.cpp" />
+    <ClCompile Include="Source\Memory\Test42.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -142,7 +142,6 @@
     <ClInclude Include="Source\Memory\Containers\LinkedList.h" />
     <ClInclude Include="Source\Memory\Containers\StaticArray.h" />
     <ClInclude Include="Source\Memory\_MemTracker.h" />
-    <ClInclude Include="Source\SQLite\SQLiteEntity\Expression.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">

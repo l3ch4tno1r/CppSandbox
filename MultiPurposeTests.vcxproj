@@ -130,7 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Memory\Test42.cpp" />
+    <ClCompile Include="Source\Eigen\Test01.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
   </ItemGroup>
   <ItemGroup>

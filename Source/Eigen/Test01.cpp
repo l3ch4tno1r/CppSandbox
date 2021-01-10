@@ -3,7 +3,18 @@
 #include "Eigen/Core"
 #include "Eigen/Geometry"
 
+#include <LCN_Math/Source/Utilities/Angles.h>
+
 #define SEPARATOR(X) std::cout << "---------- " << X << " ----------" << std::endl
+
+template<class EL, class ER>
+inline typename Eigen::MatrixBase<EL>::PlainObject
+operator^(
+	const Eigen::MatrixBase<EL>& el,
+	const Eigen::MatrixBase<ER>& er)
+{
+	return el.cross3(er);
+}
 
 int main()
 {
@@ -41,6 +52,43 @@ int main()
 		Eigen::Matrix3f mat;
 
 		auto tmat = mat.transpose().eval();
+	}
+
+	SEPARATOR(3);
+	{
+		Eigen::Vector4f vec1 = { 1, 2, 3, 0 };
+		Eigen::Vector4f vec2 = { 0, 0, 1, 1 };
+
+		auto vec3 = vec1.cross3(vec2);
+
+		std::cout << vec3 << std::endl;
+
+		auto vec4 = vec1 ^ vec2;
+
+		std::cout << vec4 << std::endl;
+	}
+
+	SEPARATOR(4);
+	{
+		Eigen::Affine3f transform;
+
+		transform.setIdentity();
+
+		transform.rotate(Eigen::AngleAxisf(TORAD(90.0f), Eigen::Vector3f::UnitZ()));
+
+		//std::cout << transform.rotation() << std::endl;
+		//std::cout << transform.translation() << std::endl;
+
+		Eigen::Affine3f::TranslationPart translation = transform.translation();
+
+		std::cout << "Size of rotation : " << sizeof(translation) << std::endl;
+
+		translation << 1, 4, 3;
+		transform.linear().setIdentity();
+
+		translation[0] = 2;
+
+		std::cout << transform.matrix() << std::endl;
 	}
 
 	std::cin.get();

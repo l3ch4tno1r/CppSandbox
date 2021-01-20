@@ -130,7 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Eigen\Test01.cpp" />
+    <ClCompile Include="Source\Math\Test11.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +145,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">
+      <Project>{9c344fbf-3053-4c64-a2ee-739e310656c4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="LCN_Math\LCNMath.vcxproj">
+      <Project>{840ea722-4361-4ae5-895f-3c305b1df81a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="Utilities\Utilities.vcxproj">
       <Project>{9c344fbf-3053-4c64-a2ee-739e310656c4}</Project>
     </ProjectReference>
   </ItemGroup>

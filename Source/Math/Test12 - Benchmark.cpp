@@ -12,25 +12,43 @@ int main()
 {
 	const size_t iterations = 200000;
 
-	LCN::Transform3Df T;
+	LCN::Transform3Df T3D;
+	LCN::Transform2Df T2D;
 
-	std::future<Session> session1 = TimePerformanceAsync(iterations, [&]()
+	std::future<Session> session3D1 = TimePerformanceAsync(iterations, [&]()
 		{
-			auto iT = T.Inverse();
+			auto iT = T3D.Inverse();
 		});
 
-	std::future<Session> session2 = TimePerformanceAsync(iterations, [&]()
+	std::future<Session> session2D1 = TimePerformanceAsync(iterations, [&]()
 		{
-			auto iT = T.QuickInverse();
+			auto iT = T2D.Inverse();
 		});
 
-	long long d1 = session1.get().Duration(DurationUnit::Milliseconds);
-	long long d2 = session2.get().Duration(DurationUnit::Milliseconds);
+	std::future<Session> session3D2 = TimePerformanceAsync(iterations, [&]()
+		{
+			auto iT = T3D.QuickInverse();
+		});
 
-	std::cout << "Session duration : " << d1 << "ms" << std::endl;
-	std::cout << "Session duration : " << d2 << "ms" << std::endl;
+	std::future<Session> session2D2 = TimePerformanceAsync(iterations, [&]()
+		{
+			auto iT = T2D.QuickInverse();
+		});
 
-	std::cout << "Gain : " << (double)d1 / (double)d2 << std::endl;
+	long long _3Dd1 = session3D1.get().Duration(DurationUnit::Milliseconds);
+	long long _2Dd1 = session2D1.get().Duration(DurationUnit::Milliseconds);
+	long long _3Dd2 = session3D2.get().Duration(DurationUnit::Milliseconds);
+	long long _2Dd2 = session2D2.get().Duration(DurationUnit::Milliseconds);
+
+	std::cout << "Session duration 2D : " << _2Dd1 << "ms" << std::endl;
+	std::cout << "Session duration 2D : " << _2Dd2 << "ms" << std::endl;
+
+	std::cout << "Gain 2D: " << (double)_2Dd1 / (double)_2Dd2 << std::endl;
+
+	std::cout << "Session duration 3D : " << _3Dd1 << "ms" << std::endl;
+	std::cout << "Session duration 3D : " << _3Dd2 << "ms" << std::endl;
+
+	std::cout << "Gain 3D: " << (double)_3Dd1 / (double)_3Dd2 << std::endl;
 
 	std::cin.get();
 }

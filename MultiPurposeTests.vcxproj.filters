@@ -18,7 +18,10 @@
     <ClCompile Include="Source\Memory\_MemTracker.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Math\Test11.cpp">
+    <ClCompile Include="Source\Math\Test12 - Benchmark.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Source\Benchmarking.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

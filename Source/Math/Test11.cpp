@@ -6,6 +6,7 @@
 #include <LCN_Math/Source/Matrix/Transpose.h>
 
 #include <LCN_Math/Source/Geometry/Vector.h>
+#include <LCN_Math/Source/Geometry/Transform.h>
 
 #define SEPARATOR(X) std::cout << "-------- " << X << " --------" << std::endl;
 
@@ -90,6 +91,55 @@ int main()
 
 		std::cout << im << std::endl;
 		std::cout << m * im << std::endl;
+	}
+
+	SEPARATOR(5)
+	{
+		LCN::Transform3Df T;
+
+		std::cout << T << std::endl;
+
+		T = {
+			1, 0,  0, 1,
+			0, 0, -1, 2,
+			0, 1,  0, 3,
+			0, 0,  0, 1
+		};
+
+		std::cout << T.RotationBlock() << std::endl;
+		std::cout << T.TranslationBlock() << std::endl;
+
+		const auto& cref(T);
+
+		std::cout << cref.RotationBlock() << std::endl;
+		std::cout << cref.TranslationBlock() << std::endl;
+
+		auto iT = T.QuickInverse();
+
+		std::cout << iT << std::endl;
+		std::cout << T * iT << std::endl;
+	}
+
+	SEPARATOR(6)
+	{
+		LCN::Transform2Df R1_2 = {
+			 0, 1, 4,
+			-1, 0, 4,
+			 0, 0, 1
+		};
+
+		LCN::HVector2Df P1 = {
+			7,
+			2,
+			1
+		};
+
+		auto R2_1 = R1_2.QuickInverse();
+
+		LCN::HVector2Df P2 = R2_1 * P1;
+
+		std::cout << R2_1 << std::endl;
+		std::cout << P2 << std::endl;
 	}
 
 	std::cin.get();

@@ -130,11 +130,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Math\Test12 - Benchmark.cpp" />
+    <ClCompile Include="Source\EnTT\Test01.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="External\entt\include\entt.hpp" />
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
     <ClInclude Include="Source\Memory\Containers\BinarySearchTree.h" />
     <ClInclude Include="Source\Memory\Containers\DynamicArray.h" />

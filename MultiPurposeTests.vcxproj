@@ -130,7 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\EnTT\Test01.cpp" />
+    <ClCompile Include="Source\Design Pattern\Test23 - Entity Component System.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
   </ItemGroup>

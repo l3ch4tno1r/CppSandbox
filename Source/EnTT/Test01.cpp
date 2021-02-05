@@ -37,12 +37,15 @@ class TestComponent : public Counter<TestComponent>
 {
 public:
 	TestComponent()                           { std::cout << '#' << this->Id() << " default ctor"    << std::endl; }
-	TestComponent(const TestComponent& other) { std::cout << '#' << this->Id() << " copy ctor from " << other.Id() << std::endl; }
+	//TestComponent(const TestComponent& other) { std::cout << '#' << this->Id() << " copy ctor from " << other.Id() << std::endl; }
+	TestComponent(const TestComponent&) = delete;
 	TestComponent(TestComponent&& other)      { std::cout << '#' << this->Id() << " move ctor from " << other.Id() << std::endl; }
 	~TestComponent()                          { std::cout << '#' << this->Id() << " dtor"            << std::endl; }
 
 	TestComponent& operator=(const TestComponent& other) { std::cout << '#' << this->Id() << " copy assign from " << other.Id() << std::endl; return *this; }
 	TestComponent& operator=(TestComponent&& other)      { std::cout << '#' << this->Id() << " move assign from " << other.Id() << std::endl; return *this; }
+
+	void Display() const { std::cout << "Hello world ! #" << this->Id() << std::endl; }
 };
 
 int main()
@@ -82,16 +85,56 @@ int main()
 		registry.emplace<int>(entity3, 3);
 		registry.emplace<float>(entity3, 4.0f);
 
+		/*
 		registry.view<int, float>().each([](int a, float b) 
 			{
 				std::cout << a << ", " << b << std::endl;
 			});
+		*/
 
 		//auto& a = registry.get<TestComponent>(entity2);
 
 		registry.destroy(entity2);
 
 		SEPARATOR("Test");
+	}
+
+	SEPARATOR(4)
+	{
+		entt::registry registry;
+
+		const entt::entity entt1 = registry.create();
+		const entt::entity entt2 = registry.create();
+
+		SEPARATOR("Add TestComponent to entt1");
+		registry.emplace<TestComponent>(entt1);
+		SEPARATOR("Add TestComponent to entt2");
+		registry.emplace<TestComponent>(entt2);
+		SEPARATOR("Display");
+		registry.view<TestComponent>().each([](const TestComponent& cmp)
+			{
+				cmp.Display();
+			});
+		SEPARATOR("Done");
+	}
+
+	SEPARATOR(5)
+	{
+		entt::registry reg;
+
+		entt::entity e1 = reg.create();
+		entt::entity e2 = reg.create();
+		entt::entity e3 = reg.create();
+
+		reg.emplace<int>(e1, 1);
+		reg.emplace<float>(e2, 2.0f);
+		reg.emplace<int>(e3, 3);
+		reg.emplace<float>(e3, 4.0f);
+
+		reg.view<int, entt::exclude_t<float>>().each([](entt::entity e, int a)
+			{
+				std::cout << entt::to_integral(e) << " - " << a << std::endl;
+			});
 	}
 
 	std::cin.get();

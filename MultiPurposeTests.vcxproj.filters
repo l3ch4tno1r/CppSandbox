@@ -21,7 +21,7 @@
     <ClCompile Include="Utilities\Source\Benchmarking.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Design Pattern\Test23 - Entity Component System.cpp">
+    <ClCompile Include="Source\EnTT\Test01.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

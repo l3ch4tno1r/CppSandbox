@@ -7,7 +7,7 @@
 
 #include "Utilities/Source/ErrorHandling.h"
 
-#define DEBUG_MEM 0
+#define DEBUG_MEM 1
 
 #if DEBUG_MEM == 1
 #define MEM_LOG(X) std::cout << "Mem debug : "; X

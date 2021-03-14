@@ -19,7 +19,7 @@ int main()
 	{
 		sqlite3* db = nullptr;
 
-		if (SQLITE_OK != sqlite3_open("../Console3D/Config.db", &db))
+		if (SQLITE_OK != sqlite3_open("E:/SQLite3/Directory.db", &db))
 			throw std::exception(sqlite3_errmsg(db));
 
 		const char* query =

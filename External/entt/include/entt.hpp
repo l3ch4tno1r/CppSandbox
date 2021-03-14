@@ -14379,7 +14379,7 @@ namespace entt {
  * @tparam Derived Actual type of process that extends the class template.
  * @tparam Delta Type to use to provide elapsed time.
  */
-template<typename Derived, typename Delta>
+template<typename Object, typename Delta>
 class process {
     enum class state: unsigned int {
         UNINITIALIZED = 0,
@@ -14391,31 +14391,31 @@ class process {
         FINISHED
     };
 
-    template<typename Target = Derived>
+    template<typename Target = Object>
     auto next(integral_constant<state::UNINITIALIZED>)
     -> decltype(std::declval<Target>().init()) {
         static_cast<Target *>(this)->init();
     }
 
-    template<typename Target = Derived>
+    template<typename Target = Object>
     auto next(integral_constant<state::RUNNING>, Delta delta, void *data)
     -> decltype(std::declval<Target>().update(delta, data)) {
         static_cast<Target *>(this)->update(delta, data);
     }
 
-    template<typename Target = Derived>
+    template<typename Target = Object>
     auto next(integral_constant<state::SUCCEEDED>)
     -> decltype(std::declval<Target>().succeeded()) {
         static_cast<Target *>(this)->succeeded();
     }
 
-    template<typename Target = Derived>
+    template<typename Target = Object>
     auto next(integral_constant<state::FAILED>)
     -> decltype(std::declval<Target>().failed()) {
         static_cast<Target *>(this)->failed();
     }
 
-    template<typename Target = Derived>
+    template<typename Target = Object>
     auto next(integral_constant<state::ABORTED>)
     -> decltype(std::declval<Target>().aborted()) {
         static_cast<Target *>(this)->aborted();
@@ -14478,7 +14478,7 @@ public:
 
     /*! @brief Default destructor. */
     virtual ~process() {
-        static_assert(std::is_base_of_v<process, Derived>);
+        static_assert(std::is_base_of_v<process, Object>);
     }
 
     /**
@@ -17301,7 +17301,7 @@ namespace entt {
  *
  * @tparam Derived Actual type of emitter that extends the class template.
  */
-template<typename Derived>
+template<typename Object>
 class emitter {
     struct basic_pool {
         virtual ~basic_pool() = default;
@@ -17312,7 +17312,7 @@ class emitter {
 
     template<typename Event>
     struct pool_handler final: basic_pool {
-        using listener_type = std::function<void(const Event &, Derived &)>;
+        using listener_type = std::function<void(const Event &, Object &)>;
         using element_type = std::pair<bool, listener_type>;
         using container_type = std::list<element_type>;
         using connection_type = typename container_type::iterator;
@@ -17357,7 +17357,7 @@ class emitter {
             }
         }
 
-        void publish(const Event &event, Derived &ref) {
+        void publish(const Event &event, Object &ref) {
             container_type swap_list;
             once_list.swap(swap_list);
 
@@ -17449,7 +17449,7 @@ public:
 
     /*! @brief Default destructor. */
     virtual ~emitter() {
-        static_assert(std::is_base_of_v<emitter<Derived>, Derived>);
+        static_assert(std::is_base_of_v<emitter<Object>, Object>);
     }
 
     /*! @brief Default move constructor. */
@@ -17471,7 +17471,7 @@ public:
      */
     template<typename Event, typename... Args>
     void publish(Args &&... args) {
-        assure<Event>().publish(Event{std::forward<Args>(args)...}, *static_cast<Derived *>(this));
+        assure<Event>().publish(Event{std::forward<Args>(args)...}, *static_cast<Object *>(this));
     }
 
     /**

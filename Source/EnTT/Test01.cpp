@@ -122,19 +122,29 @@ int main()
 	{
 		entt::registry reg;
 
+		entt::entity e0 = reg.create();
 		entt::entity e1 = reg.create();
 		entt::entity e2 = reg.create();
-		entt::entity e3 = reg.create();
 
-		reg.emplace<int>(e1, 1);
-		reg.emplace<float>(e2, 2.0f);
-		reg.emplace<int>(e3, 3);
-		reg.emplace<float>(e3, 4.0f);
+		reg.emplace<int>(e0, 1);
+		reg.emplace<float>(e1, 2.0f);
+		reg.emplace<int>(e2, 3);
+		reg.emplace<float>(e2, 4.0f);
 
-		reg.view<int, entt::exclude_t<float>>().each([](entt::entity e, int a)
-			{
-				std::cout << entt::to_integral(e) << " - " << a << std::endl;
-			});
+		auto lambda = [](entt::entity e, int a)
+		{
+			std::cout << entt::to_integral(e) << " - " << a << std::endl;
+		};
+
+		SEPARATOR("Test 1");
+
+		reg.view<int>().each(lambda);
+
+		SEPARATOR("Test 2");
+
+		auto group = reg.group<int>(entt::exclude<float>);
+
+		group.each(lambda);
 	}
 
 	std::cin.get();

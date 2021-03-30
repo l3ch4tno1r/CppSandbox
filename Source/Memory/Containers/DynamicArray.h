@@ -100,6 +100,38 @@ namespace LCN {
 		Iterator Begin() { return Iterator(m_Data); }
 		Iterator End() { return Iterator(m_Data + m_Size); }
 
+		void Erase(const Iterator& it)
+		{
+			MoveMemBlockBackward(it.m_Ptr, it.m_Ptr + 1);
+		}
+
+		void Erase(const Iterator& first, const Iterator& last)
+		{
+			MoveMemBlockBackward(first.m_Ptr, last.m_Ptr);
+		}
+
+		void Insert(const Iterator& it, const RefType value)
+		{
+			MoveMemBlockForward(it.m_Ptr + 1, it.m_Ptr);
+
+			*(it.m_Ptr) = value;
+		}
+
+		void Insert(const Iterator& it, ValType&& value)
+		{
+			MoveMemBlockForward(it.m_Ptr + 1, it.m_Ptr);
+
+			*(it.m_Ptr) = std::move(value);
+		}
+
+		void Insert(const Iterator& it, const std::initializer_list<ValType>& list)
+		{
+			PtrType ptr = MoveMemBlockForward(it.m_Ptr + list.size(), it.m_Ptr);
+
+			for (const auto& e : list)
+				new(ptr++) ValType(e);
+		}
+
 	private:
 		void MoveMemBlockBackward(PtrType dest, PtrType src)
 		{
@@ -158,39 +190,6 @@ namespace LCN {
 				ptr->~ValType();
 
 			return src;
-		}
-
-	public:
-		void Erase(const Iterator& it)
-		{
-			MoveMemBlockBackward(it.m_Ptr, it.m_Ptr + 1);
-		}
-
-		void Erase(const Iterator& first, const Iterator& last)
-		{
-			MoveMemBlockBackward(first.m_Ptr, last.m_Ptr);
-		}
-
-		void Insert(const Iterator& it, const RefType value)
-		{
-			MoveMemBlockForward(it.m_Ptr + 1, it.m_Ptr);
-
-			*(it.m_Ptr) = value;
-		}
-
-		void Insert(const Iterator& it, ValType&& value)
-		{
-			MoveMemBlockForward(it.m_Ptr + 1, it.m_Ptr);
-
-			*(it.m_Ptr) = std::move(value);
-		}
-
-		void Insert(const Iterator& it, const std::initializer_list<ValType>& list)
-		{
-			PtrType ptr = MoveMemBlockForward(it.m_Ptr + list.size(), it.m_Ptr);
-
-			for (const auto& e : list)
-				new(ptr++) ValType(e);
 		}
 
 	private:

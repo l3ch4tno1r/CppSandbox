@@ -2,41 +2,13 @@
 #include <string>
 #include <tuple>
 
+#include <Utilities/Source/TypeList.h>
+
 template<typename T1, typename T2>
 void PrintPair(const T1& a1, const T2& a2)
 {
 	std::cout << a1 << ", " << a2 << std::endl;
 }
-
-template<typename _Head, typename ... _Tail>
-struct TypeList
-{
-	using Head = _Head;
-	using Tail = TypeList<_Tail...>;
-
-	static constexpr size_t Count() { return Tail::Count() + 1; }
-};
-
-template<typename Single>
-struct TypeList<Single>
-{
-	using Head = Single;
-	using Tail = void;
-
-	static constexpr size_t Count() { return 1; }
-};
-
-template <size_t Idx, typename typelist>
-struct Extract
-{
-	using Result = typename Extract<Idx - 1, typename typelist::Tail>::Result;
-};
-
-template <typename typelist>
-struct Extract <0, typelist>
-{
-	using Result = typename typelist::Head;
-};
 
 //----------------//
 
@@ -65,7 +37,7 @@ void Print(std::tuple<Tp...>& t)
 template<typename typelist, typename tuple, size_t Idx = 0>
 void Print2(const tuple& t)
 {
-	using ResultType = typename Extract<Idx, typelist>::Result;
+	using ResultType = typename LCN::Extract<Idx, typelist>::Result;
 
 	std::cout << std::get<ResultType>(t) << std::endl;
 
@@ -75,7 +47,7 @@ void Print2(const tuple& t)
 
 int main()
 {
-	using TypeListTest = TypeList<float, int, std::string>;
+	using TypeListTest = LCN::TypeList<float, int, std::string>;
 	using TupleType    = std::tuple<int, float, std::string>;
 
 	TupleType t1 = { 1, 2.0f, "Hello world" };

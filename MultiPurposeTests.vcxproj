@@ -78,12 +78,13 @@
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir);$(SolutionDir)Utilities\External\SQLiteCpp\include</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <GenerateMapFile>false</GenerateMapFile>
+      <AdditionalDependencies>winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,9 +132,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
-    <ClCompile Include="Source\Memory\_MemTracker.cpp" />
-    <ClCompile Include="Source\Misc\Test38.cpp" />
+    <ClCompile Include="Source\EnTT\Test05 - groups.cpp" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
+    <ClCompile Include="Utilities\Source\ConfigManager.cpp" />
+    <ClCompile Include="Utilities\Source\ErrorHandling.cpp" />
+    <ClCompile Include="Utilities\Source\TimeMeasurement.cpp" />
+    <ClCompile Include="Utilities\Source\TraceLog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\entt\include\entt.hpp" />
@@ -144,8 +148,17 @@
     <ClInclude Include="Source\Memory\Containers\Iterators\BidirIterator.h" />
     <ClInclude Include="Source\Memory\Containers\Iterators\RandomIterator.h" />
     <ClInclude Include="Source\Memory\Containers\LinkedList.h" />
+    <ClInclude Include="Source\Memory\Containers\SparseSet.h" />
     <ClInclude Include="Source\Memory\Containers\StaticArray.h" />
-    <ClInclude Include="Source\Memory\_MemTracker.h" />
+    <ClInclude Include="Utilities\Source\Benchmarking.h" />
+    <ClInclude Include="Utilities\Source\ConfigManager.h" />
+    <ClInclude Include="Utilities\Source\ErrorHandling.h" />
+    <ClInclude Include="Utilities\Source\InstanceCounter.h" />
+    <ClInclude Include="Utilities\Source\Instrumentor.h" />
+    <ClInclude Include="Utilities\Source\TimeMeasurement.h" />
+    <ClInclude Include="Utilities\Source\TraceLog.h" />
+    <ClInclude Include="Utilities\Source\TypeList.h" />
+    <ClInclude Include="Utilities\Source\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">

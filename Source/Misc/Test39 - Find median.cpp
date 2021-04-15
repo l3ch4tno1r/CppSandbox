@@ -5,6 +5,7 @@
 #include <random>
 
 #include "Utilities/Source/Benchmarking.h"
+#include "Utilities/Source/ErrorHandling.h"
 
 template<typename ForwardIt>
 void PrintSequence(ForwardIt begin, ForwardIt end)
@@ -56,19 +57,24 @@ auto Select(size_t pos, RandomIt begin, RandomIt end, BinaryPredicate pred)
 
 	while (lower < upper)
 	{
-		auto pivot = *lower;
+		RandomIt last = upper - 1;
 
-		RandomIt it = Partition(lower + 1, upper, [&](auto x)
-			{
-				return pred(x, pivot);
-			});
+		if (lower == last)
+			return *lower;
+
+		auto pivot = *last;
+
+		RandomIt it = Partition(lower, last, [&](auto x)
+		{
+			return pred(x, pivot);
+		});
+
+		auto val = *it;
+		*it = *last;
+		*last = val;
 
 		if (it == target)
 			return *it;
-
-		auto val = *(it - 1);
-		*(it - 1) = *lower;
-		*lower = val;
 
 		if (it < target)
 			lower = it;
@@ -77,6 +83,12 @@ auto Select(size_t pos, RandomIt begin, RandomIt end, BinaryPredicate pred)
 	}
 
 	return *lower;
+}
+
+template<typename RandomIt>
+auto Median(RandomIt begin, RandomIt end)
+{
+	return Select((size_t)(end - begin) / 2, begin, end, [](auto a, auto b) { return a <= b; });
 }
 
 int main()
@@ -147,10 +159,10 @@ int main()
 
 		std::shuffle(vec.begin(), vec.end(), std::default_random_engine());
 
-		int median = Select(0, vec.begin(), vec.end(), [](int a, int b)
-			{
-				return a <= b;
-			});
+		int median = Select(9, vec.begin(), vec.end(), [](int a, int b)
+		{
+			return a <= b;
+		});
 
 		PrintSequence(vec.begin(), vec.end());
 
@@ -159,8 +171,20 @@ int main()
 
 	SEPARATOR(4);
 	{
-		LCN::Benchmark::TimePerformance()
+		std::vector<int> vec;
 
+		vec.reserve(17);
+
+		for (int i = 0; i < 17; ++i)
+			vec.emplace_back(i);
+
+		std::shuffle(vec.begin(), vec.end(), std::default_random_engine());
+
+		PrintSequence(vec.begin(), vec.end());
+
+		std::cout << Median(vec.begin(), vec.end()) << std::endl;
+
+		PrintSequence(vec.begin(), vec.end());
 	}
 
 	std::cin.get();

@@ -175,5 +175,15 @@ int main()
 		std::cout << "Session #10 duration : " << session.Duration(LCN::Benchmark::DurationUnit::Milliseconds) << std::endl;
 	}
 
+	SEPARATOR("Backwards iteration")
+	{
+		auto session = LCN::Benchmark::TimePerformance(iterations, [&]()
+		{
+			std::for_each(tab.rbegin(), tab.rend(), [](int& i) {i = 11;});
+		});
+
+		std::cout << "Session #11 duration : " << session.Duration(LCN::Benchmark::DurationUnit::Milliseconds) << std::endl;
+	}
+
 	std::cin.get();
 }

@@ -33,7 +33,7 @@
     <ClCompile Include="Utilities\Source\TraceLog.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Misc\Test49.cpp">
+    <ClCompile Include="Source\CodinGame\TanNetwork.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

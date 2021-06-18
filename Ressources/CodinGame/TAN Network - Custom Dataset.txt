@@ -1,0 +1,62 @@
+S
+E
+14
+S,"Sierra",,0,0,,,1,
+A,"Alpha",,0,0,,,1,
+B,"Bravo",,0,0,,,1,
+C,"Charlie",,0,0,,,1,
+D,"Delta",,0,0,,,1,
+E,"Echo",,0,0,,,1,
+F,"Foxtrot",,0,0,,,1,
+G,"Golf",,0,0,,,1,
+H,"Hotel",,0,0,,,1,
+I,"India",,0,0,,,1,
+J,"Juliet",,0,0,,,1,
+K,"Kilo",,0,0,,,1,
+L,"Lima",,0,0,,,1,
+M,"Mike",,0,0,,,1,
+44
+S A
+S B
+S C
+A D
+A B
+D F
+D B
+F H
+B H
+B M
+H G
+G M
+G E
+M E
+C M
+C L
+L I
+L J
+I J
+I K
+J K
+K E
+A S
+B S
+C S
+D A
+B A
+F D
+B D
+H F
+H B
+M B
+G H
+M G
+E G
+E M
+M C
+L C
+I L
+J L
+J I
+K I
+K J
+E K

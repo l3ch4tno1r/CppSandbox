@@ -7,6 +7,9 @@
 #include <complex>
 #include <algorithm>
 
+#define PI 3.14159265
+#define TORAD(A) (PI * A) / 180
+
 struct ComaAsSeparator : std::ctype<char>
 {
 	ComaAsSeparator(std::size_t refs = 0) : ctype(make_table(), false, refs) {}
@@ -27,25 +30,24 @@ class NodeData
 {
 public:
 	template<class STR1, class STR2>
-	NodeData(STR1&& id, STR2&& name, float x, float y, int type) :
+	NodeData(STR1&& id, STR2&& name, float lat, float lon, int type) :
 		m_Id(std::forward<STR1>(id)),
 		m_Name(std::forward<STR2>(name)),
-		m_Pos(x, y),
+		m_Latitude(lat),
+		m_Longitude(lon),
 		m_Type(type)
 	{}
 
 	const std::string& Id()   const { return m_Id; }
 	const std::string& Name() const { return m_Name; }
 
-	float X() const { return m_Pos.real(); }
-	float Y() const { return m_Pos.imag(); }
-
-	const std::complex<float>& Position() const { return m_Pos; }
+	float Latitude()  const { return m_Latitude; }
+	float Longitude() const { return m_Longitude; }
 
 private:
 	std::string m_Id;
 	std::string m_Name;
-	std::complex<float> m_Pos;
+	float m_Latitude, m_Longitude;
 	int m_Type;
 };
 
@@ -89,37 +91,34 @@ public:
 		m_Edges.emplace_back(this->GetNodeId(id1), this->GetNodeId(id2));
 	}
 
-	void GroupEdges()
+	//////////////////////
+	class Node;
+
+	class NeighboorList
 	{
-		if (m_Edges.empty())
-			return;
-
-		std::sort(m_Edges.begin(), m_Edges.end());
-
-		auto it = m_Edges.begin();
-
-		size_t lastVal = it->first;
-
-		m_EdgesByNode.push_back(0);
-
-		while (++it != m_Edges.end())
+	public:
+		Node operator[](size_t idx) const
 		{
-			if (it->first == lastVal)
-				continue;
+			size_t nidx = m_Network.m_Edges[m_Begin + idx].Node2Idx;
 
-			for (size_t k = lastVal; k < it->first - 1; ++k)
-				m_EdgesByNode.push_back(m_EdgesByNode.back());
-
-			m_EdgesByNode.push_back(std::distance(m_Edges.begin(), it));
-
-			lastVal = it->first;
+			return m_Network.Nodes(nidx);
 		}
 
-		m_EdgesByNode.push_back(m_Edges.size());
+		size_t Size() const { return m_End - m_Begin; }
 
-		while (m_EdgesByNode.size() < m_NodeData.size() + 1)
-			m_EdgesByNode.push_back(m_EdgesByNode.back());
-	}
+	private:
+		NeighboorList(const Network& network, size_t begin, size_t end) :
+			m_Network(network),
+			m_Begin(begin),
+			m_End(end)
+		{}
+
+		friend Node;
+
+		const Network& m_Network;
+		size_t m_Begin;
+		size_t m_End;
+	};
 
 	class Node
 	{
@@ -128,7 +127,17 @@ public:
 
 		const NodeData& operator*() const { return m_Network.GetNodeData(m_NodeIdx); }
 
-		//GetFirstNeighboor()
+		NeighboorList Neighboors() const
+		{
+			size_t begin = m_Network.m_EdgesNodeLUT[m_NodeIdx];
+			size_t end   = m_Network.m_EdgesNodeLUT[m_NodeIdx + 1];
+
+			return { m_Network, begin, end };
+		}
+
+		size_t NodeIdx() const { return m_NodeIdx; }
+
+		operator size_t() const { return m_NodeIdx; }
 
 	private:
 		Node(const Network& ref, size_t idx) :
@@ -142,23 +151,171 @@ public:
 		size_t m_NodeIdx;
 	};
 
-	Node GetNode(size_t idx)
+	struct Edge
+	{
+		size_t Node1Idx, Node2Idx;
+		float Weight;
+
+		Edge(size_t node1, size_t node2) :
+			Node1Idx(node1),
+			Node2Idx(node2),
+			Weight(0.0f)
+		{}
+	};
+
+	//////////////////////
+	Node Nodes(size_t idx) const
 	{
 		return { *this, idx };
+	}
+
+	Node Nodes(const std::string& key) const
+	{
+		return { *this, this->GetNodeId(key) };
+	}
+
+	void ImportNodeData(std::vector<NodeData>&& nodeDataSet)
+	{
+		m_NodeData = std::move(nodeDataSet);
+
+		size_t idx = 0;
+
+		for (const auto& nodeData : m_NodeData)
+			m_IdNodeIndex[nodeData.Id()] = idx++;
+	}
+
+	template<class WeightFunc>
+	void ImportEdges(std::vector<Edge>&& edgesSet, WeightFunc F)
+	{
+		m_Edges = std::move(edgesSet);
+
+		for (auto& edge : m_Edges)
+		{
+			Node node1{ *this, edge.Node1Idx };
+			Node node2{ *this, edge.Node2Idx };
+
+			edge.Weight = F(node1, node2);
+		}
+
+		GroupEdges();
 	}
 
 private:
 	std::vector<NodeData> m_NodeData;
 	std::unordered_map<std::string, size_t> m_IdNodeIndex;
 
-	std::vector<std::pair<size_t, size_t>> m_Edges;
-	std::vector<size_t> m_EdgesByNode;
+	std::vector<Edge> m_Edges;
+	std::vector<size_t> m_EdgesNodeLUT;
+
+	void GroupEdges()
+	{
+		if (m_Edges.empty())
+			return;
+
+		std::sort(m_Edges.begin(), m_Edges.end(), [](const Edge& e1, const Edge& e2)
+		{
+			return e1.Node1Idx < e2.Node1Idx;
+		});
+
+		auto it = m_Edges.begin();
+
+		size_t lastVal = it->Node1Idx;
+
+		m_EdgesNodeLUT.reserve(m_NodeData.size() + 1);
+		m_EdgesNodeLUT.push_back(0);
+
+		while (++it != m_Edges.end())
+		{
+			if (it->Node1Idx == lastVal)
+				continue;
+
+			for (size_t k = lastVal; k < it->Node1Idx - 1; ++k)
+				m_EdgesNodeLUT.push_back(m_EdgesNodeLUT.back());
+
+			m_EdgesNodeLUT.push_back(std::distance(m_Edges.begin(), it));
+
+			lastVal = it->Node1Idx;
+		}
+
+		m_EdgesNodeLUT.push_back(m_Edges.size());
+
+		while (m_EdgesNodeLUT.size() < m_NodeData.size() + 1)
+			m_EdgesNodeLUT.push_back(m_EdgesNodeLUT.back());
+	}
 };
+
+std::istream& operator>>(std::istream& stream, Network& network)
+{
+	auto oldLocale = stream.imbue(std::locale(stream.getloc(), new ComaAsSeparator));
+
+	// Import Node data
+	int numStop;
+	stream >> numStop;
+
+	std::vector<NodeData> nodeData;
+	nodeData.reserve(numStop);
+
+	for (int i = 0; i < numStop; ++i)
+	{
+		std::string id, name;
+		float lat, lon;
+		int type;
+
+		stream >> id >> name >> lat >> lon >> type; stream.ignore();
+
+		nodeData.emplace_back(std::move(id), name.substr(1, name.size() - 2), lat, lon, type);
+	}
+
+	network.ImportNodeData(std::move(nodeData));
+
+	stream.imbue(oldLocale);
+
+	// Import Edges
+	int linkCount;
+	stream >> linkCount;
+
+	std::vector<Network::Edge> edges;
+	edges.reserve(linkCount);
+
+	for (int i = 0; i < linkCount; ++i)
+	{
+		std::string id1, id2;
+
+		stream >> id1 >> id2; stream.ignore();
+
+		size_t idx1 = network.GetNodeId(id1);
+		size_t idx2 = network.GetNodeId(id2);
+
+		edges.emplace_back(idx1, idx2);
+	}
+
+	network.ImportEdges(std::move(edges), [](Network::Node a, Network::Node b)
+	{
+		float lonA = TORAD(a->Longitude()), latA = TORAD(a->Latitude());
+		float lonB = TORAD(b->Longitude()), latB = TORAD(b->Latitude());
+
+		float x = (lonB - lonA) * std::cos((latA + latB) / 2);
+		float y = latB - latA;
+
+		return 6371 * std::abs(std::complex<float>(x, y));
+	});
+
+	return stream;
+}
+
+std::vector<Network::Node> DijkstraAlgorithm(
+	const Network& network,
+	Network::Node start,
+	Network::Node end)
+{
+	throw std::exception("Not implemented.");
+}
 
 int main()
 {
 	try
 	{
+		//std::ifstream file("Ressources/CodinGame/TAN Network - Custom Dataset.txt", std::ios::in);
 		std::ifstream file("Ressources/CodinGame/TAN Network - Exemple Test.txt", std::ios::in);
 		//std::ifstream file("Ressources/CodinGame/TAN Network - Big Dataset.txt", std::ios::in);
 		//std::ifstream file("Ressources/CodinGame/TAN Network - Small Dataset.txt", std::ios::in);
@@ -172,39 +329,14 @@ int main()
 		std::string endPoint;
 		std::getline(file, endPoint);
 
-		int numStop;
-		file >> numStop;
-
-		auto oldLocale = file.imbue(std::locale(file.getloc(), new ComaAsSeparator));
-
 		Network network;
 
-		for (int i = 0; i < numStop; ++i)
-		{
-			std::string id, name;
-			float lat, lon;
-			int type;
+		file >> network;
 
-			file >> id >> name >> lat >> lon >> type; file.ignore();
+		auto n = network.Nodes("M").Neighboors();
 
-			NodeData& node = network.CreateNode(std::move(id), name.substr(1, name.size() - 2), lat, lon, type);
-		}
-
-		file.imbue(oldLocale);
-
-		int linkCount;
-		file >> linkCount;
-
-		for (int i = 0; i < linkCount; ++i)
-		{
-			std::string id1, id2;
-
-			file >> id1 >> id2; file.ignore();
-
-			network.AddEdge(id1, id2);
-		}
-
-		network.GroupEdges();
+		for(size_t i = 0; i < n.Size(); ++i)
+			std::cout << n[i]->Name() << std::endl;
 	}
 	catch (const std::exception& e)
 	{

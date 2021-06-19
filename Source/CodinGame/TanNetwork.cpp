@@ -6,6 +6,9 @@
 #include <unordered_map>
 #include <complex>
 #include <algorithm>
+#include <tuple>
+#include <numeric>
+#include <queue>
 
 #define PI 3.14159265
 #define TORAD(A) (PI * A) / 180
@@ -97,11 +100,12 @@ public:
 	class NeighboorList
 	{
 	public:
-		Node operator[](size_t idx) const
+		std::tuple<Node, float> operator[](size_t idx) const
 		{
 			size_t nidx = m_Network.m_Edges[m_Begin + idx].Node2Idx;
+			float weight = m_Network.m_Edges[m_Begin + idx].Weight;
 
-			return m_Network.Nodes(nidx);
+			return { m_Network.Nodes(nidx), weight };
 		}
 
 		size_t Size() const { return m_End - m_Begin; }
@@ -139,6 +143,13 @@ public:
 
 		operator size_t() const { return m_NodeIdx; }
 
+		Node& operator=(const Node& other)
+		{
+			m_NodeIdx = other.m_NodeIdx;
+
+			return *this;
+		}
+
 	private:
 		Node(const Network& ref, size_t idx) :
 			m_Network(ref),
@@ -173,6 +184,10 @@ public:
 	{
 		return { *this, this->GetNodeId(key) };
 	}
+
+	size_t NodeCount() const { return m_NodeData.size(); }
+
+	size_t EdgeCount() const { return m_Edges.size(); }
 
 	void ImportNodeData(std::vector<NodeData>&& nodeDataSet)
 	{
@@ -308,7 +323,76 @@ std::vector<Network::Node> DijkstraAlgorithm(
 	Network::Node start,
 	Network::Node end)
 {
-	throw std::exception("Not implemented.");
+	struct Status
+	{
+		int   Predecessor;
+		float Distance;
+		bool  Visited;
+	};
+
+	std::vector<Status> nodeStatus(network.NodeCount(), { -1, std::numeric_limits<float>::max(), false });
+
+	nodeStatus[start] = { -1, 0.0f, true };
+
+	auto compare = [&](size_t n1, size_t n2)
+	{
+		return nodeStatus[n2].Distance < nodeStatus[n1].Distance;
+	};
+
+	std::priority_queue<
+		size_t,
+		std::vector<size_t>,
+		decltype(compare)> pqueue(compare);
+
+	pqueue.push(start);
+
+	while (!pqueue.empty() && end != pqueue.top())
+	{
+		Network::Node currentNode = network.Nodes(pqueue.top());
+		pqueue.pop();
+
+		Network::NeighboorList neighboors  = currentNode.Neighboors();
+
+		float currentDistance = nodeStatus[currentNode].Distance;
+
+		// Add non visited neighboors
+		for (size_t i = 0; i < neighboors.Size(); ++i)
+		{
+			auto [node, distance] = neighboors[i];
+
+			Status& status = nodeStatus[node];
+
+			if (status.Visited)
+				continue;
+
+			float cumulatedDistance = currentDistance + distance;
+
+			if (cumulatedDistance >= status.Distance)
+				continue;
+
+			status.Distance    = cumulatedDistance;
+			status.Predecessor = currentNode;
+
+			pqueue.push(node);
+		}
+
+		nodeStatus[currentNode].Visited = true;
+	}
+
+	// Backtrack the path
+	size_t idx = end;
+	std::vector<Network::Node> result;
+
+	while (nodeStatus[idx].Predecessor != -1)
+	{
+		result.push_back(network.Nodes(idx));
+
+		idx = nodeStatus[idx].Predecessor;
+	}
+
+	result.push_back(network.Nodes(idx));
+
+	return result;
 }
 
 int main()
@@ -316,9 +400,10 @@ int main()
 	try
 	{
 		//std::ifstream file("Ressources/CodinGame/TAN Network - Custom Dataset.txt", std::ios::in);
-		std::ifstream file("Ressources/CodinGame/TAN Network - Exemple Test.txt", std::ios::in);
+		//std::ifstream file("Ressources/CodinGame/TAN Network - Exemple Test.txt", std::ios::in);
 		//std::ifstream file("Ressources/CodinGame/TAN Network - Big Dataset.txt", std::ios::in);
 		//std::ifstream file("Ressources/CodinGame/TAN Network - Small Dataset.txt", std::ios::in);
+		std::ifstream file("Ressources/CodinGame/TAN Network - One stop only.txt", std::ios::in);
 
 		if (!file)
 			throw std::exception("File not found !");
@@ -333,15 +418,22 @@ int main()
 
 		file >> network;
 
-		auto n = network.Nodes("M").Neighboors();
+		auto result = DijkstraAlgorithm(
+			network,
+			network.Nodes(startPoint),
+			network.Nodes(endPoint));
 
-		for(size_t i = 0; i < n.Size(); ++i)
-			std::cout << n[i]->Name() << std::endl;
+		std::reverse(result.begin(), result.end());
+
+		for (const Network::Node& node : result)
+			std::cout << node->Id() << ' ' << node->Name() << std::endl;
 	}
 	catch (const std::exception& e)
 	{
 		std::cerr << "Exception : " << e.what() << std::endl;
 	}
+
+	std::cout << "Done !" << std::endl;
 
 	std::cin.get();
 }

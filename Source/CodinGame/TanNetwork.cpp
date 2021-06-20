@@ -9,6 +9,7 @@
 #include <tuple>
 #include <numeric>
 #include <queue>
+#include <chrono>
 
 #define PI 3.14159265
 #define TORAD(A) (PI * A) / 180
@@ -69,7 +70,7 @@ public:
 		return m_NodeData.back();
 	}
 
-	size_t GetNodeId(const std::string& id) const
+	size_t GetNodeIndex(const std::string& id) const
 	{
 		auto it = m_IdNodeIndex.find(id);
 
@@ -86,12 +87,12 @@ public:
 
 	const NodeData& GetNodeData(const std::string& id) const
 	{
-		return m_NodeData[this->GetNodeId(id)];
+		return m_NodeData[this->GetNodeIndex(id)];
 	}
 
 	void AddEdge(const std::string& id1, const std::string& id2)
 	{
-		m_Edges.emplace_back(this->GetNodeId(id1), this->GetNodeId(id2));
+		m_Edges.emplace_back(this->GetNodeIndex(id1), this->GetNodeIndex(id2));
 	}
 
 	//////////////////////
@@ -182,7 +183,7 @@ public:
 
 	Node Nodes(const std::string& key) const
 	{
-		return { *this, this->GetNodeId(key) };
+		return { *this, this->GetNodeIndex(key) };
 	}
 
 	size_t NodeCount() const { return m_NodeData.size(); }
@@ -298,8 +299,11 @@ std::istream& operator>>(std::istream& stream, Network& network)
 
 		stream >> id1 >> id2; stream.ignore();
 
-		size_t idx1 = network.GetNodeId(id1);
-		size_t idx2 = network.GetNodeId(id2);
+		if (id1.empty() || id2.empty())
+			continue;
+
+		size_t idx1 = network.GetNodeIndex(id1);
+		size_t idx2 = network.GetNodeIndex(id2);
 
 		edges.emplace_back(idx1, idx2);
 	}
@@ -330,7 +334,7 @@ std::vector<Network::Node> DijkstraAlgorithm(
 		bool  Visited;
 	};
 
-	std::vector<Status> nodeStatus(network.NodeCount(), { -1, std::numeric_limits<float>::max(), false });
+	std::vector<Status> nodeStatus(network.NodeCount(), { -1, std::numeric_limits<float>::infinity(), false });
 
 	nodeStatus[start] = { -1, 0.0f, true };
 
@@ -351,7 +355,7 @@ std::vector<Network::Node> DijkstraAlgorithm(
 		Network::Node currentNode = network.Nodes(pqueue.top());
 		pqueue.pop();
 
-		Network::NeighboorList neighboors  = currentNode.Neighboors();
+		Network::NeighboorList neighboors = currentNode.Neighboors();
 
 		float currentDistance = nodeStatus[currentNode].Distance;
 
@@ -380,6 +384,9 @@ std::vector<Network::Node> DijkstraAlgorithm(
 	}
 
 	// Backtrack the path
+	if (start != end && nodeStatus[end].Predecessor == -1)
+		return {};
+
 	size_t idx = end;
 	std::vector<Network::Node> result;
 
@@ -403,7 +410,9 @@ int main()
 		//std::ifstream file("Ressources/CodinGame/TAN Network - Exemple Test.txt", std::ios::in);
 		//std::ifstream file("Ressources/CodinGame/TAN Network - Big Dataset.txt", std::ios::in);
 		//std::ifstream file("Ressources/CodinGame/TAN Network - Small Dataset.txt", std::ios::in);
-		std::ifstream file("Ressources/CodinGame/TAN Network - One stop only.txt", std::ios::in);
+		//std::ifstream file("Ressources/CodinGame/TAN Network - One stop only.txt", std::ios::in);
+		//std::ifstream file("Ressources/CodinGame/TAN Network - Impossible.txt", std::ios::in);
+		std::ifstream file("Ressources/CodinGame/TAN Network - Big number of steps.txt", std::ios::in);
 
 		if (!file)
 			throw std::exception("File not found !");
@@ -418,15 +427,25 @@ int main()
 
 		file >> network;
 
+		auto start = std::chrono::high_resolution_clock::now();
+
 		auto result = DijkstraAlgorithm(
 			network,
 			network.Nodes(startPoint),
 			network.Nodes(endPoint));
 
-		std::reverse(result.begin(), result.end());
+		std::cerr << "Done shortest path in " << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start).count() << std::endl;
 
-		for (const Network::Node& node : result)
-			std::cout << node->Id() << ' ' << node->Name() << std::endl;
+		if (result.empty())
+			std::cout << "IMPOSSIBLE" << std::endl;
+		else
+		{
+			std::reverse(result.begin(), result.end());
+
+			for (const Network::Node& node : result)
+				std::cout << node->Name() << std::endl;
+		}
+
 	}
 	catch (const std::exception& e)
 	{

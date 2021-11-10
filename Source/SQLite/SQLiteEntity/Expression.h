@@ -41,7 +41,7 @@ namespace LCN::SQLiteEntity
 
 		inline operator std::string() const { return this->ToString(); }
 
-		inline operator char*() const { return this->ToCString(); }
+		inline operator const char*() const { return this->ToCString(); }
 
 	protected:
 		inline E& Derived() { return static_cast<E&>(*this); }

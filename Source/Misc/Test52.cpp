@@ -6,7 +6,7 @@
 void Function();
 
 template<typename F>
-void Function(F f = DefaultFunction())
+void Function(F f)
 {
 	f();
 }

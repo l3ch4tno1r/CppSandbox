@@ -132,7 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
-    <ClCompile Include="Source\Misc\Test58.cpp" />
+    <ClCompile Include="Source\Template\Test42 - Tuple.cpp" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
     <ClCompile Include="Utilities\Source\ConfigManager.cpp" />
     <ClCompile Include="Utilities\Source\ErrorHandling.cpp" />
@@ -143,13 +143,6 @@
     <ClInclude Include="External\entt\include\entt.hpp" />
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
     <ClInclude Include="External\ttf-parser\src\ttfParser.h" />
-    <ClInclude Include="Source\Memory\Containers\BinarySearchTree.h" />
-    <ClInclude Include="Source\Memory\Containers\DynamicArray.h" />
-    <ClInclude Include="Source\Memory\Containers\Iterators\BidirIterator.h" />
-    <ClInclude Include="Source\Memory\Containers\Iterators\RandomIterator.h" />
-    <ClInclude Include="Source\Memory\Containers\LinkedList.h" />
-    <ClInclude Include="Source\Memory\Containers\SparseSet.h" />
-    <ClInclude Include="Source\Memory\Containers\StaticArray.h" />
     <ClInclude Include="Source\SQLite\SQLiteEntity\Expression.h" />
     <ClInclude Include="Utilities\Source\Benchmarking.h" />
     <ClInclude Include="Utilities\Source\ConfigManager.h" />
@@ -157,6 +150,7 @@
     <ClInclude Include="Utilities\Source\InstanceCounter.h" />
     <ClInclude Include="Utilities\Source\Instrumentor.h" />
     <ClInclude Include="Utilities\Source\Noisy.h" />
+    <ClInclude Include="Utilities\Source\Synchronized.h" />
     <ClInclude Include="Utilities\Source\TimeMeasurement.h" />
     <ClInclude Include="Utilities\Source\TraceLog.h" />
     <ClInclude Include="Utilities\Source\TypeList.h" />

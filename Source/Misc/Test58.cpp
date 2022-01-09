@@ -107,8 +107,6 @@ int main()
 
 	std::cout << "----------------------" << std::endl;
 
-	std::is_empty<A>::value;
-
 	{
 		Timer timer;
 

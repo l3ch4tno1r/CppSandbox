@@ -9,59 +9,59 @@
 
 #define SEPARATOR(X) std::cout << "----------- " << #X << " -----------" << std::endl;
 
-class SplitStringViewIterator;
+class SplitResultIterator;
 
-class SplitStringView
+class SplitResult
 {
 public:
-	friend SplitStringViewIterator;
+	friend SplitResultIterator;
 
-	using Iterator = SplitStringViewIterator;
+	using Iterator = SplitResultIterator;
 
-	SplitStringViewIterator begin() const;
-	SplitStringViewIterator end()   const;
+	SplitResultIterator begin() const;
+	SplitResultIterator end()   const;
 
 	operator std::vector<std::string>() const;
 
 	size_t Count() const;
 
 private:
-	SplitStringView(const std::string& target) :
+	SplitResult(const std::string& target) :
 		m_Target(target)
 	{}
 
 	template<typename StrType>
-	SplitStringView(const std::string& target, StrType&& delimiter) :
+	SplitResult(const std::string& target, StrType&& delimiter) :
 		m_Target(target),
 		m_Delimiter(std::forward<StrType>(delimiter))
 	{}
 
-	friend SplitStringView Split(const std::string&);
+	friend SplitResult Split(const std::string&);
 
 	template<typename StrType>
-	friend SplitStringView Split(const std::string&, StrType&&);
+	friend SplitResult Split(const std::string&, StrType&&);
 
 private:
 	const std::string& m_Target;
 	std::string m_Delimiter{ " " };
 };
 
-class SplitStringViewIterator
+class SplitResultIterator
 {
 public:
-	SplitStringViewIterator(const SplitStringViewIterator& other) :
+	SplitResultIterator(const SplitResultIterator& other) :
 		m_Spliter(other.m_Spliter),
 		m_Start(other.m_Start),
 		m_End(other.m_End),
 		m_View(other.m_View)
 	{}
 
-	SplitStringViewIterator(const SplitStringView& spliter) :
+	SplitResultIterator(const SplitResult& spliter) :
 		m_Spliter(spliter),
 		m_Start(spliter.m_Target.size())
 	{}
 
-	SplitStringViewIterator(const SplitStringView& spliter, bool) :
+	SplitResultIterator(const SplitResult& spliter, bool) :
 		m_Spliter(spliter)
 	{
 		const std::string& target{ m_Spliter.m_Target };
@@ -72,7 +72,7 @@ public:
 		m_View = { target.begin(), target.begin() + m_End };
 	}
 
-	SplitStringViewIterator& operator++()
+	SplitResultIterator& operator++()
 	{
 		const std::string& target{ m_Spliter.m_Target };
 		const std::string& delimiter{ m_Spliter.m_Delimiter};
@@ -85,9 +85,9 @@ public:
 		return *this;
 	}
 
-	SplitStringViewIterator operator++(int)
+	SplitResultIterator operator++(int)
 	{
-		SplitStringViewIterator it{ *this };
+		SplitResultIterator it{ *this };
 
 		++(*this);
 
@@ -104,48 +104,48 @@ public:
 		return &m_View;
 	}
 
-	friend bool operator==(const SplitStringViewIterator&, const SplitStringViewIterator&);
-	friend bool operator!=(const SplitStringViewIterator&, const SplitStringViewIterator&);
+	friend bool operator==(const SplitResultIterator&, const SplitResultIterator&);
+	friend bool operator!=(const SplitResultIterator&, const SplitResultIterator&);
 
 private:
-	const SplitStringView& m_Spliter;
+	const SplitResult& m_Spliter;
 
 	uint32_t m_Start{ 0 }, m_End{ std::string::npos };
 	std::string_view m_View;
 };
 
-SplitStringView Split(const std::string& str)
+SplitResult Split(const std::string& str)
 {
 	return { str };
 }
 
 template<typename StrType>
-SplitStringView Split(const std::string& str, StrType&& delim)
+SplitResult Split(const std::string& str, StrType&& delim)
 {
 	return { str, std::forward<StrType>(delim) };
 }
 
-bool operator==(const SplitStringViewIterator& a, const SplitStringViewIterator& b)
+bool operator==(const SplitResultIterator& a, const SplitResultIterator& b)
 {
 	return &a.m_Spliter == &b.m_Spliter && a.m_Start == b.m_Start;
 }
 
-bool operator!=(const SplitStringViewIterator& a, const SplitStringViewIterator& b)
+bool operator!=(const SplitResultIterator& a, const SplitResultIterator& b)
 {
 	return !(a == b);
 }
 
-SplitStringViewIterator SplitStringView::begin() const
+SplitResultIterator SplitResult::begin() const
 {
 	return { *this, true };
 }
 
-SplitStringViewIterator SplitStringView::end() const
+SplitResultIterator SplitResult::end() const
 {
 	return { *this };
 }
 
-SplitStringView::operator std::vector<std::string>() const
+SplitResult::operator std::vector<std::string>() const
 {
 	std::vector<std::string> result;
 	result.reserve(this->Count());
@@ -156,7 +156,7 @@ SplitStringView::operator std::vector<std::string>() const
 	return result;
 }
 
-size_t SplitStringView::Count() const
+size_t SplitResult::Count() const
 {
 	size_t count{ 0 };
 
@@ -179,7 +179,7 @@ int main()
 
 		SEPARATOR(2);
 
-		SplitStringView splitView = Split(str);
+		SplitResult splitView = Split(str);
 
 		SEPARATOR(3);
 

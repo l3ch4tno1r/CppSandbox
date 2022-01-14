@@ -50,37 +50,30 @@ class SplitResultIterator
 {
 public:
 	SplitResultIterator(const SplitResultIterator& other) :
-		m_Spliter(other.m_Spliter),
+		m_SplitResult(other.m_SplitResult),
 		m_Start(other.m_Start),
-		m_End(other.m_End),
-		m_View(other.m_View)
+		m_End(other.m_End)
 	{}
 
-	SplitResultIterator(const SplitResult& spliter) :
-		m_Spliter(spliter),
-		m_Start(spliter.m_Target.size())
+	SplitResultIterator(const SplitResult& splitResult) :
+		m_SplitResult(splitResult),
+		m_Start(splitResult.m_Target.size())
 	{}
 
-	SplitResultIterator(const SplitResult& spliter, bool) :
-		m_Spliter(spliter)
-	{
-		const std::string& target{ m_Spliter.m_Target };
-		const std::string& delimiter{ m_Spliter.m_Delimiter };
-
-		m_End = target.find(delimiter);
-
-		m_View = { target.begin(), target.begin() + m_End };
-	}
+	SplitResultIterator(const SplitResult& splitResult, bool) :
+		m_SplitResult(splitResult),
+		m_End(std::min(
+			splitResult.m_Target.find(splitResult.m_Delimiter),
+			splitResult.m_Target.size()))
+	{}
 
 	SplitResultIterator& operator++()
 	{
-		const std::string& target{ m_Spliter.m_Target };
-		const std::string& delimiter{ m_Spliter.m_Delimiter};
+		const std::string& target{ m_SplitResult.m_Target };
+		const std::string& delimiter{ m_SplitResult.m_Delimiter};
 
 		m_Start = std::min(m_End + delimiter.size(), target.size());
 		m_End   = std::min(target.find(delimiter, m_Start), target.size());
-
-		m_View = { target.begin() + m_Start, target.begin() + m_End };
 
 		return *this;
 	}
@@ -96,22 +89,16 @@ public:
 
 	std::string_view operator*() const
 	{
-		return m_View;
-	}
-
-	const std::string_view* operator->() const
-	{
-		return &m_View;
+		return { m_SplitResult.m_Target.c_str() + m_Start, m_End - m_Start };
 	}
 
 	friend bool operator==(const SplitResultIterator&, const SplitResultIterator&);
 	friend bool operator!=(const SplitResultIterator&, const SplitResultIterator&);
 
 private:
-	const SplitResult& m_Spliter;
+	const SplitResult& m_SplitResult;
 
 	uint32_t m_Start{ 0 }, m_End{ std::string::npos };
-	std::string_view m_View;
 };
 
 SplitResult Split(const std::string& str)
@@ -127,7 +114,7 @@ SplitResult Split(const std::string& str, StrType&& delim)
 
 bool operator==(const SplitResultIterator& a, const SplitResultIterator& b)
 {
-	return &a.m_Spliter == &b.m_Spliter && a.m_Start == b.m_Start;
+	return &a.m_SplitResult == &b.m_SplitResult && a.m_Start == b.m_Start;
 }
 
 bool operator!=(const SplitResultIterator& a, const SplitResultIterator& b)

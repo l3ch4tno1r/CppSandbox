@@ -89,5 +89,8 @@
     <ClInclude Include="Source\Memory\_MemTracker.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities\Source\SplitString.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,8 +21,6 @@ public:
 	SplitResultIterator begin() const;
 	SplitResultIterator end()   const;
 
-	operator std::vector<std::string>() const;
-
 	size_t Count() const;
 
 private:
@@ -132,17 +130,6 @@ SplitResultIterator SplitResult::end() const
 	return { *this };
 }
 
-SplitResult::operator std::vector<std::string>() const
-{
-	std::vector<std::string> result;
-	result.reserve(this->Count());
-
-	for (auto view : *this)
-		result.emplace_back(view);
-
-	return result;
-}
-
 size_t SplitResult::Count() const
 {
 	size_t count{ 0 };
@@ -186,10 +173,6 @@ int main()
 			for (auto it = splitView.begin(); it != splitView.end(); ++it)
 				std::cout << *it << std::endl;
 		}
-
-		SEPARATOR(6);
-
-		std::vector<std::string> vec = splitView;
 
 		SEPARATOR(7);
 		{

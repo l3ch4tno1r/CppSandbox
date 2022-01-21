@@ -33,10 +33,10 @@
     <ClCompile Include="Utilities\Source\TraceLog.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Memory\Test45.cpp">
+    <ClCompile Include="Source\Template\Test43 - Ranges.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Memory\_MemTracker.cpp">
+    <ClCompile Include="Source\Cpp20\Test03 - ranges.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -84,9 +84,6 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Utilities\Source\Synchronized.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Memory\_MemTracker.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Utilities\Source\SplitString.h">

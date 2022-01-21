@@ -132,8 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
-    <ClCompile Include="Source\Memory\Test45.cpp" />
-    <ClCompile Include="Source\Memory\_MemTracker.cpp" />
+    <ClCompile Include="Source\Cpp20\Test03 - ranges.cpp" />
+    <ClCompile Include="Source\Template\Test43 - Ranges.cpp" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
     <ClCompile Include="Utilities\Source\ConfigManager.cpp" />
     <ClCompile Include="Utilities\Source\ErrorHandling.cpp" />
@@ -144,7 +144,6 @@
     <ClInclude Include="External\entt\include\entt.hpp" />
     <ClInclude Include="External\TheCherno\Instrumentor.h" />
     <ClInclude Include="External\ttf-parser\src\ttfParser.h" />
-    <ClInclude Include="Source\Memory\_MemTracker.h" />
     <ClInclude Include="Source\SQLite\SQLiteEntity\Expression.h" />
     <ClInclude Include="Utilities\Source\Benchmarking.h" />
     <ClInclude Include="Utilities\Source\ConfigManager.h" />

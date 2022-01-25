@@ -132,8 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
-    <ClCompile Include="Source\Memory\Test46 - Split.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
+    <ClCompile Include="Source\SQLite\Test16.cpp" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
     <ClCompile Include="Utilities\Source\ConfigManager.cpp" />
     <ClCompile Include="Utilities\Source\ErrorHandling.cpp" />
@@ -151,6 +151,7 @@
     <ClInclude Include="Utilities\Source\ErrorHandling.h" />
     <ClInclude Include="Utilities\Source\InstanceCounter.h" />
     <ClInclude Include="Utilities\Source\Instrumentor.h" />
+    <ClInclude Include="Utilities\Source\NameOfType.h" />
     <ClInclude Include="Utilities\Source\Noisy.h" />
     <ClInclude Include="Utilities\Source\SplitString.h" />
     <ClInclude Include="Utilities\Source\Synchronized.h" />

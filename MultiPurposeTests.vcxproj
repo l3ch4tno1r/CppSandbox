@@ -133,7 +133,7 @@
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
-    <ClCompile Include="Source\SQLite\Test16.cpp" />
+    <ClCompile Include="Source\Template\Test47.cpp" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
     <ClCompile Include="Utilities\Source\ConfigManager.cpp" />
     <ClCompile Include="Utilities\Source\ErrorHandling.cpp" />
@@ -146,6 +146,9 @@
     <ClInclude Include="External\ttf-parser\src\ttfParser.h" />
     <ClInclude Include="Source\Memory\_MemTracker.h" />
     <ClInclude Include="Source\SQLite\SQLiteEntity\Expression.h" />
+    <ClInclude Include="Utilities\Experimental\ColumnNaming.h" />
+    <ClInclude Include="Utilities\Experimental\LiteralStringGenerator.h" />
+    <ClInclude Include="Utilities\Experimental\TableNaming.h" />
     <ClInclude Include="Utilities\Source\Benchmarking.h" />
     <ClInclude Include="Utilities\Source\ConfigManager.h" />
     <ClInclude Include="Utilities\Source\ErrorHandling.h" />

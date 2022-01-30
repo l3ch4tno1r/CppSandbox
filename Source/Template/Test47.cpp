@@ -30,9 +30,13 @@ int main()
 {
 	using ContactTabName = TableName<Contact>;
 	using ContactVarName = LCN::ToLower<ContactTabName>;
+	using ContactVARName = LCN::ToUpper<ContactTabName>;
 
 	std::cout << LCN::Literal<ContactTabName> << '\n';
 	std::cout << LCN::Literal<ContactVarName> << '\n';
+	std::cout << LCN::Literal<ContactVARName> << '\n';
+
+	constexpr size_t size = LCN::ToString<int, 505>::Size();
 
 	std::cin.get();
 }

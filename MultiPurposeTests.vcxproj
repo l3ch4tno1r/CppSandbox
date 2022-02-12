@@ -138,8 +138,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
+    <ClCompile Include="Source\Low Level Stuff\Test03.cpp" />
     <ClCompile Include="Source\Memory\_MemTracker.cpp" />
-    <ClCompile Include="Source\Template\Test49.cpp" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
     <ClCompile Include="Utilities\Source\ConfigManager.cpp" />
     <ClCompile Include="Utilities\Source\ErrorHandling.cpp" />

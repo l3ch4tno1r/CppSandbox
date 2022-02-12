@@ -1,49 +1,53 @@
 #include <iostream>
 
+////////////////
+//-- Select --//
+////////////////
+
+struct SelectBloc {};
+
+SelectBloc Select() { return {}; }
+
+template<typename _NextStmt>
+struct SelectStmt {};
+
 template<typename _Derived>
-struct SQLExpr
-{};
+struct AfterSelect {};
 
-template<typename _EL, typename _ER>
-struct Expr : SQLExpr<Expr<_EL, _ER>>
-{};
+template<typename _NextStmt>
+SelectStmt<_NextStmt> operator|(const SelectBloc&, const AfterSelect<_NextStmt>&) { return {}; }
 
-template<typename _EL, typename _ER>
-Expr<_EL, _ER> operator|(const SQLExpr<_EL>&, const SQLExpr<_ER>&)
-{
-	return {};
-}
+//////////////
+//-- From --//
+//////////////
 
-struct SelectExpr : SQLExpr<SelectExpr>
-{};
+struct FromClause : AfterSelect<FromClause> {};
 
-SelectExpr Select() { return {}; }
+FromClause From() { return {}; }
 
-struct FromExpr : SQLExpr<FromExpr>
-{};
+template<typename _NextStmt>
+struct FromStmt : AfterSelect<FromStmt<_NextStmt>> {};
 
-FromExpr From() { return {}; }
+template<typename _Derived>
+struct AfterFrom {};
 
-struct WhereExpr : SQLExpr<WhereExpr>
-{};
+template<typename _NextStmt>
+FromStmt<_NextStmt> operator|(const FromClause&, const AfterFrom<_NextStmt>&) { return {}; }
 
-WhereExpr Where() { return {}; }
+//////////////
+//-- Join --//
+//////////////
 
-struct JoinExpr : SQLExpr<JoinExpr>
-{};
+struct JoinStmt : AfterFrom<JoinStmt> {};
 
-JoinExpr Join() { return {}; }
+JoinStmt Join() { return {}; }
 
 int main()
 {
-	auto query1 =
-		Select() | From() |
-		Join() |
-		Where();
-
-	auto query2 = 
+	auto query =
 		Select() |
-		Where();
+		From() |
+		Join();
 
 	std::cin.get();
 }

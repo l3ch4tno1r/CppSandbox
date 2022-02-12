@@ -36,7 +36,7 @@
     <ClCompile Include="Source\Memory\_MemTracker.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Template\Test49.cpp">
+    <ClCompile Include="Source\Low Level Stuff\Test03.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

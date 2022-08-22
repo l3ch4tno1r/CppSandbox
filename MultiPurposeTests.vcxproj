@@ -138,7 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
-    <ClCompile Include="Source\Misc\Test61 - Testing binary structure.cpp" />
+    <ClCompile Include="Source\Misc\Test62.cpp" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
     <ClCompile Include="Utilities\Source\ConfigManager.cpp" />
     <ClCompile Include="Utilities\Source\ErrorHandling.cpp" />
@@ -154,6 +154,9 @@
     <ClInclude Include="Utilities\Experimental\TableNaming.h" />
     <ClInclude Include="Utilities\Source\Benchmarking.h" />
     <ClInclude Include="Utilities\Source\ConfigManager.h" />
+    <ClInclude Include="Utilities\Source\DesignPatterns\EntityComponentSystem.h" />
+    <ClInclude Include="Utilities\Source\DesignPatterns\Observer.h" />
+    <ClInclude Include="Utilities\Source\DesignPatterns\SignalSlot.h" />
     <ClInclude Include="Utilities\Source\ErrorHandling.h" />
     <ClInclude Include="Utilities\Source\InstanceCounter.h" />
     <ClInclude Include="Utilities\Source\Instrumentor.h" />

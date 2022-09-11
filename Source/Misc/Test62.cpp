@@ -88,5 +88,29 @@ int main()
 
 	std::cout << std::cos(0.25rnd) << ", " << std::sin(0.25rnd) << '\n';
 
+	auto meter = 1m;
+
+	std::cout << (meter *= 2).Count() << ", " << (meter /= 2).Count() << std::endl;
+
+	constexpr LCN::Units::DegreeLL deg57 = 1.0rad;
+	constexpr LCN::Units::RadianLD rad1  = 1.0rad;
+
+	bool equal = (deg57 == rad1);
+
+	static_assert(1m == 1000mm);
+	static_assert(1m != 2km);
+	static_assert(45deg < 1.0rad);
+	static_assert(45deg <= 1.0rad);
+	static_assert(45deg <= 45deg);
+	static_assert(60deg > 1.0rad);
+	static_assert(60deg >= 1.0rad);
+	static_assert(60deg >= 60deg);
+	//static_assert(57deg == 1.0rad);
+
+	using _CT = std::common_type_t<LCN::Units::InchLL, LCN::Units::FootLL>;
+
+	static_assert(_CT::RatioType::num == 127);
+	static_assert(_CT::RatioType::den == 5000);
+
 	std::cin.get();
 }

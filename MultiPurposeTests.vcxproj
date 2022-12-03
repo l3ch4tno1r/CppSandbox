@@ -138,7 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
-    <ClCompile Include="Source\Misc\Test62.cpp" />
+    <ClCompile Include="Source\Template\Test56 - Compile time matrix init.cpp" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
     <ClCompile Include="Utilities\Source\ConfigManager.cpp" />
     <ClCompile Include="Utilities\Source\ErrorHandling.cpp" />

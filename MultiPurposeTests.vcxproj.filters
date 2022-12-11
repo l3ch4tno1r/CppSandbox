@@ -33,7 +33,10 @@
     <ClCompile Include="Utilities\Source\TraceLog.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Template\Test56 - Compile time matrix init.cpp">
+    <ClCompile Include="Source\SQLite\Test57.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\External\sqlite3\sqlite3.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -153,6 +156,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="LCN_Math\Source\Utilities\UnitsAngle.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\External\sqlite3\sqlite3.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

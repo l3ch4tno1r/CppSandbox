@@ -138,7 +138,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
-    <ClCompile Include="Source\Template\Test56 - Compile time matrix init.cpp" />
+    <ClCompile Include="Source\SQLite\Test57.cpp" />
+    <ClCompile Include="Utilities\External\sqlite3\sqlite3.c" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
     <ClCompile Include="Utilities\Source\ConfigManager.cpp" />
     <ClCompile Include="Utilities\Source\ErrorHandling.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Utilities\Experimental\ColumnNaming.h" />
     <ClInclude Include="Utilities\Experimental\LiteralStringGenerator.h" />
     <ClInclude Include="Utilities\Experimental\TableNaming.h" />
+    <ClInclude Include="Utilities\External\sqlite3\sqlite3.h" />
     <ClInclude Include="Utilities\Source\Benchmarking.h" />
     <ClInclude Include="Utilities\Source\ConfigManager.h" />
     <ClInclude Include="Utilities\Source\DesignPatterns\EntityComponentSystem.h" />

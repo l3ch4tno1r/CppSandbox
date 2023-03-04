@@ -40,10 +40,10 @@ namespace Test01
 
 	template<typename _LHS>
 	constexpr
-		CExpr<_LHS>
-		operator|(
-			const _LHS&,
-			const CType&)
+	CExpr<_LHS>
+	operator|(
+		const _LHS&,
+		const CType&)
 	{
 		return {};
 	}
@@ -70,10 +70,10 @@ namespace Test01
 
 	template<typename _LHS>
 	constexpr
-		BExpr<_LHS>
-		operator|(
-			const _LHS&,
-			const BType&)
+	BExpr<_LHS>
+	operator|(
+		const _LHS&,
+		const BType&)
 	{
 		return {};
 	}

@@ -138,7 +138,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
-    <ClCompile Include="Source\SQLite\Test57.cpp" />
+    <ClCompile Include="Source\Parsing\Test01.cpp" />
     <ClCompile Include="Utilities\External\sqlite3\sqlite3.c" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
     <ClCompile Include="Utilities\Source\ConfigManager.cpp" />

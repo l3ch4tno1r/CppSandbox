@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 
+#define SEPARATOR(X) std::cout << "---------- " << X << " ----------\n"
+
 namespace LCN::Parsing
 {
 #pragma region Check single char
@@ -103,28 +105,89 @@ namespace LCN::Parsing
 #pragma endregion
 }
 
+namespace Test02
+{
+	template<typename _Derived>
+	struct Expr
+	{};
+
+	template<typename _LHS, typename _RHS>
+	struct PipeType;
+
+	template<typename _LHS, typename _RHS>
+	constexpr
+	typename PipeType<_LHS, _RHS>::Type
+	operator>>(
+		const _LHS&,
+		const Expr<_RHS>&)
+	{
+		return {};
+	}
+
+	template<typename _Type>
+	struct PlaceHolder : Expr<PlaceHolder<_Type>>
+	{};
+
+	PlaceHolder<int>   Int;
+	PlaceHolder<float> Float;
+
+	template<typename _LHS, typename _Type>
+	struct PlaceHolderPipe : Expr<PlaceHolderPipe<_LHS, _Type>>
+	{};
+
+	template<typename _LHS, typename _Type>
+	struct PipeType<_LHS, PlaceHolder<_Type>>
+	{
+		using Type = PlaceHolderPipe<_LHS, _Type>;
+	};
+}
+
 int main()
 {
-	using LCN::Parsing::Check;
-
-	try
+	SEPARATOR("Test 01");
 	{
-		std::stringstream sstr{ "bbbb [1;2;3;4;5;6] eeee" };
-		sstr.exceptions(std::ios::failbit | std::ios::badbit);
+		using LCN::Parsing::Check;
 
-		int tab[6];
-		auto it = std::begin(tab), end = std::end(tab);
+		try
+		{
+			std::stringstream sstr{ "bbbb [1;2;3;4;5;6] eeee" };
+			sstr.exceptions(std::ios::failbit | std::ios::badbit);
 
-		sstr >> Check('b') * 4 >> Check('[') >> *(it++);
+			int tab[6];
+			auto it = std::begin(tab), end = std::end(tab);
 
-		for (; it != end; ++it)
-			sstr >> Check(';') >> *it;
+			sstr >> Check('b') * 4 >> Check('[') >> *(it++);
 
-		sstr >> Check(']') >> 4 * Check('e');
+			for (; it != end; ++it)
+				sstr >> Check(';') >> *it;
+
+			sstr >> Check(']') >> 4 * Check('e');
+		}
+		catch (const std::ios::failure& e)
+		{
+			std::cerr << "Exception : " << e.what() << " - " << e.code().message() << std::endl;
+		}
 	}
-	catch (const std::ios::failure& e)
+
+	SEPARATOR("Test 02");
 	{
-		std::cerr << "Exception : " << e.what() << std::endl;
+		using Test02::Int;
+		using Test02::Float;
+
+		//std::istringstream iss{ "(1;2;3)" };
+		std::istringstream iss{ "(1)" };
+		iss.exceptions(std::ios::failbit | std::ios::badbit);
+
+		struct
+		{
+			int x, y, z;
+		}
+		p;
+
+		//auto expr = '(' >> Int >> 2 * (';' >> Int) >> ')';
+		auto expr = '(' >> Int >> Float;
+
+		iss >> expr(p.x);
 	}
 
 	std::cin.get();

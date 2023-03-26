@@ -265,6 +265,155 @@ namespace Test03
 	}
 }
 
+namespace Test04
+{
+	namespace Hidden
+	{
+		template<typename _IStream>
+		concept IStream = std::is_base_of_v<
+			std::basic_istream<
+				typename _IStream::char_type,
+				typename _IStream::traits_type>,
+			_IStream>;
+
+		enum class Side
+		{
+			Left,
+			Right
+		};
+	}
+
+	//////////////
+	//-- Expr --//
+	//////////////
+
+	template<typename _Derived>
+	class Expr
+	{
+	public:
+		template<Hidden::IStream _IStream>
+		void
+		ExtractData(
+			_IStream& is) const
+		{
+			this->Derived().ExtractData(is);
+		}
+
+	private:
+		_Derived&       Derived()       { return static_cast<_Derived&>(*this); }
+		_Derived const& Derived() const { return static_cast<const _Derived&>(*this); }
+	};
+
+	template<
+		Hidden::IStream _IStream,
+		typename _Derived>
+	void
+	operator>>(
+		_IStream& is,
+		const Expr<_Derived>& expr)
+	{
+		expr.ExtractData(is);
+	}
+
+	///////////////////
+	//-- CheckChar --//
+	///////////////////
+
+	template<typename _E, Hidden::Side _Side>
+	struct CheckChar : Expr<CheckChar<_E, _Side>>
+	{
+	public:
+		CheckChar(char c, const Expr<_E>& e)
+			: m_char{ c }
+			, m_expr{ static_cast<const _E&>(e) }
+		{}
+
+		template<Hidden::IStream _IStream>
+		void
+		ExtractData(
+			_IStream& is) const
+		{
+			auto lambda = [&]()
+			{
+				const char c = is.peek();
+
+				if (c != m_char)
+					is.setstate(std::ios::failbit);
+
+				is.get();
+			};
+
+			switch (_Side)
+			{
+			case Test04::Hidden::Side::Left:
+				lambda();
+				m_expr.ExtractData(is);
+				break;
+			case Test04::Hidden::Side::Right:
+				m_expr.ExtractData(is);
+				lambda();
+				break;
+			default:
+				break;
+			}
+		}
+
+	private:
+		char m_char;
+		const _E& m_expr;
+	};
+
+	template<typename _LHS>
+	CheckChar<_LHS, Hidden::Side::Right>
+	operator>>(
+		const Expr<_LHS>& lhs,
+		char c)
+	{
+		return { c, static_cast<const _LHS&>(lhs) };
+	}
+
+	template<typename _RHS>
+	CheckChar<_RHS, Hidden::Side::Left>
+	operator>>(
+		char c,
+		const Expr<_RHS>& lhs)
+	{
+		return { c, static_cast<const _RHS&>(lhs) };
+	}
+
+	////////////////
+	//-- Reader --//
+	////////////////
+
+	template<typename _Target>
+	class Reader : public Expr<Reader<_Target>>
+	{
+	public:
+		Reader(_Target& target)
+			: m_Target{ target }
+		{}
+
+		template<Hidden::IStream _IStream>
+		void
+		ExtractData(
+			_IStream& is) const
+		{
+			is >> m_Target;
+		}
+
+	private:
+		_Target& m_Target;
+	};
+
+	template<typename _Target>
+	Reader<_Target>
+	Read(
+		_Target& target)
+	{
+		return { target };
+	}
+}
+
 int main()
 {
 	SEPARATOR("Test 01");
@@ -325,6 +474,7 @@ int main()
 			 "[0, 0, 0, 1]]"
 		};
 
+		//auto exprLine = '[' >> ArgIt >> 3 * ( ',' >> ++ArgIt ) >> ']';
 		auto expr = Arg0 >> Arg1 >> Arg2;
 		//auto expr2 = Arg0 >> expr;
 
@@ -337,6 +487,19 @@ int main()
 		auto it = std::ranges::min_element(vec);
 
 		std::cout << *it << '\n';
+	}
+
+	SEPARATOR("Test 04");
+	{
+		using namespace Test04;
+
+		std::istringstream sstr{ "1;2;3" };
+
+		uint64_t a, b, c;
+		auto ra = Read(a), rb = Read(b), rc = Read(c);
+
+		//auto expr = ';' >> Read(a) >> ';';
+		sstr >> (ra >> ';' >> rb);
 	}
 
 	std::cin.get();

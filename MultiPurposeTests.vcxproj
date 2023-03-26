@@ -77,7 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>DEBUG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Librairies\boost_1_77_0;$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir);$(SolutionDir)Utilities\External\SQLiteCpp\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Utilisateurs\Arnaud\Documents\GitHub\GoogleBenchmark\benchmark\include;E:\Librairies\boost_1_77_0;$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir);$(SolutionDir)Utilities\External\SQLiteCpp\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <PreprocessToFile>false</PreprocessToFile>
@@ -94,11 +94,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>E:\Librairies\boost_1_77_0;$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Utilisateurs\Arnaud\Documents\GitHub\GoogleBenchmark\benchmark\include;E:\Librairies\boost_1_77_0;$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir);</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PreprocessorDefinitions>BENCHMARK_STATIC_DEFINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>E:\Librairies\boost_1_77_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,7 +111,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>E:\Librairies\boost_1_77_0;$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Utilisateurs\Arnaud\Documents\GitHub\GoogleBenchmark\benchmark\include;E:\Librairies\boost_1_77_0;$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir);</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
@@ -127,18 +129,21 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>E:\Librairies\boost_1_77_0;$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir);</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>E:\Utilisateurs\Arnaud\Documents\GitHub\GoogleBenchmark\benchmark\include;E:\Librairies\boost_1_77_0;$(SolutionDir);$(SolutionDir)eigen;$(ProjectDir);</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PreprocessorDefinitions>BENCHMARK_STATIC_DEFINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>E:\Librairies\boost_1_77_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="External\ttf-parser\src\ttfParser.cpp" />
-    <ClCompile Include="Source\Parsing\Test01.cpp" />
+    <ClCompile Include="Source\Benchmark\BenchmarkMain.cpp" />
+    <ClCompile Include="Source\Benchmark\Test11.cpp" />
     <ClCompile Include="Utilities\External\sqlite3\sqlite3.c" />
     <ClCompile Include="Utilities\Source\Benchmarking.cpp" />
     <ClCompile Include="Utilities\Source\ConfigManager.cpp" />
@@ -191,6 +196,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Console3D\Utilities\Utilities.vcxproj">
       <Project>{9c344fbf-3053-4c64-a2ee-739e310656c4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GoogleBenchmark\benchmark\build\src\benchmark.vcxproj">
+      <Project>{f28f04a3-14bf-3d29-ac3d-6bc4664dc637}</Project>
     </ProjectReference>
     <ProjectReference Include="LCN_Math\LCNMath.vcxproj">
       <Project>{840ea722-4361-4ae5-895f-3c305b1df81a}</Project>

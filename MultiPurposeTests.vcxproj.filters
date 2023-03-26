@@ -36,7 +36,10 @@
     <ClCompile Include="Utilities\External\sqlite3\sqlite3.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Parsing\Test01.cpp">
+    <ClCompile Include="Source\Benchmark\BenchmarkMain.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Benchmark\Test11.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
